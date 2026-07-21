@@ -83,7 +83,10 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    overflow: auto;
+    /* Allow scrolling on extremely small viewports */
+    padding: 20px 10px;
+    /* Padding for desktop screens */
     transition: background 0.3s ease;
 }
 
@@ -93,8 +96,15 @@ body.dark {
 
 /* App Bezel Housing (Mobile Frame on Desktop, Fullscreen on Mobile) */
 .phone-frame {
-    width: 425px;
-    height: 860px;
+    width: 100%;
+    max-width: 425px;
+    /* Responsive fluid scaling on wider screens */
+    height: 90vh;
+    /* Auto scales height depending on viewport size */
+    max-height: 860px;
+    /* Upper bounds on massive screens */
+    min-height: 580px;
+    /* Lower bounds to prevent elements folding */
     background-color: var(--bg-system);
     border-radius: 40px;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4), inset 0 0 0 8px #1E293B;
@@ -109,11 +119,16 @@ body.dark {
 @media (max-width: 480px) {
     body {
         background: var(--bg-system);
+        padding: 0;
+        overflow: hidden;
     }
 
     .phone-frame {
+        max-width: 100%;
         width: 100%;
         height: 100vh;
+        max-height: 100vh;
+        min-height: 100vh;
         border-radius: 0;
         border: none;
         box-shadow: none;
