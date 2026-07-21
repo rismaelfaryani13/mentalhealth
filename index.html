@@ -4,18 +4,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>InnerCalm - Mental Health Tracker & Gamified Self-Care</title>
+    <title>InnerCalm | Mental Health Tracker & Gamified Self-Care</title>
+
+    <!-- SEO & Metadata -->
+    <meta name="description"
+        content="InnerCalm adalah pelacak kesehatan mental harian dan pendukung kebiasaan meditatif interaktif. Kelola stres, hidrasi, tidur, dan refleksikan jurnal harian secara terintegrasi.">
+    <meta name="keywords"
+        content="mental health, self care, pelacak mood, meditasi pernapasan, kesehatan mental, jurnal refleksi, habit tracker">
+    <meta name="author" content="InnerCalm Team">
+    <link rel="canonical" href="https://innercalm.example.org/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://innercalm.example.org/">
+    <meta property="og:title" content="InnerCalm | Mental Health Tracker & Gamified Self-Care">
+    <meta property="og:description"
+        content="Lacak mood, hidrasi, tidur, dan naikkan level kesehatan mentalmu secara interaktif. Bebaskan stres dengan latihan pernapasan terpandu.">
+    <meta property="og:image" content="icon.svg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://innercalm.example.org/">
+    <meta property="twitter:title" content="InnerCalm | Mental Health Tracker & Gamified Self-Care">
+    <meta property="twitter:description"
+        content="Lacak mood, hidrasi, tidur, dan naikkan level kesehatan mentalmu secara interaktif. Bebaskan stres dengan latihan pernapasan terpandu.">
+    <meta property="twitter:image" content="icon.svg">
+
     <!-- PWA Mobile Web App Headers -->
     <meta name="theme-color" content="#8ECAE6">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="icon.svg">
     <link rel="manifest" href="manifest.json">
-    <!-- Google Fonts Poppins -->
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
         rel="stylesheet">
+
     <!-- CSS Link -->
     <link rel="stylesheet" href="style.css">
     <!-- Lucide Icons Library -->
@@ -24,10 +52,43 @@
 
 <body>
 
-    <!-- Phone Frame Container -->
-    <div class="phone-frame">
-        <!-- Built-in Notch Bezel -->
-        <div class="phone-notch"></div>
+    <!-- Main SaaS Layout Container -->
+    <div class="app-container">
+
+        <!-- Sidebar / Bottom Navigation (Responsive Navigation Component) -->
+        <nav class="app-navigation" id="app-navigation" style="display: none;">
+            <div class="sidebar-logo">
+                <i data-lucide="heart" style="color: #8ECAE6; width: 24px; height: 24px; stroke-width: 2.5;"></i>
+                <span>InnerCalm</span>
+            </div>
+            <div class="sidebar-menu">
+                <div class="nav-item active" onclick="navigateTo('screen-home')" title="Beranda" role="button"
+                    aria-label="Navigasi ke Beranda">
+                    <i data-lucide="home"></i>
+                    <span>Beranda</span>
+                </div>
+                <div class="nav-item" onclick="navigateTo('screen-mood')" title="Mood" role="button"
+                    aria-label="Navigasi ke Mood">
+                    <i data-lucide="smile"></i>
+                    <span>Mood</span>
+                </div>
+                <div class="nav-item" onclick="navigateTo('screen-journal')" title="Jurnal" role="button"
+                    aria-label="Navigasi ke Jurnal">
+                    <i data-lucide="book-open"></i>
+                    <span>Jurnal</span>
+                </div>
+                <div class="nav-item" onclick="navigateTo('screen-stats')" title="Statistik" role="button"
+                    aria-label="Navigasi ke Statistik">
+                    <i data-lucide="bar-chart-2"></i>
+                    <span>Statistik</span>
+                </div>
+                <div class="nav-item" onclick="navigateTo('screen-profile')" title="Profil" role="button"
+                    aria-label="Navigasi ke Profil">
+                    <i data-lucide="user"></i>
+                    <span>Profil</span>
+                </div>
+            </div>
+        </nav>
 
         <!-- App View Container -->
         <div class="view-container">
@@ -152,110 +213,368 @@
                     </div>
                 </div>
 
-                <!-- Gamification Widget Card -->
-                <div class="card card-glass">
-                    <div class="xp-row">
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <span class="level-tag" id="gui-lvl-label">Level 1</span>
-                            <span style="font-size: 12.5px; font-weight: 700; color: var(--text-main);">Inner
-                                Hero</span>
+                <!-- Dashboard Grid Layout -->
+                <div class="dashboard-grid">
+
+                    <!-- Left Section (Main content) -->
+                    <main class="dashboard-main-col">
+
+                        <!-- Mood Hari Ini Card -->
+                        <div class="card card-glass" style="margin-bottom: 24px;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                                <h4 style="font-size: 14px; font-weight: 800; color: var(--text-main);">Mood Hari Ini
+                                </h4>
+                                <span
+                                    style="font-size: 11px; font-weight: 800; color: var(--primary-dark); cursor: pointer;"
+                                    onclick="navigateTo('screen-mood')">Kelola &gt;</span>
+                            </div>
+
+                            <div
+                                style="display: flex; align-items: center; gap: 12px; padding: 14px 18px; background-color: var(--bg-sec); border-radius: 16px; margin-bottom: 16px; border: 1px solid var(--border-color);">
+                                <span style="font-size: 28px;" id="gui-current-mood-emoji">😄</span>
+                                <div>
+                                    <h5 style="font-size: 14px; font-weight: 700; color: var(--text-main);"
+                                        id="gui-current-mood-label">Baik</h5>
+                                    <span style="font-size: 11px; color: var(--text-sub);">Suasana hati terdata</span>
+                                </div>
+                            </div>
+
+                            <div class="mood-grid">
+                                <span class="mood-btn" role="button" aria-label="Sangat Bahagia"
+                                    onclick="logQuickMood('sangat-bahagia')">😄</span>
+                                <span class="mood-btn" role="button" aria-label="Bahagia"
+                                    onclick="logQuickMood('bahagia')">😊</span>
+                                <span class="mood-btn" role="button" aria-label="Biasa"
+                                    onclick="logQuickMood('biasa')">😐</span>
+                                <span class="mood-btn" role="button" aria-label="Sedih"
+                                    onclick="logQuickMood('sedih')">😔</span>
+                                <span class="mood-btn" role="button" aria-label="Cemas"
+                                    onclick="logQuickMood('cemas')">😣</span>
+                                <span class="mood-btn" role="button" aria-label="Lelah"
+                                    onclick="logQuickMood('lelah')">😴</span>
+                            </div>
                         </div>
-                        <span id="gui-xp-text" style="font-size: 11px; font-weight: 700; color: var(--text-sub);">35 /
-                            100 XP</span>
-                    </div>
-                    <div class="progress-bar-container">
-                        <div id="gui-xp-bar" class="xp-progress-bar" style="width: 35%;"></div>
-                    </div>
-                </div>
 
-                <!-- Affirmation Box Card -->
-                <div class="affirmation-box" style="margin-bottom: 20px;" onclick="cycleAffirmations()">
-                    <span id="gui-affirmation-text" class="affirmation-text">"Setiap langkah kecil yang kamu ambil hari
-                        ini adalah kemajuan menuju diri yang lebih sehat."</span>
-                    <div class="affirmation-sub">— Afirmasi Hari Ini (Sentuh untuk ganti)</div>
-                </div>
+                        <!-- Ringkasan Mingguan Card -->
+                        <div class="card card-glass" style="margin-bottom: 24px;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                                <h4 style="font-size: 14px; font-weight: 800; color: var(--text-main);">Ringkasan
+                                    Mingguan</h4>
+                                <span
+                                    style="font-size: 11px; font-weight: 800; color: var(--primary-dark); cursor: pointer;"
+                                    onclick="navigateTo('screen-mood')">Lihat Detail &gt;</span>
+                            </div>
+                            <div class="weekly-chart-wrapper"
+                                style="height: 120px; width: 100%; display: flex; align-items: flex-end;">
+                                <svg viewBox="0 0 300 100" width="100%" height="80%" preserveAspectRatio="none">
+                                    <defs>
+                                        <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0%" stop-color="#A8C5FF" stop-opacity="0.45" />
+                                            <stop offset="100%" stop-color="#A8C5FF" stop-opacity="0.0" />
+                                        </linearGradient>
+                                    </defs>
+                                    <path d="M 10,70 Q 50,50 90,65 T 170,30 T 250,40 T 290,20 L 290,100 L 10,100 Z"
+                                        fill="url(#chartGrad)" />
+                                    <path d="M 10,70 Q 50,50 90,65 T 170,30 T 250,40 T 290,20" stroke="#8ECAE6"
+                                        stroke-width="3" fill="none" stroke-linecap="round" />
+                                    <circle cx="10" cy="70" r="4" fill="#FFFFFF" stroke="#8ECAE6" stroke-width="2" />
+                                    <circle cx="50" cy="52" r="4" fill="#FFFFFF" stroke="#8ECAE6" stroke-width="2" />
+                                    <circle cx="90" cy="65" r="4" fill="#FFFFFF" stroke="#8ECAE6" stroke-width="2" />
+                                    <circle cx="130" cy="45" r="4" fill="#FFFFFF" stroke="#8ECAE6" stroke-width="2" />
+                                    <circle cx="170" cy="30" r="4" fill="#FFFFFF" stroke="#8ECAE6" stroke-width="2" />
+                                    <circle cx="210" cy="36" r="4" fill="#FFFFFF" stroke="#8ECAE6" stroke-width="2" />
+                                    <circle cx="250" cy="40" r="4" fill="#FFFFFF" stroke="#8ECAE6" stroke-width="2" />
+                                    <circle cx="290" cy="20" r="4" fill="#FFFFFF" stroke="#8ECAE6" stroke-width="2" />
+                                </svg>
+                            </div>
+                            <div
+                                style="display: flex; justify-content: space-between; font-size: 10px; color: var(--text-sub); margin-top: 8px; font-weight:600;">
+                                <span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span><span>Min</span>
+                            </div>
+                        </div>
 
-                <!-- Quick Mood Row Questionnaire header -->
-                <h4 style="font-size: 14.5px; font-weight: 800; color: var(--text-main); margin-bottom: 12px;">Bagaimana
-                    perasaanmu hari ini?</h4>
-                <div class="mood-grid">
-                    <span class="mood-btn" onclick="logQuickMood('sangat-bahagia')">😄</span>
-                    <span class="mood-btn" onclick="logQuickMood('bahagia')">😊</span>
-                    <span class="mood-btn" onclick="logQuickMood('biasa')">😐</span>
-                    <span class="mood-btn" onclick="logQuickMood('sedih')">😔</span>
-                    <span class="mood-btn" onclick="logQuickMood('cemas')">😣</span>
-                    <span class="mood-btn" onclick="logQuickMood('lelah')">😴</span>
-                </div>
+                        <!-- Jadwal Self-care Card -->
+                        <div class="card card-glass" style="margin-bottom: 24px;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                                <h4 style="font-size: 14px; font-weight: 800; color: var(--text-main);">Jadwal Self-care
+                                </h4>
+                                <span
+                                    style="font-size: 11px; font-weight: 800; color: var(--primary-dark); cursor: pointer;"
+                                    onclick="navigateTo('screen-habits')">Kelola &gt;</span>
+                            </div>
+                            <div class="selfcare-items" style="display: flex; flex-direction: column; gap: 12px;">
+                                <div
+                                    style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background-color: var(--bg-sec); border-radius: 16px; border: 1px solid var(--border-color);">
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <span style="font-size: 20px;">🧘</span>
+                                        <div>
+                                            <h5 style="font-size: 13px; font-weight: 700; color: var(--text-main);">
+                                                Meditasi</h5>
+                                            <span style="font-size: 10px; color: var(--text-sub);">10 menit • Pukul
+                                                20:00</span>
+                                        </div>
+                                    </div>
+                                    <div class="habit-checkbox completed"
+                                        style="background-color: var(--primary); border-color: var(--primary);">✓</div>
+                                </div>
+                                <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background-color: var(--bg-sec); border-radius: 16px; border: 1px solid var(--border-color); cursor:pointer;"
+                                    onclick="openWaterTracker()">
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <span style="font-size: 20px;">💧</span>
+                                        <div>
+                                            <h5 style="font-size: 13px; font-weight: 700; color: var(--text-main);">
+                                                Minum Air</h5>
+                                            <span style="font-size: 10px; color: var(--text-sub);">8 gelas / hari</span>
+                                        </div>
+                                    </div>
+                                    <span class="level-tag" id="gui-water-badge-label"
+                                        style="font-size: 10px; padding: 4px 10px; background-color: var(--bg-highlight); font-weight:700;">5/8
+                                        gelas</span>
+                                </div>
+                            </div>
+                        </div>
 
-                <!-- Double stats row sleepers and water trackers -->
-                <div class="stats-row">
-                    <!-- Sleep duration card -->
-                    <div class="card card-glass stat-card" onclick="openSleepTracker()">
-                        <div class="stat-icon-wrapper sleep-bg">🌙</div>
-                        <span class="stat-title">Tidur Semalam</span>
-                        <h4 id="gui-stat-sleep" class="stat-value">7 jam</h4>
-                        <span id="gui-stat-sleep-quality" class="stat-desc">Kualitas: 4★</span>
-                    </div>
-                    <!-- Water log card -->
-                    <div class="card card-glass stat-card" onclick="openWaterTracker()">
-                        <div class="stat-icon-wrapper water-bg">💧</div>
-                        <span class="stat-title">Minum Air</span>
-                        <h4 id="gui-stat-water" class="stat-value">500 / 2000ml</h4>
-                        <span class="stat-desc">Target Hidrasi</span>
-                    </div>
-                </div>
+                    </main>
 
-                <!-- Habits Checklist Preview -->
-                <div class="card card-glass" style="margin-bottom: 20px;">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                        <h4 style="font-size: 13.5px; font-weight: 800; color: var(--text-main);">Checklist Kebiasaan
-                        </h4>
-                        <span style="font-size: 11px; font-weight: 800; color: var(--primary); cursor: pointer;"
-                            onclick="navigateTo('screen-habits')">Lihat Semua</span>
-                    </div>
-                    <div id="gui-dashboard-habits" class="habits-list">
-                        <!-- Loaded dynamically in js -->
-                    </div>
-                </div>
+                    <!-- Right Section (Sidebar content) -->
+                    <aside class="dashboard-side-col">
+                        <!-- Gamification Widget Card -->
+                        <div class="card card-glass" style="margin-bottom: 24px;">
+                            <div class="xp-row" style="margin-bottom: 12px;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span class="level-tag" id="gui-lvl-label">Level 1</span>
+                                    <span style="font-size: 12.5px; font-weight: 700; color: var(--text-main);">Inner
+                                        Hero</span>
+                                </div>
+                                <span id="gui-xp-text"
+                                    style="font-size: 11px; font-weight: 700; color: var(--text-sub);">35 / 100
+                                    XP</span>
+                            </div>
+                            <div class="progress-bar-container" style="height: 10px;">
+                                <div id="gui-xp-bar" class="xp-progress-bar" style="width: 35%;"></div>
+                            </div>
+                        </div>
 
-                <!-- Grid menu buttons -->
-                <div class="action-grid">
-                    <div class="action-btn-card" onclick="navigateTo('screen-breath')">
-                        <span class="action-btn-icon">🌬️</span>
-                        <span class="action-btn-label">Pernapasan</span>
-                    </div>
-                    <div class="action-btn-card" onclick="startMHCheck()">
-                        <span class="action-btn-icon">📋</span>
-                        <span class="action-btn-label">Mental Health Check</span>
-                    </div>
-                    <div class="action-btn-card"
-                        onclick="filterArticlesCategory('Semua'); navigateTo('screen-articles');">
-                        <span class="action-btn-icon">📚</span>
-                        <span class="action-btn-label">Artikel Edukasi</span>
-                    </div>
-                    <div class="action-btn-card" style="background-color: hsla(350, 100%, 78%, 0.12);"
-                        onclick="navigateTo('screen-emergency')">
-                        <span class="action-btn-icon">🚨</span>
-                        <span class="action-btn-label" style="color: var(--accent);">Emergency Help</span>
-                    </div>
+                        <!-- Affirmation Box Card -->
+                        <div class="affirmation-box" style="margin-bottom: 24px;" onclick="cycleAffirmations()"
+                            role="button" aria-label="Ganti afirmasi positif hari ini">
+                            <span id="gui-affirmation-text" class="affirmation-text">"Setiap langkah kecil yang kamu
+                                ambil hari ini adalah kemajuan menuju diri yang lebih sehat."</span>
+                            <div class="affirmation-sub">— Afirmasi Hari Ini (Sentuh untuk ganti)</div>
+                        </div>
+
+                        <!-- Quick Actions Grid card wrapper -->
+                        <div class="card card-glass" style="padding: 24px;">
+                            <h4
+                                style="font-size: 14.5px; font-weight: 800; color: var(--text-main); margin-bottom: 16px;">
+                                Aktivitas Utama</h4>
+                            <div class="action-grid">
+                                <div class="action-btn-card" onclick="navigateTo('screen-breath')" role="button"
+                                    aria-label="Mulai Latihan Pernapasan">
+                                    <span class="action-btn-icon">🌬️</span>
+                                    <span class="action-btn-label">Pernapasan</span>
+                                </div>
+                                <div class="action-btn-card" onclick="startMHCheck()" role="button"
+                                    aria-label="Mulai Evaluasi Kesehatan Mental">
+                                    <span class="action-btn-icon">📋</span>
+                                    <span class="action-btn-label">Check Kesehatan</span>
+                                </div>
+                                <div class="action-btn-card"
+                                    onclick="filterArticlesCategory('Semua'); navigateTo('screen-articles');"
+                                    role="button" aria-label="Buka Artikel Edukasi">
+                                    <span class="action-btn-icon">📚</span>
+                                    <span class="action-btn-label">Artikel Edukasi</span>
+                                </div>
+                                <div class="action-btn-card emergency-btn-card" onclick="navigateTo('screen-emergency')"
+                                    role="button" aria-label="Buka Saluran Bantuan Darurat">
+                                    <span class="action-btn-icon">🚨</span>
+                                    <span class="action-btn-label">Emergency Help</span>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+
                 </div>
             </div>
 
-            <!-- VIEW 6: MOOD GRAPHIC & TRACKER TABS -->
+            <!-- SCREEN 5: MOOD TRACKER FORM -->
             <div id="screen-mood" class="screen">
-                <div style="margin-bottom: 20px;">
-                    <h2 style="font-size: 18px; font-weight: 800; color: var(--text-main);">Catatan Mood Harian</h2>
-                    <p style="font-size: 12.5px; color: var(--text-sub);">Melacak kurva mood harian secara berkala.</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="font-size: 18px; font-weight: 800; color: var(--text-main);">Mood Tracker</h2>
+                    <i data-lucide="calendar" style="width: 22px; color: var(--text-main); cursor: pointer;"></i>
                 </div>
 
-                <div class="card card-glass">
-                    <span style="font-size: 11.5px; color: var(--text-sub); display: block; margin-bottom: 2px;">Dominan
+                <!-- Date selector -->
+                <div
+                    style="display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 28px;">
+                    <i data-lucide="chevron-left" style="width: 18px; color: var(--text-sub); cursor: pointer;"></i>
+                    <span style="font-size: 14.5px; font-weight: 700; color: var(--text-main);">16 Mei 2024</span>
+                    <i data-lucide="chevron-right" style="width: 18px; color: var(--text-sub); cursor: pointer;"></i>
+                </div>
+
+                <!-- Main Form Card -->
+                <div class="card card-glass" style="margin-bottom: 24px;">
+                    <h4
+                        style="text-align: center; font-size: 15px; font-weight: 800; color: var(--text-main); margin-bottom: 24px;">
+                        Bagaimana perasaanmu hari ini?
+                    </h4>
+
+                    <!-- 3x3 Grid Emojis -->
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px;"
+                        id="mood-form-emoji-grid">
+                        <div class="quiz-opt-btn" onclick="selectFormMood('sangat-bahagia', '😄', this)"
+                            data-mood="sangat-bahagia">
+                            <span class="quiz-opt-dot">😄</span>
+                            <span class="quiz-opt-label">Sangat Bahagia</span>
+                        </div>
+                        <div class="quiz-opt-btn active" onclick="selectFormMood('bahagia', '😊', this)"
+                            data-mood="bahagia">
+                            <span class="quiz-opt-dot">😊</span>
+                            <span class="quiz-opt-label">Bahagia</span>
+                        </div>
+                        <div class="quiz-opt-btn" onclick="selectFormMood('biasa', '😐', this)" data-mood="biasa">
+                            <span class="quiz-opt-dot">😐</span>
+                            <span class="quiz-opt-label">Biasa</span>
+                        </div>
+
+                        <div class="quiz-opt-btn" onclick="selectFormMood('sedih', '😔', this)" data-mood="sedih">
+                            <span class="quiz-opt-dot">😔</span>
+                            <span class="quiz-opt-label">Sedih</span>
+                        </div>
+                        <div class="quiz-opt-btn" onclick="selectFormMood('cemas', '😣', this)" data-mood="cemas">
+                            <span class="quiz-opt-dot">😣</span>
+                            <span class="quiz-opt-label">Cemas</span>
+                        </div>
+                        <div class="quiz-opt-btn" onclick="selectFormMood('marah', '😡', this)" data-mood="marah">
+                            <span class="quiz-opt-dot">😡</span>
+                            <span class="quiz-opt-label">Marah</span>
+                        </div>
+
+                        <div class="quiz-opt-btn" onclick="selectFormMood('lelah', '😴', this)" data-mood="lelah">
+                            <span class="quiz-opt-dot">😴</span>
+                            <span class="quiz-opt-label">Lelah</span>
+                        </div>
+                        <div class="quiz-opt-btn" onclick="selectFormMood('stress', '🤯', this)" data-mood="stress">
+                            <span class="quiz-opt-dot">🤯</span>
+                            <span class="quiz-opt-label">Stres</span>
+                        </div>
+                        <div class="quiz-opt-btn" onclick="selectFormMood('lainnya', '💬', this)" data-mood="lainnya">
+                            <span class="quiz-opt-dot">💬</span>
+                            <span class="quiz-opt-label">Lainnya</span>
+                        </div>
+                    </div>
+
+                    <!-- Note Form Input -->
+                    <div class="form-group" style="margin-bottom: 24px;">
+                        <label>Catatan (Opsional)</label>
+                        <textarea id="mood-form-note-input" class="input-field" style="min-height: 80px; resize: none;"
+                            placeholder="Tulis apa yang kamu rasakan..."></textarea>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="submitMoodForm()">Simpan</button>
+                </div>
+            </div>
+
+            <!-- SCREEN 6: STATISTIK SCREEN -->
+            <div id="screen-stats" class="screen">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="font-size: 18px; font-weight: 800; color: var(--text-main);">Statistik</h2>
+                    <select class="input-field"
+                        style="width: auto; padding: 8px 16px; font-size: 12px; font-weight: 700; border-radius: 20px;">
+                        <option>Mingguan</option>
+                        <option>Bulanan</option>
+                    </select>
+                </div>
+
+                <!-- Top Stats Card (Averages and Bar columns chart side-by-side) -->
+                <div class="card card-glass"
+                    style="margin-bottom: 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: center;">
+                    <div>
+                        <span style="font-size: 11px; color: var(--text-sub); font-weight: 600;">Rata-rata Mood</span>
+                        <h3 style="font-size: 32px; font-weight: 800; color: var(--text-main); margin-top: 4px;">4.2
+                        </h3>
+                        <span class="level-tag"
+                            style="background-color: var(--primary-light); color: var(--primary-dark); font-size: 10px; font-weight: 800;">Baik</span>
+                    </div>
+                    <!-- Small Sparklines Vertical Bar graph -->
+                    <div
+                        style="display: flex; justify-content: space-around; align-items: flex-end; height: 70px; border-bottom: 1.5px solid var(--border-color); padding-bottom: 2px;">
+                        <div
+                            style="width: 8px; height: 50%; background-color: var(--primary-dark); border-radius: 4px;">
+                        </div>
+                        <div
+                            style="width: 8px; height: 75%; background-color: var(--primary-dark); border-radius: 4px;">
+                        </div>
+                        <div
+                            style="width: 8px; height: 60%; background-color: var(--primary-dark); border-radius: 4px;">
+                        </div>
+                        <div
+                            style="width: 8px; height: 85%; background-color: var(--primary-dark); border-radius: 4px;">
+                        </div>
+                        <div
+                            style="width: 8px; height: 40%; background-color: var(--primary-dark); border-radius: 4px;">
+                        </div>
+                        <div
+                            style="width: 8px; height: 90%; background-color: var(--primary-dark); border-radius: 4px;">
+                        </div>
+                        <div
+                            style="width: 8px; height: 70%; background-color: var(--primary-dark); border-radius: 4px;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2x2 Stats Grid -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
+                    <div class="card card-glass" style="padding: 16px; display: flex; align-items: center; gap: 12px;">
+                        <span style="font-size: 24px;">🌙</span>
+                        <div>
+                            <span style="font-size: 10px; color: var(--text-sub); display: block; font-weight: 600;">Jam
+                                Tidur Rata-rata</span>
+                            <span style="font-size: 13px; font-weight: 800; color: var(--text-main);">7 jam 20
+                                menit</span>
+                        </div>
+                    </div>
+                    <div class="card card-glass" style="padding: 16px; display: flex; align-items: center; gap: 12px;">
+                        <span style="font-size: 24px;">📝</span>
+                        <div>
+                            <span
+                                style="font-size: 10px; color: var(--text-sub); display: block; font-weight: 600;">Jurnal
+                                Ditulis</span>
+                            <span style="font-size: 13px; font-weight: 800; color: var(--text-main);">5 kali</span>
+                        </div>
+                    </div>
+                    <div class="card card-glass" style="padding: 16px; display: flex; align-items: center; gap: 12px;">
+                        <span style="font-size: 24px;">✅</span>
+                        <div>
+                            <span
+                                style="font-size: 10px; color: var(--text-sub); display: block; font-weight: 600;">Self-care
+                                Selesai</span>
+                            <span style="font-size: 13px; font-weight: 800; color: var(--text-main);">6 aktivitas</span>
+                        </div>
+                    </div>
+                    <div class="card card-glass" style="padding: 16px; display: flex; align-items: center; gap: 12px;">
+                        <span style="font-size: 24px;">💧</span>
+                        <div>
+                            <span
+                                style="font-size: 10px; color: var(--text-sub); display: block; font-weight: 600;">Minum
+                                Air</span>
+                            <span style="font-size: 13px; font-weight: 800; color: var(--text-main);">6/8 gelas</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mood Trend Area Line Chart Card -->
+                <div class="card card-glass" style="margin-bottom: 24px;">
+                    <span
+                        style="font-size: 11.5px; color: var(--text-sub); display: block; margin-bottom: 2px; font-weight:600;">Dominan
                         Mood Pekan Ini</span>
-                    <h3 id="gui-dominant-mood" style="font-size: 20px; font-weight: 800; color: var(--primary);">😊
+                    <h3 id="gui-dominant-mood" style="font-size: 20px; font-weight: 800; color: var(--primary-dark);">😊
                         Bahagia</h3>
 
-                    <!-- CSS Bar Chart Grid container -->
+                    <!-- Frequencies columns visual chart -->
                     <div class="mood-chart-container">
                         <div class="chart-bar-col">
                             <span id="chart-count-sangat-bahagia" class="chart-bar-label"
@@ -299,7 +618,7 @@
                 <h4 style="font-size: 14px; font-weight: 800; margin-bottom: 12px; color: var(--text-main);">Riwayat
                     Aktivitas</h4>
                 <div id="mood-history-list" class="habits-list">
-                    <!-- Loaded dynamically -->
+                    <!-- Dynamic loaded -->
                 </div>
             </div>
 
@@ -769,29 +1088,7 @@
         <!-- Notification Toast Drawer -->
         <div id="toast-container" class="toast-container"></div>
 
-        <!-- Bottom Navigation Shell Bar -->
-        <nav class="bottom-nav" id="app-bottom-nav">
-            <div class="nav-item active" onclick="navigateTo('screen-home')">
-                <i data-lucide="home"></i>
-                Beranda
-            </div>
-            <div class="nav-item" onclick="navigateTo('screen-mood')">
-                <i data-lucide="smile"></i>
-                Mood
-            </div>
-            <div class="nav-item" onclick="navigateTo('screen-journal')">
-                <i data-lucide="book-open"></i>
-                Jurnal
-            </div>
-            <div class="nav-item" onclick="navigateTo('screen-habits')">
-                <i data-lucide="check-square"></i>
-                Kebiasaan
-            </div>
-            <div class="nav-item" onclick="navigateTo('screen-profile')">
-                <i data-lucide="user"></i>
-                Profil
-            </div>
-        </nav>
+        <!-- Sidebar replaces Bottom Navigation -->
 
         <!-- Emergency Dialog overlay popup confirmation -->
         <div id="emergency-dialog" class="modal-overlay">

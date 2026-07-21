@@ -137,8 +137,8 @@ function navigateTo(screenId) {
         target.scrollTop = 0;
     }
 
-    // Manage Nab-Bar visibility
-    const navBar = document.getElementById('app-bottom-nav');
+    // Manage Sidebar visibility
+    const navBar = document.getElementById('app-navigation');
     const noNavScreens = ['screen-splash', 'screen-onboarding', 'screen-login', 'screen-register', 'screen-breath', 'screen-mhcheck', 'screen-mhcheck-result', 'screen-article-reader', 'screen-emergency', 'screen-water-log', 'screen-sleep-log'];
     if (noNavScreens.includes(screenId)) {
         navBar.style.display = 'none';
@@ -152,7 +152,7 @@ function navigateTo(screenId) {
     if (screenId === 'screen-home') {
         renderDashboardHabits();
     }
-    if (screenId === 'screen-mood') {
+    if (screenId === 'screen-stats') {
         renderMoodChart();
     }
     if (screenId === 'screen-journal') {
@@ -181,16 +181,17 @@ function updateGUI() {
         // we show splash, then they proceed
     }
 
-    // Update theme values
-    document.body.className = appState.profile.isDarkMode ? 'dark' : '';
+    // Apply Theme Color changes by dynamically mutating CSS variables
+    const root = document.documentElement;
     if (appState.profile.theme === 'lavender') {
-        document.documentElement.style.setProperty('--hue', '262');
-        document.documentElement.style.setProperty('--sat', '85%');
-        document.documentElement.style.setProperty('--lightness', '65%');
+        root.style.setProperty('--hue', '262');
+        root.style.setProperty('--sat', '80%');
+        root.style.setProperty('--lightness', '60%');
     } else {
-        document.documentElement.style.setProperty('--hue', '198');
-        document.documentElement.style.setProperty('--sat', '64%');
-        document.documentElement.style.setProperty('--lightness', '73%');
+        // Default theme: blue (#A8C5FF)
+        root.style.setProperty('--hue', '220');
+        root.style.setProperty('--sat', '100%');
+        root.style.setProperty('--lightness', '83%');
     }
 
     // Header updates
@@ -224,6 +225,23 @@ function updateGUI() {
 
     const statWater = document.getElementById('gui-stat-water');
     if (statWater) statWater.textContent = `${appState.tracker.waterLogged} / ${appState.tracker.waterTarget}ml`;
+
+    // Mood Today Widgets
+    const currentMoodEmoji = document.getElementById('gui-current-mood-emoji');
+    const currentMoodLabel = document.getElementById('gui-current-mood-label');
+    if (appState.moodHistory && appState.moodHistory.length > 0) {
+        const latest = appState.moodHistory[0];
+        const moodDef = MOODS_DICTIONARY[latest.mood] || { label: latest.mood, emoji: latest.emoji };
+        if (currentMoodEmoji) currentMoodEmoji.textContent = latest.emoji;
+        if (currentMoodLabel) currentMoodLabel.textContent = moodDef.label;
+    }
+
+    // Water cups statistics checklist update
+    const waterBadgeLabel = document.getElementById('gui-water-badge-label');
+    if (waterBadgeLabel) {
+        const glasses = Math.round(appState.tracker.waterLogged / 250);
+        waterBadgeLabel.textContent = `${glasses}/8 gelas`;
+    }
 
     renderDashboardHabits();
 }
@@ -277,6 +295,43 @@ function logQuickMood(moodKey) {
     appState.moodHistory.unshift(newEntry);
     showToast(`Mood ${moodDef.emoji} berhasil dicatat! ✨`);
     addXP(15); // +15 XP for logging mood
+    saveState();
+    updateGUI();
+}
+
+// Mood Form tracker helpers
+let selectedFormMoodKey = 'bahagia';
+let selectedFormMoodEmoji = '😊';
+
+function selectFormMood(moodKey, emoji, element) {
+    selectedFormMoodKey = moodKey;
+    selectedFormMoodEmoji = emoji;
+
+    const options = document.querySelectorAll('#mood-form-emoji-grid .quiz-opt-btn');
+    options.forEach(opt => opt.classList.remove('active'));
+    element.classList.add('active');
+}
+
+function submitMoodForm() {
+    const noteText = document.getElementById('mood-form-note-input').value.trim();
+    const newEntry = {
+        id: 'mood-' + Date.now(),
+        mood: selectedFormMoodKey,
+        emoji: selectedFormMoodEmoji,
+        intensity: 7,
+        note: noteText || 'Tercatat via Mood Tracker',
+        date: 'Hari ini (' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ')'
+    };
+
+    appState.moodHistory.unshift(newEntry);
+    addXP(20);
+    saveState();
+
+    document.getElementById('mood-form-note-input').value = '';
+    showToast(`Mood ${selectedFormMoodEmoji} berhasil disimpan! 🌸`);
+
+    updateGUI();
+    navigateTo('screen-home');
 }
 
 // Habits Checklist Logic
@@ -1079,9 +1134,9 @@ function verifyUserRegister() {
 // Onboarding sliders page cycles
 let currentOnboardIdx = 0;
 const ONBOARDING_SLIDES = [
-    { title: "Monitor Kesehatan Mental Harian", desc: "Catat dan kendalikan tingkat suasana hati (mood), waktu tidur, hingga hidrasi harianmu secara interaktif.", emoji: "📊" },
-    { title: "Fitur Gamifikasi Seru (XP Level)", desc: "Meningkatkan status mentalmu sembari menaikkan Level 'Inner Hero' dengan menyelesaikan kebiasaan baik harian.", emoji: "🌟" },
-    { title: "Meditasi & SOS Emergency", desc: "Gunakan latihan meditasi pernapasan terpandu untuk melepas kepenatan, serta akses hotline bantuan psikolog darurat.", emoji: "🧘" }
+    { title: "Welcome!", desc: "A small step today for a better tomorrow.", emoji: "❤️" },
+    { title: "Monitor Kesehatan Harian", desc: "Catat dan kendalikan tingkat suasana hati (mood), waktu tidur, hingga hidrasi harianmu secara interaktif.", emoji: "📊" },
+    { title: "Fitur Gamifikasi Seru", desc: "Meningkatkan status mentalmu sembari menaikkan Level 'Inner Hero' dengan menyelesaikan kebiasaan baik harian.", emoji: "🌟" }
 ];
 
 function nextOnboardSlide() {
@@ -1096,7 +1151,47 @@ function nextOnboardSlide() {
 
 function updateOnboardSlide() {
     const slide = ONBOARDING_SLIDES[currentOnboardIdx];
-    document.getElementById('onboard-visual-emoji').textContent = slide.emoji;
+    const visual = document.getElementById('onboard-visual-emoji');
+    if (currentOnboardIdx === 0) {
+        // Welcome illustration: Girl hugging heart
+        visual.innerHTML = `
+            <svg viewBox="0 0 200 200" width="160" height="160" style="display:block; margin:auto;">
+                <circle cx="100" cy="100" r="80" fill="var(--primary-light)" opacity="0.6"/>
+                <path d="M100 135 C60 110 40 80 40 55 C40 35 55 20 75 20 C87 20 95 27 100 35 C105 27 113 20 125 20 C145 20 160 35 160 55 C160 80 140 110 100 135 Z" fill="#A8C5FF"/>
+                <circle cx="100" cy="65" r="22" fill="#FFE2D1"/>
+                <path d="M100 87 C80 87 68 100 68 120 L132 120 C132 100 120 87 100 87 Z" fill="#FFF3D6"/>
+                <path d="M78 65 C78 50 122 50 122 65 C122 75 115 80 100 80 C85 80 78 75 78 65 Z" fill="#2E2C2C"/>
+                <circle cx="100" cy="55" r="5" fill="#2E2C2C"/>
+                <path d="M75 105 C85 100 95 100 105 105" stroke="#FFE2D1" stroke-width="8" stroke-linecap="round" fill="none"/>
+            </svg>
+        `;
+    } else if (currentOnboardIdx === 1) {
+        // Stats illustration
+        visual.innerHTML = `
+            <svg viewBox="0 0 200 200" width="160" height="160" style="display:block; margin:auto;">
+                <circle cx="100" cy="100" r="80" fill="var(--bg-highlight)" opacity="0.6"/>
+                <rect x="60" y="60" width="80" height="90" rx="12" fill="#FFFFFF" stroke="var(--border-color)" stroke-width="3"/>
+                <line x1="75" y1="130" x2="125" y2="130" stroke="var(--text-sub)" stroke-width="2"/>
+                <path d="M75 110 L90 90 L105 105 L125 80 L125 130 L75 130 Z" fill="#A8C5FF" opacity="0.5"/>
+                <path d="M75 110 L90 90 L105 105 L125 80" stroke="var(--primary-dark)" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <circle cx="80" cy="75" r="6" fill="#7DD3A7"/>
+                <circle cx="100" cy="75" r="6" fill="#F7C873"/>
+                <circle cx="120" cy="75" r="6" fill="#8ECAE6"/>
+            </svg>
+        `;
+    } else {
+        // Meditasi/SOS Lungs illustration
+        visual.innerHTML = `
+            <svg viewBox="0 0 200 200" width="160" height="160" style="display:block; margin:auto;">
+                <circle cx="100" cy="100" r="80" fill="var(--primary-light)" opacity="0.6"/>
+                <path d="M85 70 C60 70 50 90 50 115 C50 135 65 145 78 145 C88 145 92 135 95 125 L95 80 Z" fill="#A8C5FF" opacity="0.8"/>
+                <path d="M115 70 C140 70 150 90 150 115 C150 135 135 145 122 145 C112 145 108 135 105 125 L105 80 Z" fill="#A8C5FF" opacity="0.8"/>
+                <line x1="100" y1="60" x2="100" y2="120" stroke="var(--primary-dark)" stroke-width="4" stroke-linecap="round"/>
+                <path d="M100 80 Q95 85 90 85" stroke="var(--primary-dark)" stroke-width="3" fill="none"/>
+                <path d="M100 95 Q105 100 110 100" stroke="var(--primary-dark)" stroke-width="3" fill="none"/>
+            </svg>
+        `;
+    }
     document.getElementById('onboard-slide-title').textContent = slide.title;
     document.getElementById('onboard-slide-desc').textContent = slide.desc;
 
