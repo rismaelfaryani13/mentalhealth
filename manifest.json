@@ -1,0 +1,22 @@
+{
+    "name": "InnerCalm Mental Health Tracker",
+    "short_name": "InnerCalm",
+    "description": "Harmoni dalam Pikiran & Raga. Pelacak kesehatan mental harian dan manajemen kebiasaan interaktif.",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "orientation": "portrait-primary",
+    "background_color": "#FFFFFF",
+    "theme_color": "#8ECAE6",
+    "categories": [
+        "lifestyle",
+        "health"
+    ],
+    "icons": [
+        {
+            "src": "icon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        }
+    ]
+}
