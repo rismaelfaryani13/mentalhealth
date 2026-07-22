@@ -4,44 +4,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>InnerCalm | Mental Health Tracker & Gamified Self-Care</title>
+    <title>TemanJiwa | Ruang Ketenangan & Pelacak Kesehatan Mental</title>
 
     <!-- SEO & Metadata -->
     <meta name="description"
-        content="InnerCalm adalah pelacak kesehatan mental harian dan pendukung kebiasaan meditatif interaktif. Kelola stres, hidrasi, tidur, dan refleksikan jurnal harian secara terintegrasi.">
+        content="TemanJiwa adalah sahabat setia pelacak kesehatan mental harian dan pendukung kebiasaan meditatif interaktif. Kelola stres, hidrasi, tidur, dan refleksikan jurnal harian secara terintegrasi.">
     <meta name="keywords"
-        content="mental health, self care, pelacak mood, meditasi pernapasan, kesehatan mental, jurnal refleksi, habit tracker">
-    <meta name="author" content="InnerCalm Team">
-    <link rel="canonical" href="https://innercalm.example.org/">
+        content="temanjiwa, kesehatan mental, pelacak mood indonesia, self care, meditasi pernapasan, jurnal refleksi, habit tracker">
+    <meta name="author" content="TemanJiwa Indonesia">
+    <link rel="canonical" href="https://temanjiwa.id/">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://innercalm.example.org/">
-    <meta property="og:title" content="InnerCalm | Mental Health Tracker & Gamified Self-Care">
+    <meta property="og:url" content="https://temanjiwa.id/">
+    <meta property="og:title" content="TemanJiwa | Ruang Ketenangan & Pelacak Kesehatan Mental">
     <meta property="og:description"
-        content="Lacak mood, hidrasi, tidur, dan naikkan level kesehatan mentalmu secara interaktif. Bebaskan stres dengan latihan pernapasan terpandu.">
+        content="Sahabat setia merawat jiwamu. Lacak mood, hidrasi, tidur, dan latih pernapasan terpandu untuk ketenangan pikiran.">
     <meta property="og:image" content="icon.svg">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://innercalm.example.org/">
-    <meta property="twitter:title" content="InnerCalm | Mental Health Tracker & Gamified Self-Care">
+    <meta property="twitter:url" content="https://temanjiwa.id/">
+    <meta property="twitter:title" content="TemanJiwa | Ruang Ketenangan & Pelacak Kesehatan Mental">
     <meta property="twitter:description"
-        content="Lacak mood, hidrasi, tidur, dan naikkan level kesehatan mentalmu secara interaktif. Bebaskan stres dengan latihan pernapasan terpandu.">
+        content="Sahabat setia merawat jiwamu. Lacak mood, hidrasi, tidur, dan latih pernapasan terpandu untuk ketenangan pikiran.">
     <meta property="twitter:image" content="icon.svg">
 
     <!-- PWA Mobile Web App Headers -->
-    <meta name="theme-color" content="#8ECAE6">
+    <meta name="theme-color" content="#8EC5FC">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="icon.svg">
     <link rel="manifest" href="manifest.json">
 
-    <!-- Google Fonts -->
+    <!-- Google Fonts: Plus Jakarta Sans & Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
         rel="stylesheet">
 
     <!-- CSS Link -->
@@ -52,40 +52,66 @@
 
 <body>
 
+    <!-- Ambient Layered Animated Background (Subtle Blobs & Floating Elements) -->
+    <div class="ambient-background" aria-hidden="true">
+        <div class="ambient-blob blob-1"></div>
+        <div class="ambient-blob blob-2"></div>
+        <div class="ambient-blob blob-3"></div>
+        <div class="ambient-blob blob-4"></div>
+        <div class="glass-particles">
+            <span class="floating-particle particle-1">☁️</span>
+            <span class="floating-particle particle-2">🌸</span>
+            <span class="floating-particle particle-3">✨</span>
+            <span class="floating-particle particle-4">💧</span>
+        </div>
+    </div>
+
     <!-- Main SaaS Layout Container -->
     <div class="app-container">
 
-        <!-- Sidebar / Bottom Navigation (Responsive Navigation Component) -->
+        <!-- Sidebar Navigation (Web App Responsive Sidebar) -->
         <nav class="app-navigation" id="app-navigation" style="display: none;">
-            <div class="sidebar-logo">
-                <i data-lucide="heart" style="color: #8ECAE6; width: 24px; height: 24px; stroke-width: 2.5;"></i>
-                <span>InnerCalm</span>
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <div class="logo-icon-wrapper">
+                        <i data-lucide="heart" class="logo-heart-icon"></i>
+                    </div>
+                    <span class="logo-text">TemanJiwa</span>
+                </div>
             </div>
+            
             <div class="sidebar-menu">
                 <div class="nav-item active" onclick="navigateTo('screen-home')" title="Beranda" role="button"
-                    aria-label="Navigasi ke Beranda">
+                    tabindex="0" aria-label="Navigasi ke Beranda">
                     <i data-lucide="home"></i>
                     <span>Beranda</span>
                 </div>
                 <div class="nav-item" onclick="navigateTo('screen-mood')" title="Mood" role="button"
-                    aria-label="Navigasi ke Mood">
+                    tabindex="0" aria-label="Navigasi ke Mood">
                     <i data-lucide="smile"></i>
                     <span>Mood</span>
                 </div>
                 <div class="nav-item" onclick="navigateTo('screen-journal')" title="Jurnal" role="button"
-                    aria-label="Navigasi ke Jurnal">
+                    tabindex="0" aria-label="Navigasi ke Jurnal">
                     <i data-lucide="book-open"></i>
                     <span>Jurnal</span>
                 </div>
                 <div class="nav-item" onclick="navigateTo('screen-stats')" title="Statistik" role="button"
-                    aria-label="Navigasi ke Statistik">
+                    tabindex="0" aria-label="Navigasi ke Statistik">
                     <i data-lucide="bar-chart-2"></i>
                     <span>Statistik</span>
                 </div>
                 <div class="nav-item" onclick="navigateTo('screen-profile')" title="Profil" role="button"
-                    aria-label="Navigasi ke Profil">
+                    tabindex="0" aria-label="Navigasi ke Profil">
                     <i data-lucide="user"></i>
                     <span>Profil</span>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-hero-pill" onclick="navigateTo('screen-breath')" role="button" title="Mulai Pernapasan">
+                    <span class="pill-icon">🌬️</span>
+                    <span class="pill-text">Pernapasan</span>
                 </div>
             </div>
         </nav>
@@ -93,122 +119,242 @@
         <!-- App View Container -->
         <div class="view-container">
 
-            <!-- SCREEN 1: SPLASH SCREEN -->
+            <!-- SCREEN 1: SPLASH / LOADING SCREEN -->
             <div id="screen-splash" class="screen no-nav active">
-                <div class="splash-logo">🧘‍♀️</div>
-                <h1 class="splash-title">InnerCalm</h1>
-                <p class="splash-subtitle">Harmoni dalam Pikiran & Raga</p>
-                <div style="margin-top: 100px; font-size: 11px; opacity: 0.6;">Dukungan Kesehatan Mental Harian</div>
+                <div class="splash-card card-glass">
+                    <div class="splash-logo-glow">
+                        <div class="splash-lotus-icon">
+                            <svg viewBox="0 0 100 100" width="84" height="84">
+                                <circle cx="50" cy="50" r="46" fill="url(#splashGrad)" opacity="0.25"/>
+                                <path d="M50,18 C34,38 22,58 50,85 C78,58 66,38 50,18 Z" fill="#60A5FA"/>
+                                <path d="M50,32 C30,42 18,62 50,85 C82,62 70,42 50,32 Z" fill="#93C5FD" opacity="0.85"/>
+                                <path d="M50,46 C38,52 28,68 50,85 C72,68 62,52 50,46 Z" fill="#BFDBFE"/>
+                                <circle cx="50" cy="46" r="4.5" fill="#FFFFFF"/>
+                                <defs>
+                                    <linearGradient id="splashGrad" x1="0" y1="0" x2="1" y2="1">
+                                        <stop offset="0%" stop-color="#8EC5FC"/>
+                                        <stop offset="100%" stop-color="#E0C3FC"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                    </div>
+                    <h1 class="splash-title">TemanJiwa</h1>
+                    <p class="splash-subtitle">Sahabat Setia Kesehatan Mentalmu</p>
+                    <div class="splash-poetic-quote">
+                        "Menemani setiap helaan napas dan langkah kecilmu..."
+                    </div>
+                    <div class="splash-loader-wrapper">
+                        <div class="splash-loader-bar">
+                            <div id="splash-loader-progress" class="splash-loader-progress"></div>
+                        </div>
+                        <div class="splash-loader-meta">
+                            <span id="splash-loader-status" class="splash-status-text">Memuat ruang ketenangan...</span>
+                            <span id="splash-loader-pct" class="splash-pct-text">0%</span>
+                        </div>
+                    </div>
+                    <div class="splash-footer-note">
+                        <i data-lucide="shield-check" class="splash-shield-icon"></i>
+                        <span>Ruang Aman & Terenkripsi untuk Kesehatan Mental 🇮🇩</span>
+                    </div>
+                </div>
             </div>
 
             <!-- SCREEN 2: ONBOARDING CAROUSEL -->
             <div id="screen-onboarding" class="screen no-nav">
-                <div class="onboarding-intro">
-                    <div id="onboard-visual-emoji" class="onboarding-image">📊</div>
-                    <h2 id="onboard-slide-title"
-                        style="font-size: 20px; font-weight: 800; margin-bottom: 12px; color: var(--text-main);">Monitor
-                        Kesehatan Mental</h2>
-                    <p id="onboard-slide-desc"
-                        style="font-size: 13px; color: var(--text-sub); line-height: 1.5; padding: 0 10px;">Catat dan
-                        kendalikan tingkat suasana hati (mood), waktu tidur, hingga hidrasi harianmu secara interaktif.
-                    </p>
-                    <div class="onboarding-dots">
-                        <div class="dot active"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
+                <div class="onboarding-card card-glass">
+                    <div class="onboarding-top-bar">
+                        <button class="skip-btn" onclick="navigateTo('screen-login')">Skip</button>
                     </div>
+                    <div class="onboarding-intro">
+                        <div id="onboard-visual-emoji" class="onboarding-image">
+                            <!-- Girl hugging blue heart SVG vector -->
+                            <svg viewBox="0 0 200 200" width="180" height="180">
+                                <circle cx="100" cy="100" r="85" fill="#EBF4FF"/>
+                                <path d="M40,110 C20,90 30,60 50,70 C60,85 50,110 40,110 Z" fill="#7DD3A7" opacity="0.7"/>
+                                <path d="M160,110 C180,90 170,60 150,70 C140,85 150,110 160,110 Z" fill="#7DD3A7" opacity="0.7"/>
+                                <path d="M68,90 C68,45 132,45 132,90 C132,130 68,130 68,90 Z" fill="#2D3748"/>
+                                <circle cx="100" cy="85" r="26" fill="#FED7AA"/>
+                                <path d="M92,84 Q96,87 100,84" stroke="#4A5568" stroke-width="2" fill="none"/>
+                                <path d="M93,92 Q100,97 107,92" stroke="#E53E3E" stroke-width="2" stroke-linecap="round" fill="none"/>
+                                <circle cx="88" cy="90" r="3" fill="#FCA5A5" opacity="0.6"/>
+                                <circle cx="112" cy="90" r="3" fill="#FCA5A5" opacity="0.6"/>
+                                <path d="M72,80 C72,55 128,55 128,80 C128,70 120,60 100,60 C80,60 72,70 72,80 Z" fill="#1A202C"/>
+                                <path d="M100,150 C70,120 55,95 75,75 C90,60 100,75 100,75 C100,75 110,60 125,75 C145,95 130,120 100,150 Z" fill="#80A6FF"/>
+                                <path d="M65,125 Q80,135 95,125" stroke="#FED7AA" stroke-width="10" stroke-linecap="round" fill="none"/>
+                                <path d="M135,125 Q120,135 105,125" stroke="#FED7AA" stroke-width="10" stroke-linecap="round" fill="none"/>
+                            </svg>
+                        </div>
+                        <h2 id="onboard-slide-title" class="onboarding-slide-title">Welcome!</h2>
+                        <p id="onboard-slide-desc" class="onboarding-slide-desc">
+                            A small step today for a better tomorrow.
+                        </p>
+                        <div class="onboarding-dots">
+                            <div class="dot active"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-pill btn-large" onclick="nextOnboardSlide()">
+                        <span>Get Started</span>
+                        <i data-lucide="arrow-right"></i>
+                    </button>
                 </div>
-                <button class="btn btn-primary" onclick="nextOnboardSlide()">
-                    Lanjut <i data-lucide="arrow-right" style="width: 16px;"></i>
-                </button>
             </div>
 
             <!-- SCREEN 3: LOGIN SCREEN -->
             <div id="screen-login" class="screen no-nav">
-                <div style="margin-top: 40px; margin-bottom: 30px;">
-                    <h2 style="font-size: 24px; font-weight: 800; color: var(--text-main);">Selamat Datang Kembali!</h2>
-                    <p style="font-size: 13.5px; color: var(--text-sub); margin-top: 4px;">Masuk untuk melanjutkan
-                        jurnal kesehatan mentalmu.</p>
-                </div>
-
-                <div class="card card-glass" style="padding: 24px;">
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input id="login-email" class="input-field" type="email" placeholder="nama@email.com"
-                            value="risma@example.com">
+                <div class="auth-wrapper">
+                    <div class="auth-header">
+                        <span class="auth-badge">Selamat Datang</span>
+                        <h2 class="auth-title">Selamat Datang Kembali!</h2>
+                        <p class="auth-subtitle">Masuk untuk melanjutkan jurnal kesehatan mentalmu.</p>
                     </div>
 
-                    <div class="form-group">
-                        <label>Kata Sandi</label>
-                        <input id="login-pass" class="input-field" type="password" placeholder="••••••••"
-                            value="password123">
+                    <div class="card card-glass auth-card">
+                        <div class="form-group">
+                            <label for="login-email">Email</label>
+                            <div class="input-wrapper">
+                                <i data-lucide="mail" class="input-icon"></i>
+                                <input id="login-email" class="input-field" type="email" placeholder="nama@email.com"
+                                    value="risma@example.com">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="login-pass">Kata Sandi</label>
+                            <div class="input-wrapper">
+                                <i data-lucide="lock" class="input-icon"></i>
+                                <input id="login-pass" class="input-field" type="password" placeholder="••••••••"
+                                    value="password123">
+                            </div>
+                        </div>
+
+                        <div class="auth-forgot-row">
+                            <a href="#" onclick="showToast('Fitur reset kata sandi telah dikirim ke email!'); return false;"
+                                class="auth-forgot-link">Lupa Sandi?</a>
+                        </div>
+
+                        <button class="btn btn-primary btn-pill btn-large" onclick="verifyUserLogin()">
+                            <i data-lucide="log-in"></i>
+                            <span>Masuk</span>
+                        </button>
                     </div>
 
-                    <div style="text-align: right; margin-bottom: 20px;">
-                        <a href="#"
-                            style="font-size: 11.5px; color: var(--primary); font-weight: 700; text-decoration: none;">Lupa
-                            Sandi?</a>
+                    <div class="auth-divider">
+                        <span>atau masuk dengan</span>
                     </div>
 
-                    <button class="btn btn-primary" onclick="verifyUserLogin()">Masuk</button>
-                </div>
+                    <button class="btn btn-outline btn-pill btn-social" onclick="navigateTo('screen-home')">
+                        <span class="social-icon">🌐</span>
+                        <span>Masuk dengan Google</span>
+                    </button>
 
-                <div style="text-align: center; margin: 16px 0; color: var(--text-sub); font-size: 12px;">atau</div>
-
-                <button class="btn btn-outline" style="margin-bottom: 40px;" onclick="navigateTo('screen-home')">
-                    <span style="font-size: 18px;">🌐</span> Masuk dengan Google
-                </button>
-
-                <div style="text-align: center; font-size: 12.5px;">
-                    Belum punya akun? <a href="#" onclick="navigateTo('screen-register')"
-                        style="color: var(--primary); font-weight: 800; text-decoration: none;">Daftar Sekarang</a>
+                    <div class="auth-footer-text">
+                        Belum punya akun? <a href="#" onclick="navigateTo('screen-register')" class="auth-link">Daftar Sekarang</a>
+                    </div>
                 </div>
             </div>
 
             <!-- SCREEN 4: REGISTER SCREEN -->
             <div id="screen-register" class="screen no-nav">
-                <div style="margin-top: 40px; margin-bottom: 24px;">
-                    <h2 style="font-size: 24px; font-weight: 800; color: var(--text-main);">Mulai Perjalananmu</h2>
-                    <p style="font-size: 13.5px; color: var(--text-sub); margin-top: 4px;">Bergabunglah untuk melacak
-                        stabilitas emosi kamu harian.</p>
-                </div>
+                <div class="auth-wrapper">
+                    <div class="auth-header">
+                        <span class="auth-badge">Mulai Baru</span>
+                        <h2 class="auth-title">Mulai Perjalananmu</h2>
+                        <p class="auth-subtitle">Bergabunglah untuk melacak stabilitas emosi kamu harian.</p>
+                    </div>
 
-                <div class="card card-glass" style="padding: 24px;">
-                    <div class="form-group">
-                        <label>Nama Lengkap</label>
-                        <input id="reg-name" class="input-field" type="text" placeholder="Masukkan nama panggilanmu">
-                    </div>
-                    <div class="form-group">
-                        <label>Alamat Email</label>
-                        <input id="reg-email" class="input-field" type="email" placeholder="contoh@mail.com">
-                    </div>
-                    <div class="form-group">
-                        <label>Kata Sandi</label>
-                        <input id="reg-pass" class="input-field" type="password" placeholder="Min. 8 karakter">
-                    </div>
-                    <button class="btn btn-primary" style="margin-top: 10px;"
-                        onclick="verifyUserRegister()">Daftar</button>
-                </div>
+                    <div class="card card-glass auth-card">
+                        <div class="form-group">
+                            <label for="reg-name">Nama Lengkap</label>
+                            <div class="input-wrapper">
+                                <i data-lucide="user" class="input-icon"></i>
+                                <input id="reg-name" class="input-field" type="text" placeholder="Masukkan nama panggilanmu">
+                            </div>
+                        </div>
 
-                <div style="text-align: center; font-size: 12.5px; margin-top: 30px;">
-                    Sudah punya akun? <a href="#" onclick="navigateTo('screen-login')"
-                        style="color: var(--primary); font-weight: 800; text-decoration: none;">Masuk di sini</a>
+                        <div class="form-group">
+                            <label for="reg-email">Alamat Email</label>
+                            <div class="input-wrapper">
+                                <i data-lucide="mail" class="input-icon"></i>
+                                <input id="reg-email" class="input-field" type="email" placeholder="contoh@mail.com">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="reg-pass">Kata Sandi</label>
+                            <div class="input-wrapper">
+                                <i data-lucide="lock" class="input-icon"></i>
+                                <input id="reg-pass" class="input-field" type="password" placeholder="Min. 8 karakter">
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary btn-pill btn-large" onclick="verifyUserRegister()">
+                            <i data-lucide="user-plus"></i>
+                            <span>Daftar Akun</span>
+                        </button>
+                    </div>
+
+                    <div class="auth-footer-text" style="margin-top: 24px;">
+                        Sudah punya akun? <a href="#" onclick="navigateTo('screen-login')" class="auth-link">Masuk di sini</a>
+                    </div>
                 </div>
             </div>
 
             <!-- SCREEN 5: HOME SCREEN / DASHBOARD -->
             <div id="screen-home" class="screen">
-                <!-- Custom Welcome Header -->
-                <div class="dashboard-header">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <div id="gui-avatar-badge" class="user-avatar">R</div>
-                        <div class="header-info">
-                            <p>Halo, Selamat Pagi</p>
-                            <h2 id="gui-welcome-name">Risma 👋</h2>
+                
+                <!-- HERO BANNER -->
+                <section class="hero-banner card-glass">
+                    <div class="hero-content">
+                        <div class="hero-badge">
+                            <span class="hero-badge-pulse"></span>
+                            <span>Ruang Ketenangan Pikiran</span>
+                        </div>
+                        <h1 class="hero-quote">
+                            "Take a deep breath.<br>Your mental well-being matters."
+                        </h1>
+                        <p class="hero-subquote">
+                            Setiap momen kecemasan bisa ditenangkan dengan satu hembusan napas yang sadar.
+                        </p>
+                        <div class="hero-cta-group">
+                            <button class="btn btn-primary btn-pill hero-cta-primary" onclick="navigateTo('screen-mood')">
+                                <i data-lucide="sparkles"></i>
+                                <span>Start Tracking</span>
+                            </button>
+                            <button class="btn btn-outline btn-pill hero-cta-secondary" onclick="filterArticlesCategory('Semua'); navigateTo('screen-articles');">
+                                <i data-lucide="compass"></i>
+                                <span>Learn More</span>
+                            </button>
                         </div>
                     </div>
-                    <div class="notif-badge" onclick="showToast('Semua pengingat harian telah aktif! 🔔')">
-                        <i data-lucide="bell" style="color: var(--text-main); width: 22px; height: 22px;"></i>
+                    <div class="hero-illustration">
+                        <div class="hero-blob-aura"></div>
+                        <span class="hero-emoji-floating">🧘‍♀️</span>
+                        <div class="hero-cloud cloud-1">☁️</div>
+                        <div class="hero-cloud cloud-2">✨</div>
+                    </div>
+                </section>
+
+                <!-- Custom Welcome Header -->
+                <div class="dashboard-header">
+                    <div class="user-greeting">
+                        <div id="gui-avatar-badge" class="user-avatar" role="img" aria-label="Avatar Pengguna">
+                            <svg viewBox="0 0 100 100" width="48" height="48">
+                                <circle cx="50" cy="50" r="45" fill="#B7DCFF"/>
+                                <path d="M25,40 C25,20 75,20 75,40 Z" fill="#2D3748"/>
+                                <circle cx="50" cy="45" r="18" fill="#FED7AA"/>
+                                <path d="M25,85 C25,65 75,65 75,85 Z" fill="#80A6FF"/>
+                            </svg>
+                        </div>
+                        <div class="header-info">
+                            <p class="greeting-subtitle" id="gui-greeting-time">Selamat Pagi 🌤️</p>
+                            <h2 id="gui-welcome-name" class="greeting-title">Halo, Risma 👋</h2>
+                        </div>
+                    </div>
+                    <div class="notif-badge" onclick="showToast('Semua pengingat harian telah aktif! 🔔')" role="button" aria-label="Notifikasi Pengingat">
+                        <i data-lucide="bell" class="notif-icon"></i>
                         <div class="badge-dot"></div>
                     </div>
                 </div>
@@ -220,119 +366,132 @@
                     <main class="dashboard-main-col">
 
                         <!-- Mood Hari Ini Card -->
-                        <div class="card card-glass" style="margin-bottom: 24px;">
-                            <div
-                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-                                <h4 style="font-size: 14px; font-weight: 800; color: var(--text-main);">Mood Hari Ini
-                                </h4>
-                                <span
-                                    style="font-size: 11px; font-weight: 800; color: var(--primary-dark); cursor: pointer;"
-                                    onclick="navigateTo('screen-mood')">Kelola &gt;</span>
-                            </div>
-
-                            <div
-                                style="display: flex; align-items: center; gap: 12px; padding: 14px 18px; background-color: var(--bg-sec); border-radius: 16px; margin-bottom: 16px; border: 1px solid var(--border-color);">
-                                <span style="font-size: 28px;" id="gui-current-mood-emoji">😄</span>
-                                <div>
-                                    <h5 style="font-size: 14px; font-weight: 700; color: var(--text-main);"
-                                        id="gui-current-mood-label">Baik</h5>
-                                    <span style="font-size: 11px; color: var(--text-sub);">Suasana hati terdata</span>
+                        <div class="card card-glass mood-today-card">
+                            <div class="card-header-row">
+                                <div class="card-header-title">
+                                    <i data-lucide="smile" class="card-title-icon"></i>
+                                    <h4>Mood Hari Ini</h4>
                                 </div>
+                                <button class="link-btn" onclick="navigateTo('screen-mood')" aria-label="Kelola Mood">Kelola &gt;</button>
                             </div>
 
-                            <div class="mood-grid">
-                                <span class="mood-btn" role="button" aria-label="Sangat Bahagia"
-                                    onclick="logQuickMood('sangat-bahagia')">😄</span>
-                                <span class="mood-btn" role="button" aria-label="Bahagia"
-                                    onclick="logQuickMood('bahagia')">😊</span>
-                                <span class="mood-btn" role="button" aria-label="Biasa"
-                                    onclick="logQuickMood('biasa')">😐</span>
-                                <span class="mood-btn" role="button" aria-label="Sedih"
-                                    onclick="logQuickMood('sedih')">😔</span>
-                                <span class="mood-btn" role="button" aria-label="Cemas"
-                                    onclick="logQuickMood('cemas')">😣</span>
-                                <span class="mood-btn" role="button" aria-label="Lelah"
-                                    onclick="logQuickMood('lelah')">😴</span>
+                            <div class="current-mood-banner">
+                                <div class="mood-emoji-badge">
+                                    <span style="font-size: 36px;" id="gui-current-mood-emoji">😊</span>
+                                </div>
+                                <div class="mood-info-box">
+                                    <h5 id="gui-current-mood-label" class="current-mood-name">Baik</h5>
+                                    <span class="current-mood-desc">Suasana hati terdata hari ini</span>
+                                </div>
+                                <div class="mood-pulse-indicator"></div>
+                            </div>
+
+                            <div class="mood-grid-quick">
+                                <button class="mood-btn-quick" role="button" aria-label="Bahagia" onclick="logQuickMood('sangat-bahagia')">
+                                    <span class="quick-emoji">😄</span>
+                                    <span class="quick-label">Bahagia</span>
+                                </button>
+                                <button class="mood-btn-quick" role="button" aria-label="Senang" onclick="logQuickMood('bahagia')">
+                                    <span class="quick-emoji">😊</span>
+                                    <span class="quick-label">Senang</span>
+                                </button>
+                                <button class="mood-btn-quick" role="button" aria-label="Biasa" onclick="logQuickMood('biasa')">
+                                    <span class="quick-emoji">😐</span>
+                                    <span class="quick-label">Biasa</span>
+                                </button>
+                                <button class="mood-btn-quick" role="button" aria-label="Sedih" onclick="logQuickMood('sedih')">
+                                    <span class="quick-emoji">😔</span>
+                                    <span class="quick-label">Sedih</span>
+                                </button>
+                                <button class="mood-btn-quick" role="button" aria-label="Cemas" onclick="logQuickMood('cemas')">
+                                    <span class="quick-emoji">😣</span>
+                                    <span class="quick-label">Cemas</span>
+                                </button>
+                                <button class="mood-btn-quick" role="button" aria-label="Lelah" onclick="logQuickMood('lelah')">
+                                    <span class="quick-emoji">😴</span>
+                                    <span class="quick-label">Lelah</span>
+                                </button>
                             </div>
                         </div>
 
                         <!-- Ringkasan Mingguan Card -->
-                        <div class="card card-glass" style="margin-bottom: 24px;">
-                            <div
-                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                                <h4 style="font-size: 14px; font-weight: 800; color: var(--text-main);">Ringkasan
-                                    Mingguan</h4>
-                                <span
-                                    style="font-size: 11px; font-weight: 800; color: var(--primary-dark); cursor: pointer;"
-                                    onclick="navigateTo('screen-mood')">Lihat Detail &gt;</span>
+                        <div class="card card-glass weekly-summary-card">
+                            <div class="card-header-row">
+                                <div class="card-header-title">
+                                    <i data-lucide="trending-up" class="card-title-icon"></i>
+                                    <h4>Ringkasan Mingguan</h4>
+                                </div>
+                                <button class="link-btn" onclick="navigateTo('screen-mood')">Lihat Detail &gt;</button>
                             </div>
-                            <div class="weekly-chart-wrapper"
-                                style="height: 120px; width: 100%; display: flex; align-items: flex-end;">
-                                <svg viewBox="0 0 300 100" width="100%" height="80%" preserveAspectRatio="none">
-                                    <defs>
-                                        <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="0%" stop-color="#A8C5FF" stop-opacity="0.45" />
-                                            <stop offset="100%" stop-color="#A8C5FF" stop-opacity="0.0" />
-                                        </linearGradient>
-                                    </defs>
-                                    <path d="M 10,70 Q 50,50 90,65 T 170,30 T 250,40 T 290,20 L 290,100 L 10,100 Z"
-                                        fill="url(#chartGrad)" />
-                                    <path d="M 10,70 Q 50,50 90,65 T 170,30 T 250,40 T 290,20" stroke="#8ECAE6"
-                                        stroke-width="3" fill="none" stroke-linecap="round" />
-                                    <circle cx="10" cy="70" r="4" fill="#FFFFFF" stroke="#8ECAE6" stroke-width="2" />
-                                    <circle cx="50" cy="52" r="4" fill="#FFFFFF" stroke="#8ECAE6" stroke-width="2" />
-                                    <circle cx="90" cy="65" r="4" fill="#FFFFFF" stroke="#8ECAE6" stroke-width="2" />
-                                    <circle cx="130" cy="45" r="4" fill="#FFFFFF" stroke="#8ECAE6" stroke-width="2" />
-                                    <circle cx="170" cy="30" r="4" fill="#FFFFFF" stroke="#8ECAE6" stroke-width="2" />
-                                    <circle cx="210" cy="36" r="4" fill="#FFFFFF" stroke="#8ECAE6" stroke-width="2" />
-                                    <circle cx="250" cy="40" r="4" fill="#FFFFFF" stroke="#8ECAE6" stroke-width="2" />
-                                    <circle cx="290" cy="20" r="4" fill="#FFFFFF" stroke="#8ECAE6" stroke-width="2" />
-                                </svg>
-                            </div>
-                            <div
-                                style="display: flex; justify-content: space-between; font-size: 10px; color: var(--text-sub); margin-top: 8px; font-weight:600;">
-                                <span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span><span>Min</span>
+
+                            <div class="chart-container-enhanced">
+                                <div class="weekly-chart-wrapper">
+                                    <svg viewBox="0 0 320 120" width="100%" height="100%" preserveAspectRatio="none">
+                                        <defs>
+                                            <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="0%" stop-color="#8EC5FC" stop-opacity="0.55" />
+                                                <stop offset="50%" stop-color="#B7DCFF" stop-opacity="0.25" />
+                                                <stop offset="100%" stop-color="#8EC5FC" stop-opacity="0.0" />
+                                            </linearGradient>
+                                            <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                                                <feGaussianBlur stdDeviation="3" result="blur" />
+                                                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                                            </filter>
+                                        </defs>
+                                        <line x1="0" y1="30" x2="320" y2="30" stroke="#E5E7EB" stroke-dasharray="4 4" stroke-opacity="0.5"/>
+                                        <line x1="0" y1="70" x2="320" y2="70" stroke="#E5E7EB" stroke-dasharray="4 4" stroke-opacity="0.5"/>
+                                        
+                                        <path id="weekly-chart-fill" d="M 10,75 C 50,45 80,70 120,40 C 160,20 200,45 240,30 C 270,18 295,25 310,20 L 310,110 L 10,110 Z"
+                                            fill="url(#chartGrad)" />
+                                        <path id="weekly-chart-line" d="M 10,75 C 50,45 80,70 120,40 C 160,20 200,45 240,30 C 270,18 295,25 310,20" 
+                                            stroke="#60A5FA" stroke-width="3.5" fill="none" stroke-linecap="round" filter="url(#glow)" />
+                                        <g id="weekly-chart-points">
+                                            <circle cx="10" cy="75" r="5" class="chart-point" />
+                                            <circle cx="60" cy="52" r="5" class="chart-point" />
+                                            <circle cx="110" cy="65" r="5" class="chart-point" />
+                                            <circle cx="160" cy="35" r="5" class="chart-point" />
+                                            <circle cx="210" cy="42" r="5" class="chart-point" />
+                                            <circle cx="260" cy="25" r="5" class="chart-point" />
+                                            <circle cx="310" cy="20" r="6" class="chart-point active-point" />
+                                        </g>
+                                    </svg>
+                                </div>
+                                <div class="chart-day-labels">
+                                    <span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span><span class="active-day">Min</span>
+                                </div>
                             </div>
                         </div>
 
                         <!-- Jadwal Self-care Card -->
-                        <div class="card card-glass" style="margin-bottom: 24px;">
-                            <div
-                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                                <h4 style="font-size: 14px; font-weight: 800; color: var(--text-main);">Jadwal Self-care
-                                </h4>
-                                <span
-                                    style="font-size: 11px; font-weight: 800; color: var(--primary-dark); cursor: pointer;"
-                                    onclick="navigateTo('screen-habits')">Kelola &gt;</span>
-                            </div>
-                            <div class="selfcare-items" style="display: flex; flex-direction: column; gap: 12px;">
-                                <div
-                                    style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background-color: var(--bg-sec); border-radius: 16px; border: 1px solid var(--border-color);">
-                                    <div style="display: flex; align-items: center; gap: 12px;">
-                                        <span style="font-size: 20px;">🧘</span>
-                                        <div>
-                                            <h5 style="font-size: 13px; font-weight: 700; color: var(--text-main);">
-                                                Meditasi</h5>
-                                            <span style="font-size: 10px; color: var(--text-sub);">10 menit • Pukul
-                                                20:00</span>
-                                        </div>
-                                    </div>
-                                    <div class="habit-checkbox completed"
-                                        style="background-color: var(--primary); border-color: var(--primary);">✓</div>
+                        <div class="card card-glass selfcare-card">
+                            <div class="card-header-row">
+                                <div class="card-header-title">
+                                    <i data-lucide="check-circle" class="card-title-icon"></i>
+                                    <h4>Jadwal Self-care</h4>
                                 </div>
-                                <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background-color: var(--bg-sec); border-radius: 16px; border: 1px solid var(--border-color); cursor:pointer;"
-                                    onclick="openWaterTracker()">
-                                    <div style="display: flex; align-items: center; gap: 12px;">
-                                        <span style="font-size: 20px;">💧</span>
+                                <button class="link-btn" onclick="navigateTo('screen-habits')">Kelola &gt;</button>
+                            </div>
+                            
+                            <div id="gui-dashboard-habits" class="selfcare-items">
+                                <div class="selfcare-item-row" onclick="navigateTo('screen-breath')">
+                                    <div class="selfcare-info">
+                                        <span class="selfcare-icon">🧘</span>
                                         <div>
-                                            <h5 style="font-size: 13px; font-weight: 700; color: var(--text-main);">
-                                                Minum Air</h5>
-                                            <span style="font-size: 10px; color: var(--text-sub);">8 gelas / hari</span>
+                                            <h5 class="selfcare-title">Meditasi</h5>
+                                            <span class="selfcare-sub">10 menit • Pukul 20:00</span>
                                         </div>
                                     </div>
-                                    <span class="level-tag" id="gui-water-badge-label"
-                                        style="font-size: 10px; padding: 4px 10px; background-color: var(--bg-highlight); font-weight:700;">5/8
-                                        gelas</span>
+                                    <div class="habit-checkbox completed">✓</div>
+                                </div>
+                                <div class="selfcare-item-row" onclick="openWaterTracker()">
+                                    <div class="selfcare-info">
+                                        <span class="selfcare-icon">💧</span>
+                                        <div>
+                                            <h5 class="selfcare-title">Minum Air</h5>
+                                            <span class="selfcare-sub">8 gelas / hari</span>
+                                        </div>
+                                    </div>
+                                    <span class="level-tag water-tag" id="gui-water-badge-label">5/8 gelas</span>
                                 </div>
                             </div>
                         </div>
@@ -342,55 +501,52 @@
                     <!-- Right Section (Sidebar content) -->
                     <aside class="dashboard-side-col">
                         <!-- Gamification Widget Card -->
-                        <div class="card card-glass" style="margin-bottom: 24px;">
-                            <div class="xp-row" style="margin-bottom: 12px;">
-                                <div style="display: flex; align-items: center; gap: 8px;">
+                        <div class="card card-glass gamify-card">
+                            <div class="xp-row">
+                                <div class="level-badge-wrapper">
                                     <span class="level-tag" id="gui-lvl-label">Level 1</span>
-                                    <span style="font-size: 12.5px; font-weight: 700; color: var(--text-main);">Inner
-                                        Hero</span>
+                                    <span class="hero-title-text">Inner Hero</span>
                                 </div>
-                                <span id="gui-xp-text"
-                                    style="font-size: 11px; font-weight: 700; color: var(--text-sub);">35 / 100
-                                    XP</span>
+                                <span id="gui-xp-text" class="xp-counter">35 / 100 XP</span>
                             </div>
-                            <div class="progress-bar-container" style="height: 10px;">
+                            <div class="progress-bar-container">
                                 <div id="gui-xp-bar" class="xp-progress-bar" style="width: 35%;"></div>
                             </div>
                         </div>
 
                         <!-- Affirmation Box Card -->
-                        <div class="affirmation-box" style="margin-bottom: 24px;" onclick="cycleAffirmations()"
-                            role="button" aria-label="Ganti afirmasi positif hari ini">
-                            <span id="gui-affirmation-text" class="affirmation-text">"Setiap langkah kecil yang kamu
-                                ambil hari ini adalah kemajuan menuju diri yang lebih sehat."</span>
+                        <div class="affirmation-box card-glass" onclick="cycleAffirmations()" role="button" aria-label="Ganti afirmasi positif hari ini" tabindex="0">
+                            <div class="affirmation-quote-mark">“</div>
+                            <span id="gui-affirmation-text" class="affirmation-text">"Setiap langkah kecil yang kamu ambil hari ini adalah kemajuan menuju diri yang lebih sehat."</span>
                             <div class="affirmation-sub">— Afirmasi Hari Ini (Sentuh untuk ganti)</div>
                         </div>
 
                         <!-- Quick Actions Grid card wrapper -->
-                        <div class="card card-glass" style="padding: 24px;">
-                            <h4
-                                style="font-size: 14.5px; font-weight: 800; color: var(--text-main); margin-bottom: 16px;">
-                                Aktivitas Utama</h4>
+                        <div class="card card-glass quick-actions-card">
+                            <h4 class="card-section-title">Aktivitas Utama</h4>
                             <div class="action-grid">
-                                <div class="action-btn-card" onclick="navigateTo('screen-breath')" role="button"
-                                    aria-label="Mulai Latihan Pernapasan">
-                                    <span class="action-btn-icon">🌬️</span>
+                                <div class="action-btn-card" onclick="navigateTo('screen-breath')" role="button" tabindex="0" aria-label="Mulai Latihan Pernapasan">
+                                    <div class="action-icon-bg breath-bg">
+                                        <span class="action-btn-icon">🌬️</span>
+                                    </div>
                                     <span class="action-btn-label">Pernapasan</span>
                                 </div>
-                                <div class="action-btn-card" onclick="startMHCheck()" role="button"
-                                    aria-label="Mulai Evaluasi Kesehatan Mental">
-                                    <span class="action-btn-icon">📋</span>
+                                <div class="action-btn-card" onclick="startMHCheck()" role="button" tabindex="0" aria-label="Mulai Evaluasi Kesehatan Mental">
+                                    <div class="action-icon-bg check-bg">
+                                        <span class="action-btn-icon">📋</span>
+                                    </div>
                                     <span class="action-btn-label">Check Kesehatan</span>
                                 </div>
-                                <div class="action-btn-card"
-                                    onclick="filterArticlesCategory('Semua'); navigateTo('screen-articles');"
-                                    role="button" aria-label="Buka Artikel Edukasi">
-                                    <span class="action-btn-icon">📚</span>
+                                <div class="action-btn-card" onclick="filterArticlesCategory('Semua'); navigateTo('screen-articles');" role="button" tabindex="0" aria-label="Buka Artikel Edukasi">
+                                    <div class="action-icon-bg book-bg">
+                                        <span class="action-btn-icon">📚</span>
+                                    </div>
                                     <span class="action-btn-label">Artikel Edukasi</span>
                                 </div>
-                                <div class="action-btn-card emergency-btn-card" onclick="navigateTo('screen-emergency')"
-                                    role="button" aria-label="Buka Saluran Bantuan Darurat">
-                                    <span class="action-btn-icon">🚨</span>
+                                <div class="action-btn-card emergency-btn-card" onclick="navigateTo('screen-emergency')" role="button" tabindex="0" aria-label="Buka Saluran Bantuan Darurat">
+                                    <div class="action-icon-bg sos-bg">
+                                        <span class="action-btn-icon">🚨</span>
+                                    </div>
                                     <span class="action-btn-label">Emergency Help</span>
                                 </div>
                             </div>
@@ -400,267 +556,275 @@
                 </div>
             </div>
 
-            <!-- SCREEN 5: MOOD TRACKER FORM -->
+            <!-- SCREEN 6: MOOD TRACKER FORM -->
             <div id="screen-mood" class="screen">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h2 style="font-size: 18px; font-weight: 800; color: var(--text-main);">Mood Tracker</h2>
-                    <i data-lucide="calendar" style="width: 22px; color: var(--text-main); cursor: pointer;"></i>
+                <div class="screen-header">
+                    <button class="back-btn" onclick="navigateTo('screen-home')" aria-label="Kembali">
+                        <i data-lucide="arrow-left"></i>
+                    </button>
+                    <h2 class="screen-title" style="flex: 1; text-align: center;">Mood Tracker</h2>
+                    <div class="header-action-icon" onclick="showToast('Kalender mood dapat diakses dari menu statistik!')" role="button" aria-label="Kalender Mood">
+                        <i data-lucide="calendar"></i>
+                    </div>
                 </div>
 
                 <!-- Date selector -->
-                <div
-                    style="display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 28px;">
-                    <i data-lucide="chevron-left" style="width: 18px; color: var(--text-sub); cursor: pointer;"></i>
-                    <span style="font-size: 14.5px; font-weight: 700; color: var(--text-main);">16 Mei 2024</span>
-                    <i data-lucide="chevron-right" style="width: 18px; color: var(--text-sub); cursor: pointer;"></i>
+                <div class="date-picker-row">
+                    <button class="date-nav-btn" aria-label="Hari Sebelumnya"><i data-lucide="chevron-left"></i></button>
+                    <span class="date-picker-current">16 Mei 2024</span>
+                    <button class="date-nav-btn" aria-label="Hari Berikutnya"><i data-lucide="chevron-right"></i></button>
                 </div>
 
                 <!-- Main Form Card -->
-                <div class="card card-glass" style="margin-bottom: 24px;">
-                    <h4
-                        style="text-align: center; font-size: 15px; font-weight: 800; color: var(--text-main); margin-bottom: 24px;">
-                        Bagaimana perasaanmu hari ini?
-                    </h4>
+                <div class="card card-glass mood-selector-card">
+                    <h4 class="mood-prompt-title">Bagaimana perasaanmu hari ini?</h4>
 
-                    <!-- 3x3 Grid Emojis -->
-                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px;"
-                        id="mood-form-emoji-grid">
-                        <div class="quiz-opt-btn" onclick="selectFormMood('sangat-bahagia', '😄', this)"
-                            data-mood="sangat-bahagia">
-                            <span class="quiz-opt-dot">😄</span>
-                            <span class="quiz-opt-label">Sangat Bahagia</span>
+                    <!-- 3x3 Interactive Mood Cards matching example image -->
+                    <div class="mood-cards-grid" id="mood-form-emoji-grid">
+                        <div class="quiz-opt-btn mood-card-item mood-tint-yellow" onclick="selectFormMood('sangat-bahagia', '😄', this)" data-mood="sangat-bahagia" tabindex="0" role="button">
+                            <div class="mood-card-emoji-wrap">
+                                <span class="quiz-opt-dot mood-card-emoji">😄</span>
+                            </div>
+                            <span class="quiz-opt-label mood-card-name">Sangat Bahagia</span>
                         </div>
-                        <div class="quiz-opt-btn active" onclick="selectFormMood('bahagia', '😊', this)"
-                            data-mood="bahagia">
-                            <span class="quiz-opt-dot">😊</span>
-                            <span class="quiz-opt-label">Bahagia</span>
+                        <div class="quiz-opt-btn mood-card-item mood-tint-blue active" onclick="selectFormMood('bahagia', '😊', this)" data-mood="bahagia" tabindex="0" role="button">
+                            <div class="mood-card-emoji-wrap">
+                                <span class="quiz-opt-dot mood-card-emoji">😊</span>
+                                <div class="selected-check-badge">✓</div>
+                            </div>
+                            <span class="quiz-opt-label mood-card-name">Bahagia</span>
                         </div>
-                        <div class="quiz-opt-btn" onclick="selectFormMood('biasa', '😐', this)" data-mood="biasa">
-                            <span class="quiz-opt-dot">😐</span>
-                            <span class="quiz-opt-label">Biasa</span>
+                        <div class="quiz-opt-btn mood-card-item mood-tint-gray" onclick="selectFormMood('biasa', '😐', this)" data-mood="biasa" tabindex="0" role="button">
+                            <div class="mood-card-emoji-wrap">
+                                <span class="quiz-opt-dot mood-card-emoji">😐</span>
+                            </div>
+                            <span class="quiz-opt-label mood-card-name">Biasa</span>
                         </div>
-
-                        <div class="quiz-opt-btn" onclick="selectFormMood('sedih', '😔', this)" data-mood="sedih">
-                            <span class="quiz-opt-dot">😔</span>
-                            <span class="quiz-opt-label">Sedih</span>
+                        <div class="quiz-opt-btn mood-card-item mood-tint-blue" onclick="selectFormMood('sedih', '😔', this)" data-mood="sedih" tabindex="0" role="button">
+                            <div class="mood-card-emoji-wrap">
+                                <span class="quiz-opt-dot mood-card-emoji">😔</span>
+                            </div>
+                            <span class="quiz-opt-label mood-card-name">Sedih</span>
                         </div>
-                        <div class="quiz-opt-btn" onclick="selectFormMood('cemas', '😣', this)" data-mood="cemas">
-                            <span class="quiz-opt-dot">😣</span>
-                            <span class="quiz-opt-label">Cemas</span>
+                        <div class="quiz-opt-btn mood-card-item mood-tint-purple" onclick="selectFormMood('cemas', '😣', this)" data-mood="cemas" tabindex="0" role="button">
+                            <div class="mood-card-emoji-wrap">
+                                <span class="quiz-opt-dot mood-card-emoji">😣</span>
+                            </div>
+                            <span class="quiz-opt-label mood-card-name">Cemas</span>
                         </div>
-                        <div class="quiz-opt-btn" onclick="selectFormMood('marah', '😡', this)" data-mood="marah">
-                            <span class="quiz-opt-dot">😡</span>
-                            <span class="quiz-opt-label">Marah</span>
+                        <div class="quiz-opt-btn mood-card-item mood-tint-pink" onclick="selectFormMood('marah', '😡', this)" data-mood="marah" tabindex="0" role="button">
+                            <div class="mood-card-emoji-wrap">
+                                <span class="quiz-opt-dot mood-card-emoji">😡</span>
+                            </div>
+                            <span class="quiz-opt-label mood-card-name">Marah</span>
                         </div>
-
-                        <div class="quiz-opt-btn" onclick="selectFormMood('lelah', '😴', this)" data-mood="lelah">
-                            <span class="quiz-opt-dot">😴</span>
-                            <span class="quiz-opt-label">Lelah</span>
+                        <div class="quiz-opt-btn mood-card-item mood-tint-indigo" onclick="selectFormMood('lelah', '😴', this)" data-mood="lelah" tabindex="0" role="button">
+                            <div class="mood-card-emoji-wrap">
+                                <span class="quiz-opt-dot mood-card-emoji">😴</span>
+                            </div>
+                            <span class="quiz-opt-label mood-card-name">Lelah</span>
                         </div>
-                        <div class="quiz-opt-btn" onclick="selectFormMood('stress', '🤯', this)" data-mood="stress">
-                            <span class="quiz-opt-dot">🤯</span>
-                            <span class="quiz-opt-label">Stres</span>
+                        <div class="quiz-opt-btn mood-card-item mood-tint-pink" onclick="selectFormMood('stress', '🤯', this)" data-mood="stress" tabindex="0" role="button">
+                            <div class="mood-card-emoji-wrap">
+                                <span class="quiz-opt-dot mood-card-emoji">🤯</span>
+                            </div>
+                            <span class="quiz-opt-label mood-card-name">Stres</span>
                         </div>
-                        <div class="quiz-opt-btn" onclick="selectFormMood('lainnya', '💬', this)" data-mood="lainnya">
-                            <span class="quiz-opt-dot">💬</span>
-                            <span class="quiz-opt-label">Lainnya</span>
+                        <div class="quiz-opt-btn mood-card-item mood-tint-yellow" onclick="selectFormMood('lainnya', '💬', this)" data-mood="lainnya" tabindex="0" role="button">
+                            <div class="mood-card-emoji-wrap">
+                                <span class="quiz-opt-dot mood-card-emoji">💬</span>
+                            </div>
+                            <span class="quiz-opt-label mood-card-name">Lainnya</span>
                         </div>
                     </div>
 
                     <!-- Note Form Input -->
-                    <div class="form-group" style="margin-bottom: 24px;">
-                        <label>Catatan (Opsional)</label>
-                        <textarea id="mood-form-note-input" class="input-field" style="min-height: 80px; resize: none;"
-                            placeholder="Tulis apa yang kamu rasakan..."></textarea>
+                    <div class="form-group mood-note-group">
+                        <div class="note-label-row">
+                            <label for="mood-form-note-input">Catatan (Opsional)</label>
+                        </div>
+                        <div class="note-input-container">
+                            <textarea id="mood-form-note-input" class="input-field mood-textarea"
+                                placeholder="Tulis apa yang kamu rasakan..."></textarea>
+                            <div class="note-flower-illustration">
+                                🌸
+                            </div>
+                        </div>
                     </div>
 
-                    <button class="btn btn-primary" onclick="submitMoodForm()">Simpan</button>
+                    <button class="btn btn-primary btn-pill btn-large" onclick="submitMoodForm()">
+                        <span>Simpan</span>
+                    </button>
                 </div>
             </div>
 
-            <!-- SCREEN 6: STATISTIK SCREEN -->
+            <!-- SCREEN 7: STATISTIK SCREEN -->
             <div id="screen-stats" class="screen">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h2 style="font-size: 18px; font-weight: 800; color: var(--text-main);">Statistik</h2>
-                    <select class="input-field"
-                        style="width: auto; padding: 8px 16px; font-size: 12px; font-weight: 700; border-radius: 20px;">
+                <div class="screen-header">
+                    <button class="back-btn" onclick="navigateTo('screen-home')" aria-label="Kembali">
+                        <i data-lucide="arrow-left"></i>
+                    </button>
+                    <h2 class="screen-title" style="flex: 1; text-align: center;">Statistik</h2>
+                    <select class="input-field select-pill" aria-label="Periode Statistik">
                         <option>Mingguan</option>
                         <option>Bulanan</option>
                     </select>
                 </div>
 
                 <!-- Top Stats Card (Averages and Bar columns chart side-by-side) -->
-                <div class="card card-glass"
-                    style="margin-bottom: 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: center;">
-                    <div>
-                        <span style="font-size: 11px; color: var(--text-sub); font-weight: 600;">Rata-rata Mood</span>
-                        <h3 style="font-size: 32px; font-weight: 800; color: var(--text-main); margin-top: 4px;">4.2
-                        </h3>
-                        <span class="level-tag"
-                            style="background-color: var(--primary-light); color: var(--primary-dark); font-size: 10px; font-weight: 800;">Baik</span>
+                <div class="card card-glass stats-overview-card">
+                    <div class="stats-avg-box">
+                        <span class="stats-label">Rata-rata Mood</span>
+                        <div class="avg-score-row">
+                            <h3 class="stats-score" id="gui-avg-mood-score">4.2</h3>
+                            <span class="level-tag score-tag" id="gui-avg-mood-label">(Baik)</span>
+                        </div>
                     </div>
-                    <!-- Small Sparklines Vertical Bar graph -->
-                    <div
-                        style="display: flex; justify-content: space-around; align-items: flex-end; height: 70px; border-bottom: 1.5px solid var(--border-color); padding-bottom: 2px;">
-                        <div
-                            style="width: 8px; height: 50%; background-color: var(--primary-dark); border-radius: 4px;">
-                        </div>
-                        <div
-                            style="width: 8px; height: 75%; background-color: var(--primary-dark); border-radius: 4px;">
-                        </div>
-                        <div
-                            style="width: 8px; height: 60%; background-color: var(--primary-dark); border-radius: 4px;">
-                        </div>
-                        <div
-                            style="width: 8px; height: 85%; background-color: var(--primary-dark); border-radius: 4px;">
-                        </div>
-                        <div
-                            style="width: 8px; height: 40%; background-color: var(--primary-dark); border-radius: 4px;">
-                        </div>
-                        <div
-                            style="width: 8px; height: 90%; background-color: var(--primary-dark); border-radius: 4px;">
-                        </div>
-                        <div
-                            style="width: 8px; height: 70%; background-color: var(--primary-dark); border-radius: 4px;">
-                        </div>
+                    <div class="sparkline-bar-group" id="sparkline-bar-group">
+                        <div class="sparkbar-item" style="height: 50%;"></div>
+                        <div class="sparkbar-item" style="height: 75%;"></div>
+                        <div class="sparkbar-item" style="height: 60%;"></div>
+                        <div class="sparkbar-item" style="height: 85%;"></div>
+                        <div class="sparkbar-item" style="height: 40%;"></div>
+                        <div class="sparkbar-item" style="height: 90%;"></div>
+                        <div class="sparkbar-item active-spark" style="height: 70%;"></div>
                     </div>
                 </div>
 
                 <!-- 2x2 Stats Grid -->
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
-                    <div class="card card-glass" style="padding: 16px; display: flex; align-items: center; gap: 12px;">
-                        <span style="font-size: 24px;">🌙</span>
-                        <div>
-                            <span style="font-size: 10px; color: var(--text-sub); display: block; font-weight: 600;">Jam
-                                Tidur Rata-rata</span>
-                            <span style="font-size: 13px; font-weight: 800; color: var(--text-main);">7 jam 20
-                                menit</span>
+                <div class="stats-grid-2x2">
+                    <div class="card card-glass stat-tile" onclick="openSleepTracker()" role="button" tabindex="0">
+                        <div class="tile-icon-wrap sleep-icon-bg">
+                            <span>🌙</span>
+                        </div>
+                        <div class="tile-info">
+                            <span class="tile-label">Jam Tidur Rata-rata</span>
+                            <span id="gui-stat-sleep" class="tile-val">7 jam 20 menit</span>
                         </div>
                     </div>
-                    <div class="card card-glass" style="padding: 16px; display: flex; align-items: center; gap: 12px;">
-                        <span style="font-size: 24px;">📝</span>
-                        <div>
-                            <span
-                                style="font-size: 10px; color: var(--text-sub); display: block; font-weight: 600;">Jurnal
-                                Ditulis</span>
-                            <span style="font-size: 13px; font-weight: 800; color: var(--text-main);">5 kali</span>
+                    <div class="card card-glass stat-tile" onclick="navigateTo('screen-journal')" role="button" tabindex="0">
+                        <div class="tile-icon-wrap journal-icon-bg">
+                            <span>📝</span>
+                        </div>
+                        <div class="tile-info">
+                            <span class="tile-label">Jurnal Ditulis</span>
+                            <span class="tile-val" id="gui-stat-journals-count">5 kali</span>
                         </div>
                     </div>
-                    <div class="card card-glass" style="padding: 16px; display: flex; align-items: center; gap: 12px;">
-                        <span style="font-size: 24px;">✅</span>
-                        <div>
-                            <span
-                                style="font-size: 10px; color: var(--text-sub); display: block; font-weight: 600;">Self-care
-                                Selesai</span>
-                            <span style="font-size: 13px; font-weight: 800; color: var(--text-main);">6 aktivitas</span>
+                    <div class="card card-glass stat-tile" onclick="navigateTo('screen-habits')" role="button" tabindex="0">
+                        <div class="tile-icon-wrap habit-icon-bg">
+                            <span>✅</span>
+                        </div>
+                        <div class="tile-info">
+                            <span class="tile-label">Self-care Selesai</span>
+                            <span class="tile-val" id="gui-stat-habits-count">6 aktivitas</span>
                         </div>
                     </div>
-                    <div class="card card-glass" style="padding: 16px; display: flex; align-items: center; gap: 12px;">
-                        <span style="font-size: 24px;">💧</span>
-                        <div>
-                            <span
-                                style="font-size: 10px; color: var(--text-sub); display: block; font-weight: 600;">Minum
-                                Air</span>
-                            <span style="font-size: 13px; font-weight: 800; color: var(--text-main);">6/8 gelas</span>
+                    <div class="card card-glass stat-tile" onclick="openWaterTracker()" role="button" tabindex="0">
+                        <div class="tile-icon-wrap water-icon-bg">
+                            <span>💧</span>
+                        </div>
+                        <div class="tile-info">
+                            <span class="tile-label">Minum Air</span>
+                            <span id="gui-stat-water" class="tile-val">6/8 gelas</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Mood Trend Area Line Chart Card -->
-                <div class="card card-glass" style="margin-bottom: 24px;">
-                    <span
-                        style="font-size: 11.5px; color: var(--text-sub); display: block; margin-bottom: 2px; font-weight:600;">Dominan
-                        Mood Pekan Ini</span>
-                    <h3 id="gui-dominant-mood" style="font-size: 20px; font-weight: 800; color: var(--primary-dark);">😊
-                        Bahagia</h3>
+                <div class="card card-glass mood-trend-card">
+                    <div class="card-header-row" style="margin-bottom: 12px;">
+                        <span class="chart-subtitle">Mood Trend</span>
+                        <h3 id="gui-dominant-mood" class="dominant-mood-display">😊 Bahagia</h3>
+                    </div>
 
-                    <!-- Frequencies columns visual chart -->
                     <div class="mood-chart-container">
                         <div class="chart-bar-col">
-                            <span id="chart-count-sangat-bahagia" class="chart-bar-label"
-                                style="margin-top: 0; margin-bottom: 4px; font-weight:700;"></span>
+                            <span id="chart-count-sangat-bahagia" class="chart-bar-label"></span>
                             <div id="chart-fill-sangat-bahagia" class="chart-bar-fill"></div>
                             <span class="chart-bar-emoji">😄</span>
                         </div>
                         <div class="chart-bar-col">
-                            <span id="chart-count-bahagia" class="chart-bar-label"
-                                style="margin-top: 0; margin-bottom: 4px; font-weight:700;"></span>
+                            <span id="chart-count-bahagia" class="chart-bar-label"></span>
                             <div id="chart-fill-bahagia" class="chart-bar-fill"></div>
                             <span class="chart-bar-emoji">😊</span>
                         </div>
                         <div class="chart-bar-col">
-                            <span id="chart-count-biasa" class="chart-bar-label"
-                                style="margin-top: 0; margin-bottom: 4px; font-weight:700;"></span>
+                            <span id="chart-count-biasa" class="chart-bar-label"></span>
                             <div id="chart-fill-biasa" class="chart-bar-fill"></div>
                             <span class="chart-bar-emoji">😐</span>
                         </div>
                         <div class="chart-bar-col">
-                            <span id="chart-count-sedih" class="chart-bar-label"
-                                style="margin-top: 0; margin-bottom: 4px; font-weight:700;"></span>
+                            <span id="chart-count-sedih" class="chart-bar-label"></span>
                             <div id="chart-fill-sedih" class="chart-bar-fill"></div>
                             <span class="chart-bar-emoji">😔</span>
                         </div>
                         <div class="chart-bar-col">
-                            <span id="chart-count-cemas" class="chart-bar-label"
-                                style="margin-top: 0; margin-bottom: 4px; font-weight:700;"></span>
+                            <span id="chart-count-cemas" class="chart-bar-label"></span>
                             <div id="chart-fill-cemas" class="chart-bar-fill"></div>
                             <span class="chart-bar-emoji">😣</span>
                         </div>
                         <div class="chart-bar-col">
-                            <span id="chart-count-lelah" class="chart-bar-label"
-                                style="margin-top: 0; margin-bottom: 4px; font-weight:700;"></span>
+                            <span id="chart-count-lelah" class="chart-bar-label"></span>
                             <div id="chart-fill-lelah" class="chart-bar-fill"></div>
                             <span class="chart-bar-emoji">😴</span>
                         </div>
                     </div>
                 </div>
 
-                <h4 style="font-size: 14px; font-weight: 800; margin-bottom: 12px; color: var(--text-main);">Riwayat
-                    Aktivitas</h4>
+                <h4 class="section-title">Riwayat Aktivitas</h4>
                 <div id="mood-history-list" class="habits-list">
-                    <!-- Dynamic loaded -->
+                    <!-- Loaded dynamically -->
                 </div>
             </div>
 
-            <!-- VIEW 7: JOURNAL LIST TABS -->
+            <!-- VIEW 8: JOURNAL LIST TABS -->
             <div id="screen-journal" class="screen">
-                <div
-                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
-                    <div>
-                        <h2 style="font-size: 18px; font-weight: 800; color: var(--text-main);">Kalbu Jurnal</h2>
-                        <p style="font-size: 12.5px; color: var(--text-sub);">Tuangkan emosi dan perasaan hati di sini.
-                        </p>
-                    </div>
-                    <button class="btn btn-primary" style="padding: 10px 14px; width: auto; font-size: 12px;"
-                        onclick="navigateTo('screen-journal-compose')">
-                        <i data-lucide="plus" style="width: 14px;"></i> Jurnal Baru
+                <div class="screen-header">
+                    <button class="back-btn" onclick="navigateTo('screen-home')" aria-label="Kembali">
+                        <i data-lucide="arrow-left"></i>
                     </button>
+                    <h2 class="screen-title" style="flex: 1; text-align: center;">Journal</h2>
+                    <i data-lucide="search" class="header-action-icon"></i>
+                </div>
+
+                <!-- Category Pills -->
+                <div class="category-pills" style="margin-bottom: 20px;">
+                    <button class="cat-pill active" onclick="filterJournalCategory('Semua')">Semua</button>
+                    <button class="cat-pill" onclick="filterJournalCategory('Catatan')">Catatan</button>
+                    <button class="cat-pill" onclick="filterJournalCategory('Perasaan')">Perasaan</button>
+                    <button class="cat-pill" onclick="filterJournalCategory('Motivasi')">Motivasi</button>
                 </div>
 
                 <div id="journals-list" class="journals-history-container">
                     <!-- Dynamic loaded in js -->
                 </div>
+
+                <!-- Floating Action Button (FAB) for new journal -->
+                <button class="fab-btn" onclick="navigateTo('screen-journal-compose')" aria-label="Tambah Jurnal">
+                    <i data-lucide="plus"></i>
+                </button>
             </div>
 
-            <!-- SCREEN 8: JOURNAL COMPOSER WIZARD -->
+            <!-- SCREEN 9: JOURNAL COMPOSER WIZARD -->
             <div id="screen-journal-compose" class="screen no-nav">
                 <div class="sub-header">
-                    <div class="back-btn" onclick="navigateTo('screen-journal')">
-                        <i data-lucide="arrow-left" style="width: 20px;"></i>
-                    </div>
+                    <button class="back-btn" onclick="navigateTo('screen-journal')" aria-label="Kembali ke Jurnal">
+                        <i data-lucide="arrow-left"></i>
+                    </button>
                     <h3>Buka Jurnal Baru</h3>
                 </div>
 
-                <div class="card card-glass" style="flex: 1; display: flex; flex-direction: column; gap: 14px;">
+                <div class="card card-glass composer-card">
                     <div class="form-group">
-                        <label>Judul Refleksi</label>
+                        <label for="journal-title-input">Judul Refleksi</label>
                         <input id="journal-title-input" class="input-field" type="text"
                             placeholder="Memikirkan esok hari...">
                     </div>
 
-                    <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
-                        <label>Bagaimana suasana tulisan ini?</label>
-                        <select id="journal-mood-select" class="input-field" style="background-color: var(--bg-card);">
+                    <div class="form-group">
+                        <label for="journal-mood-select">Bagaimana suasana tulisan ini?</label>
+                        <select id="journal-mood-select" class="input-field select-mood">
                             <option value="happy">😊 Damai & Bahagia</option>
                             <option value="sad">😔 Melankolis / Sedih</option>
                             <option value="tired">😴 Lelah / Capek</option>
@@ -668,185 +832,223 @@
                         </select>
                     </div>
 
-                    <div class="form-group" style="flex: 1; display: flex; flex-direction: column;">
-                        <label>Tuliskan Pemikiranmu</label>
-                        <textarea id="journal-content-input" class="input-field"
-                            style="flex: 1; min-height: 180px; resize: none; line-height: 1.5;"
+                    <div class="form-group flex-1-group">
+                        <label for="journal-content-input">Tuliskan Pemikiranmu</label>
+                        <textarea id="journal-content-input" class="input-field journal-textarea"
                             placeholder="Tulis sejujurnya apa yang sedang kamu rasakan saat ini..."></textarea>
                     </div>
 
-                    <button class="btn btn-primary" onclick="saveJournal()">Simpan Jurnal <i data-lucide="save"
-                            style="width: 16px;"></i></button>
+                    <button class="btn btn-primary btn-pill btn-large" onclick="saveJournal()">
+                        <i data-lucide="save"></i>
+                        <span>Simpan Jurnal</span>
+                    </button>
                 </div>
             </div>
 
-            <!-- VIEW 9: HABITS TABS -->
+            <!-- VIEW 10: HABITS TABS -->
             <div id="screen-habits" class="screen">
-                <div style="margin-bottom: 20px;">
-                    <h2 style="font-size: 18px; font-weight: 800; color: var(--text-main);">Rutinitas Kebaikan</h2>
-                    <p style="font-size: 12.5px; color: var(--text-sub);">Menyerap kebiasaan positif harian.</p>
+                <div class="screen-header">
+                    <button class="back-btn" onclick="navigateTo('screen-home')" aria-label="Kembali">
+                        <i data-lucide="arrow-left"></i>
+                    </button>
+                    <h2 class="screen-title" style="flex: 1; text-align: center;">Rutinitas Kebaikan</h2>
                 </div>
 
                 <!-- Input to add habit -->
-                <div class="card card-glass" style="padding: 16px; margin-bottom: 22px;">
-                    <div style="display: flex; gap: 10px;">
+                <div class="card card-glass habit-input-card">
+                    <div class="habit-add-row">
                         <input id="habits-new-input" class="input-field" type="text"
-                            placeholder="Kebiasaan baru: Meditasi sore..." style="flex: 1; padding: 10px 14px;">
-                        <button class="btn btn-primary" style="width: auto; padding: 10px 18px;"
+                            placeholder="Kebiasaan baru: Meditasi sore...">
+                        <button class="btn btn-primary btn-pill" style="width: auto; padding: 12px 20px;"
                             onclick="addCustomHabit()">Tambah</button>
                     </div>
                 </div>
 
-                <h4 style="font-size: 13.5px; font-weight: 800; margin-bottom: 12px; color: var(--text-main);">Daftar
-                    Kebiasaan Kamu</h4>
-                <div id="habits-list-tab" class="habits-list" style="margin-bottom: 40px;">
+                <h4 class="section-title">Daftar Kebiasaan Kamu</h4>
+                <div id="habits-list-tab" class="habits-list">
                     <!-- Loaded dynamically -->
                 </div>
             </div>
 
-            <!-- VIEW 10: USER PROFILE & SETTINGS -->
+            <!-- VIEW 11: USER PROFILE & SETTINGS -->
             <div id="screen-profile" class="screen">
-                <div style="margin-bottom: 24px; text-align: center; position: relative;">
-                    <div
-                        style="width: 80px; height: 80px; border-radius: 50%; background-color: var(--primary-light); color: var(--primary); font-size: 32px; font-weight: 800; display: flex; justify-content: center; align-items: center; margin: 10px auto 12px auto; border: 3px solid var(--border-color);">
-                        👩‍🦰</div>
-                    <h2 style="font-size: 20px; font-weight: 800; color: var(--text-main);">Pengaturan Profil</h2>
+                <div class="profile-header-card card-glass">
+                    <div class="profile-avatar-wrapper">
+                        <svg viewBox="0 0 100 100" width="80" height="80">
+                            <circle cx="50" cy="50" r="45" fill="#B7DCFF"/>
+                            <path d="M25,40 C25,20 75,20 75,40 Z" fill="#2D3748"/>
+                            <circle cx="50" cy="45" r="18" fill="#FED7AA"/>
+                            <path d="M25,85 C25,65 75,65 75,85 Z" fill="#80A6FF"/>
+                        </svg>
+                    </div>
+                    <h2 class="profile-name" id="profile-name-display">Risma Elfaryani</h2>
+                    <p class="profile-email" id="profile-email-display">risma@example.com</p>
+                    <button class="btn btn-outline btn-pill btn-small" style="width: auto; margin: 12px auto 0 auto;" onclick="editProfile()">Edit Profil</button>
                 </div>
 
-                <div class="card card-glass" style="padding: 20px; display: flex; flex-direction: column; gap: 16px;">
-
-                    <div class="form-group" style="margin-bottom: 0;">
-                        <label>Nama Pengguna</label>
-                        <div style="display: flex; gap: 8px;">
-                            <input id="profile-name-input" class="input-field" type="text" placeholder="Risma"
-                                style="flex: 1; padding: 10px 14px;">
-                            <button class="btn btn-outline" style="width: auto; padding: 10px 14px;"
-                                onclick="saveProfileName()">Ubah</button>
+                <div class="card card-glass profile-menu-list">
+                    <div class="profile-menu-item" onclick="showToast('Pengingat harian aktif!')">
+                        <div class="menu-item-left">
+                            <i data-lucide="bell" class="menu-icon"></i>
+                            <span>Pengingat</span>
                         </div>
+                        <i data-lucide="chevron-right" class="menu-chevron"></i>
                     </div>
-
-                    <!-- Custom Hue Theme Selection pills switcher -->
-                    <div class="theme-option">
-                        <div>
-                            <span
-                                style="font-size: 13px; font-weight: 700; color: var(--text-main); display: block;">Warna
-                                Tema</span>
-                            <span style="font-size: 10.5px; color: var(--text-sub);">Skema palet aplikasi</span>
+                    <div class="profile-menu-item" onclick="showToast('Target harian: 8 gelas air & 10m meditasi')">
+                        <div class="menu-item-left">
+                            <i data-lucide="target" class="menu-icon"></i>
+                            <span>Target Harian</span>
+                        </div>
+                        <i data-lucide="chevron-right" class="menu-chevron"></i>
+                    </div>
+                    <div class="profile-menu-item">
+                        <div class="menu-item-left">
+                            <i data-lucide="palette" class="menu-icon"></i>
+                            <span>Tema</span>
                         </div>
                         <div class="theme-pill-select">
-                            <div id="btn-col-lavender" class="theme-color-btn theme-lavender active"
-                                onclick="changeThemeSelection('lavender')"></div>
-                            <div id="btn-col-blue" class="theme-color-btn theme-blue"
-                                onclick="changeThemeSelection('blue')"></div>
+                            <div id="btn-col-lavender" class="theme-color-btn theme-lavender"
+                                onclick="changeThemeSelection('lavender')" title="Lavender Theme"></div>
+                            <div id="btn-col-blue" class="theme-color-btn theme-blue active"
+                                onclick="changeThemeSelection('blue')" title="Soft Blue Theme"></div>
                         </div>
                     </div>
-
-                    <!-- Dark Mode Toggle Switch indicator -->
-                    <div class="theme-option" style="border-bottom: none; padding-bottom: 0;">
-                        <div>
-                            <span
-                                style="font-size: 13px; font-weight: 700; color: var(--text-main); display: block;">Menggunakan
-                                Mode Gelap</span>
-                            <span style="font-size: 10.5px; color: var(--text-sub);">Mengurangi kelelahan mata</span>
+                    <div class="profile-menu-item">
+                        <div class="menu-item-left">
+                            <i data-lucide="moon" class="menu-icon"></i>
+                            <span>Mode Gelap</span>
                         </div>
-                        <label class="switch"
-                            style="position: relative; display: inline-block; width: 44px; height: 24px; cursor: pointer;">
-                            <input id="toggle-dark-mode" type="checkbox" onchange="toggleDarkModeSwitch()"
-                                style="opacity: 0; width: 0; height: 0;">
-                            <span
-                                style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--border-color); transition: .3s; border-radius: 24px; display: flex; align-items: center; padding: 0 4px;">
-                                <span class="slider-round"
-                                    style="height: 16px; width: 16px; border-radius: 50%; background-color: var(--bg-card); transition: .3s; display: inline-block; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"></span>
-                            </span>
+                        <label class="switch">
+                            <input id="toggle-dark-mode" type="checkbox" onchange="toggleDarkModeSwitch()">
+                            <span class="slider-track"><span class="slider-round"></span></span>
                         </label>
                     </div>
-
+                    <div class="profile-menu-item" onclick="showToast('Semua data Anda terlindungi dengan enkripsi lokal.')">
+                        <div class="menu-item-left">
+                            <i data-lucide="lock" class="menu-icon"></i>
+                            <span>Privasi & Keamanan</span>
+                        </div>
+                        <i data-lucide="chevron-right" class="menu-chevron"></i>
+                    </div>
+                    <div class="profile-menu-item" onclick="navigateTo('screen-emergency')">
+                        <div class="menu-item-left">
+                            <i data-lucide="help-circle" class="menu-icon"></i>
+                            <span>Bantuan & Dukungan</span>
+                        </div>
+                        <i data-lucide="chevron-right" class="menu-chevron"></i>
+                    </div>
+                    <div class="profile-menu-item" onclick="showToast('InnerCalm v2.5 • Antigravity Certified Wellness App')">
+                        <div class="menu-item-left">
+                            <i data-lucide="info" class="menu-icon"></i>
+                            <span>Tentang Aplikasi</span>
+                        </div>
+                        <i data-lucide="chevron-right" class="menu-chevron"></i>
+                    </div>
                 </div>
 
-                <button class="btn btn-outline"
-                    style="margin-top: 10px; color: var(--accent); border-color: var(--accent);"
-                    onclick="triggerUserDataReset()">
-                    <i data-lucide="refresh-cw" style="width: 15px;"></i> Bersihkan Semua Data
+                <!-- Hidden input for name preservation -->
+                <input id="profile-name-input" type="hidden" value="Risma Elfaryani">
+
+                <button class="btn btn-primary btn-pill btn-large" style="margin-top: 20px;" onclick="logoutUser()">
+                    <span>Log Out</span>
+                </button>
+                <button class="btn btn-outline btn-pill btn-small" style="margin-top: 10px; color: var(--danger); border-color: var(--danger);" onclick="triggerUserDataReset()">
+                    <span>Bersihkan Semua Data</span>
                 </button>
             </div>
 
             <!-- OVERLAY: EXERCISE BREATHING SPACE -->
             <div id="screen-breath" class="screen no-nav">
                 <div class="sub-header">
-                    <div class="back-btn" onclick="navigateTo('screen-home')">
-                        <i data-lucide="arrow-left" style="width: 20px;"></i>
-                    </div>
-                    <h3>Pernapasan Terarah</h3>
+                    <button class="back-btn" onclick="navigateTo('screen-home')" aria-label="Kembali">
+                        <i data-lucide="arrow-left"></i>
+                    </button>
+                    <h3>Breathing Exercise</h3>
                 </div>
 
-                <div class="breathing-container">
-                    <div class="breath-circle-outer">
-                        <div class="breath-circle-inner">
-                            <span id="breath-seconds">Ready</span>
+                <div class="card card-glass breathing-card">
+                    <div class="breathing-container">
+                        <div class="breath-circle-outer">
+                            <div class="breath-circle-inner">
+                                <!-- Lungs SVG vector illustration -->
+                                <svg viewBox="0 0 200 200" width="130" height="130">
+                                    <circle cx="100" cy="100" r="90" fill="#EBF4FF" opacity="0.6"/>
+                                    <path d="M100,45 L100,105" stroke="#60A5FA" stroke-width="6" stroke-linecap="round"/>
+                                    <path d="M100,85 Q85,100 70,115" stroke="#60A5FA" stroke-width="4" stroke-linecap="round" fill="none"/>
+                                    <path d="M100,85 Q115,100 130,115" stroke="#60A5FA" stroke-width="4" stroke-linecap="round" fill="none"/>
+                                    <path d="M90,95 C60,95 45,120 45,145 C45,160 60,170 75,170 C90,170 95,150 95,125 Z" fill="#93C5FD" opacity="0.85"/>
+                                    <path d="M110,95 C140,95 155,120 155,145 C155,160 140,170 125,170 C110,170 105,150 105,125 Z" fill="#93C5FD" opacity="0.85"/>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div class="cycle-counter-text">
+                            <span id="breath-seconds">1 / 6 Siklus</span>
+                        </div>
+
+                        <p id="breath-inst" class="breath-inst">Tarik napas perlahan dan rasakan ketenangan...</p>
+
+                        <div class="breath-controls-row">
+                            <button class="breath-ctrl-btn" onclick="startBreathing()"><i data-lucide="skip-back"></i></button>
+                            <button id="breath-start-btn" class="breath-play-btn" onclick="startBreathing()">
+                                <i data-lucide="play"></i>
+                            </button>
+                            <button class="breath-ctrl-btn" onclick="startBreathing()"><i data-lucide="skip-forward"></i></button>
                         </div>
                     </div>
-
-                    <p id="breath-inst" class="breath-inst">Siap mencari ketenangan? Tekan tombol Mulai.</p>
-
-                    <button id="breath-start-btn" class="btn btn-primary" onclick="startBreathing()">Mulai Sesi
-                        Bernapas</button>
                 </div>
             </div>
 
             <!-- OVERLAY: MENTAL HEALTH CHECK SYSTEM -->
             <div id="screen-mhcheck" class="screen no-nav">
                 <div class="sub-header">
-                    <div class="back-btn" onclick="navigateTo('screen-home')">
-                        <i data-lucide="arrow-left" style="width: 20px;"></i>
-                    </div>
+                    <button class="back-btn" onclick="navigateTo('screen-home')" aria-label="Kembali">
+                        <i data-lucide="arrow-left"></i>
+                    </button>
                     <h3>Evaluasi Kesehatan Mental</h3>
                 </div>
 
-                <div class="card card-glass" style="padding: 16px; margin-bottom: 24px;">
-                    <h5 style="font-size: 13.5px; font-weight: 700; color: var(--text-main); margin-bottom: 4px;">
-                        Evaluasi Sederhana</h5>
-                    <p style="font-size: 11px; color: var(--text-sub); line-height: 1.5;">Berdasarkan kondisi psikologis
-                        kamu selama 7 hari ke belakang.</p>
+                <div class="card card-glass wizard-info-card">
+                    <h5 class="wizard-info-title">Evaluasi Sederhana</h5>
+                    <p class="wizard-info-desc">Berdasarkan kondisi psikologis kamu selama 7 hari ke belakang.</p>
                 </div>
 
                 <div class="quiz-progress-row">
                     <span id="mh-q-progress">Pertanyaan 1 dari 5</span>
-                    <span id="mh-q-progress-text" style="color: var(--primary);">20%</span>
+                    <span id="mh-q-progress-text" class="progress-pct">20%</span>
                 </div>
-                <div class="progress-bar-container" style="height: 6px; margin-bottom: 40px;">
+                <div class="progress-bar-container progress-bar-thin">
                     <div id="mh-q-bar" class="xp-progress-bar" style="width: 20%;"></div>
                 </div>
 
-                <div class="card card-glass" style="padding: 24px; position:relative;">
-                    <h3 id="mh-q-text"
-                        style="font-size: 15px; font-weight: 700; color: var(--text-main); line-height: 1.6;">
+                <div class="card card-glass question-card">
+                    <h3 id="mh-q-text" class="question-text">
                         Saya merasa sulit untuk tidur nyenyak atau beristirahat.
                     </h3>
 
                     <div class="quiz-option-row">
-                        <div class="quiz-opt-btn" data-value="0" onclick="selectMHOption(0)">
+                        <button class="quiz-opt-btn option-tile" data-value="0" onclick="selectMHOption(0)">
                             <div class="quiz-opt-dot">0</div>
                             <span class="quiz-opt-label">Tidak</span>
-                        </div>
-                        <div class="quiz-opt-btn" data-value="1" onclick="selectMHOption(1)">
+                        </button>
+                        <button class="quiz-opt-btn option-tile" data-value="1" onclick="selectMHOption(1)">
                             <div class="quiz-opt-dot">1</div>
                             <span class="quiz-opt-label">Jarang</span>
-                        </div>
-                        <div class="quiz-opt-btn" data-value="2" onclick="selectMHOption(2)">
+                        </button>
+                        <button class="quiz-opt-btn option-tile" data-value="2" onclick="selectMHOption(2)">
                             <div class="quiz-opt-dot">2</div>
                             <span class="quiz-opt-label">Sering</span>
-                        </div>
-                        <div class="quiz-opt-btn" data-value="3" onclick="selectMHOption(3)">
+                        </button>
+                        <button class="quiz-opt-btn option-tile" data-value="3" onclick="selectMHOption(3)">
                             <div class="quiz-opt-dot">3</div>
                             <span class="quiz-opt-label">Selalu</span>
-                        </div>
+                        </button>
                     </div>
                 </div>
 
-                <div style="margin-top: auto; display: flex; justify-content: space-between; gap: 16px;">
-                    <button id="mh-prev-btn" class="btn btn-outline" onclick="prevMHQuestion()">Kembali</button>
-                    <button id="mh-next-btn" class="btn btn-primary" style="flex: 1;"
-                        onclick="nextMHQuestion()">Lanjut</button>
+                <div class="wizard-nav-actions">
+                    <button id="mh-prev-btn" class="btn btn-outline btn-pill" onclick="prevMHQuestion()">Kembali</button>
+                    <button id="mh-next-btn" class="btn btn-primary btn-pill" style="flex: 1;" onclick="nextMHQuestion()">Lanjut</button>
                 </div>
             </div>
 
@@ -856,58 +1058,49 @@
                     <h3>Hasil Evaluasi</h3>
                 </div>
 
-                <div class="card card-glass" style="text-align: center; padding: 30px 20px;">
-                    <div id="mh-res-emoji" style="font-size: 72px; margin-bottom: 12px;">😐</div>
-                    <h3 id="mh-res-title" style="font-size: 20px; font-weight: 800; color: var(--text-main);">Kondisi
-                        Cukup Baik</h3>
-                    <div id="mh-res-score"
-                        style="font-size: 13px; font-weight: 700; color: var(--primary); margin: 6px 0 16px 0;">Skor
-                        Evaluasi: 6 / 15</div>
-                    <p id="mh-res-desc" style="font-size: 12.5px; color: var(--text-sub); line-height: 1.6;">Kamu
-                        mungkin sedang berada di bawah beban psikologis yang cukup mengganggu tidur atau keseharianmu.
+                <div class="card card-glass result-card">
+                    <div id="mh-res-emoji" class="result-emoji">😐</div>
+                    <h3 id="mh-res-title" class="result-title">Kondisi Cukup Baik</h3>
+                    <div id="mh-res-score" class="result-score">Skor Evaluasi: 6 / 15</div>
+                    <p id="mh-res-desc" class="result-desc">
+                        Kamu mungkin sedang berada di bawah beban psikologis yang cukup mengganggu tidur atau keseharianmu.
                     </p>
                 </div>
 
-                <h4 style="font-size: 13.5px; font-weight: 800; margin-bottom: 12px; color: var(--text-main);">Saran &
-                    Aktivitas Mandiri</h4>
-                <div id="mh-res-suggestions" style="margin-bottom: 30px;">
+                <h4 class="section-title">Saran & Aktivitas Mandiri</h4>
+                <div id="mh-res-suggestions" class="suggestions-list">
                     <!-- Loaded dynamic suggestions lists -->
                 </div>
 
-                <button class="btn btn-primary" onclick="navigateTo('screen-home')">Selesai & Ke Beranda</button>
+                <button class="btn btn-primary btn-pill btn-large" onclick="navigateTo('screen-home')">Selesai & Ke Beranda</button>
             </div>
 
             <!-- OVERLAY: EDUCATIONAL ARTICLES PREVIEW -->
             <div id="screen-articles" class="screen no-nav">
                 <div class="sub-header">
-                    <div class="back-btn" onclick="navigateTo('screen-home')">
-                        <i data-lucide="arrow-left" style="width: 20px;"></i>
-                    </div>
+                    <button class="back-btn" onclick="navigateTo('screen-home')" aria-label="Kembali">
+                        <i data-lucide="arrow-left"></i>
+                    </button>
                     <h3>Artikel Edukasi</h3>
                 </div>
 
-                <!-- Search Input bar -->
-                <div class="form-group" style="margin-bottom: 14px;">
-                    <div style="position: relative;">
-                        <input id="art-search-input" class="input-field" type="text"
-                            placeholder="Cari tips self-care..." style="padding-left: 42px;"
-                            oninput="renderArticlesList()">
-                        <i data-lucide="search"
-                            style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); width: 16px; color: var(--text-sub);"></i>
+                <div class="form-group search-group">
+                    <div class="input-wrapper">
+                        <i data-lucide="search" class="input-icon"></i>
+                        <input id="art-search-input" class="input-field search-input" type="text"
+                            placeholder="Cari tips self-care..." oninput="renderArticlesList()">
                     </div>
                 </div>
 
-                <!-- Categories Scroll pills -->
                 <div class="category-pills">
-                    <div class="cat-pill active" onclick="filterArticlesCategory('Semua')">Semua</div>
-                    <div class="cat-pill" onclick="filterArticlesCategory('Mindfulness')">Mindfulness</div>
-                    <div class="cat-pill" onclick="filterArticlesCategory('Stress')">Stress</div>
-                    <div class="cat-pill" onclick="filterArticlesCategory('Self Love')">Self Love</div>
-                    <div class="cat-pill" onclick="filterArticlesCategory('Anxiety')">Anxiety</div>
+                    <button class="cat-pill active" onclick="filterArticlesCategory('Semua')">Semua</button>
+                    <button class="cat-pill" onclick="filterArticlesCategory('Mindfulness')">Mindfulness</button>
+                    <button class="cat-pill" onclick="filterArticlesCategory('Stress')">Stress</button>
+                    <button class="cat-pill" onclick="filterArticlesCategory('Self Love')">Self Love</button>
+                    <button class="cat-pill" onclick="filterArticlesCategory('Anxiety')">Anxiety</button>
                 </div>
 
-                <!-- Articles Grid container -->
-                <div id="articles-list-container">
+                <div id="articles-list-container" class="articles-grid">
                     <!-- Dynamic loaded in js -->
                 </div>
             </div>
@@ -915,210 +1108,224 @@
             <!-- OVERLAY: ARTICLES DETAIL READER -->
             <div id="screen-article-reader" class="screen no-nav">
                 <div class="sub-header">
-                    <div class="back-btn" onclick="navigateTo('screen-articles')">
-                        <i data-lucide="arrow-left" style="width: 20px;"></i>
-                    </div>
-                    <h3 id="art-read-category"
-                        style="font-size: 11px; font-weight: 800; color: var(--primary); letter-spacing: 1px; text-transform: uppercase;">
-                        MINDFULNESS</h3>
-                    <div style="position: absolute; right: 0; cursor: pointer; padding: 4px;"
-                        onclick="showToast('Artikel disimpan ke penanda buku!')">
-                        <i data-lucide="bookmark" style="width: 20px; color: var(--text-main);"></i>
+                    <button class="back-btn" onclick="navigateTo('screen-articles')" aria-label="Kembali ke Artikel">
+                        <i data-lucide="arrow-left"></i>
+                    </button>
+                    <h3 id="art-read-category" class="article-read-category">MINDFULNESS</h3>
+                    <div class="bookmark-action-icon" onclick="showToast('Artikel disimpan ke penanda buku!')" role="button" aria-label="Simpan Artikel">
+                        <i data-lucide="bookmark"></i>
                     </div>
                 </div>
 
-                <h2 id="art-read-title"
-                    style="font-size: 20px; font-weight: 800; color: var(--text-main); margin-bottom: 6px; line-height: 1.3;">
-                    Cara Mengelola Overthinking untuk Gen Z</h2>
-                <span id="art-read-meta"
-                    style="font-size: 11px; color: var(--text-sub); display: block; margin-bottom: 20px;">5 min membaca
-                    • Diperiksa oleh Psikolog</span>
+                <div class="card card-glass article-reader-card">
+                    <h2 id="art-read-title" class="reader-title">Cara Mengelola Overthinking untuk Gen Z</h2>
+                    <span id="art-read-meta" class="reader-meta">5 min membaca • Diperiksa oleh Psikolog</span>
 
-                <!-- Article header preview box -->
-                <div class="card"
-                    style="background-color: var(--primary-light); text-align: center; padding: 30px; border-radius: 20px; margin-bottom: 24px; border:none;">
-                    <span id="art-read-emoji" style="font-size: 64px;">🧠</span>
-                </div>
+                    <div class="article-hero-box">
+                        <span id="art-read-emoji" class="reader-emoji">🧠</span>
+                    </div>
 
-                <!-- Article html paragraphs -->
-                <div id="art-read-body"
-                    style="font-size: 13px; color: var(--text-main); line-height: 1.7; display: flex; flex-direction: column; gap: 14px; margin-bottom: 40px;">
-                    <!-- Filled dynamically -->
+                    <div id="art-read-body" class="reader-body">
+                        <!-- Filled dynamically -->
+                    </div>
                 </div>
             </div>
 
             <!-- OVERLAY: EMERGENCY ASSISTANCE SOS -->
             <div id="screen-emergency" class="screen no-nav">
                 <div class="sub-header">
-                    <div class="back-btn" onclick="navigateTo('screen-home')">
-                        <i data-lucide="arrow-left" style="width: 20px; color: var(--accent);"></i>
-                    </div>
-                    <h3 style="color: var(--accent);">Emergency Help</h3>
+                    <button class="back-btn" onclick="navigateTo('screen-home')" aria-label="Kembali">
+                        <i data-lucide="arrow-left"></i>
+                    </button>
+                    <h3 class="emergency-header-title">Emergency Help</h3>
                 </div>
 
-                <div class="card"
-                    style="background-color: hsla(350, 100%, 78%, 0.12); border: 1.5px solid var(--accent); padding: 18px; margin-bottom: 24px;">
-                    <div style="display: flex; gap: 12px; align-items: flex-start;">
-                        <span style="font-size: 20px;">⚠️</span>
+                <div class="card emergency-alert-card">
+                    <div class="emergency-alert-inner">
+                        <span class="emergency-alert-icon">⚠️</span>
                         <div>
-                            <h4 style="font-size: 13px; font-weight: 850; color: var(--text-main); margin-bottom: 4px;">
-                                Kamu Tidak Sendirian</h4>
-                            <p style="font-size: 11px; color: var(--text-sub); line-height: 1.5;">Jika kamu sedang
-                                mengalami kecemasan parah atau memiliki kecenderungan menyakiti diri, tolong hubungi
-                                kontak darurat di bawah ini segera.</p>
+                            <h4 class="emergency-alert-title">Kamu Tidak Sendirian</h4>
+                            <p class="emergency-alert-desc">
+                                Jika kamu sedang mengalami kecemasan parah atau memiliki kecenderungan menyakiti diri, tolong hubungi kontak darurat di bawah ini segera.
+                            </p>
                         </div>
                     </div>
                 </div>
 
-                <h4 style="font-size: 13.5px; font-weight: 800; margin-bottom: 12px; color: var(--text-main);">Saluran
-                    Bantuan Terdekat</h4>
+                <h4 class="section-title">Saluran Bantuan Terdekat</h4>
 
-                <div class="card card-glass"
-                    style="display: flex; align-items: center; justify-content: space-between; padding: 16px; margin-bottom: 12px;">
-                    <div>
-                        <h4 style="font-size: 13px; font-weight: 700; color: var(--text-main);">Layanan SEJIWA
-                            (Kemenkes)</h4>
-                        <p style="font-size: 10.5px; color: var(--text-sub); margin-top: 2px;">Konseling psikologis
-                            gratis Kemenkes RI</p>
-                        <span
-                            style="font-weight: 700; color: var(--accent); font-size: 12.5px; display:inline-block; margin-top: 6px;">119
-                            Ext. 8</span>
+                <div class="emergency-list">
+                    <div class="card card-glass emergency-item-card">
+                        <div>
+                            <h4 class="em-item-title">Layanan SEJIWA (Kemenkes)</h4>
+                            <p class="em-item-desc">Konseling psikologis gratis Kemenkes RI</p>
+                            <span class="em-item-phone">119 Ext. 8</span>
+                        </div>
+                        <button class="btn btn-danger btn-pill btn-small"
+                            onclick="openEmergencyDialog('Layanan SEJIWA', '119 Ext. 8')">Hubungi</button>
                     </div>
-                    <button class="btn btn-danger" style="width: auto; padding: 8px 14px; font-size:11px;"
-                        onclick="openEmergencyDialog('Layanan SEJIWA', '119 Ext. 8')">Hubungi</button>
-                </div>
 
-                <div class="card card-glass"
-                    style="display: flex; align-items: center; justify-content: space-between; padding: 16px; margin-bottom: 12px;">
-                    <div>
-                        <h4 style="font-size: 13px; font-weight: 700; color: var(--text-main);">Yayasan Pulih</h4>
-                        <p style="font-size: 10.5px; color: var(--text-sub); margin-top: 2px;">Trauma emosional &
-                            konseling psikososial</p>
-                        <span
-                            style="font-weight: 700; color: var(--accent); font-size: 12.5px; display:inline-block; margin-top: 6px;">0811-8436-633</span>
+                    <div class="card card-glass emergency-item-card">
+                        <div>
+                            <h4 class="em-item-title">Yayasan Pulih</h4>
+                            <p class="em-item-desc">Trauma emosional & konseling psikososial</p>
+                            <span class="em-item-phone">0811-8436-633</span>
+                        </div>
+                        <button class="btn btn-danger btn-pill btn-small"
+                            onclick="openEmergencyDialog('Yayasan Pulih', '0811-8436-633')">WhatsApp</button>
                     </div>
-                    <button class="btn btn-danger" style="width: auto; padding: 8px 14px; font-size:11px;"
-                        onclick="openEmergencyDialog('Yayasan Pulih', '0811-8436-633')">WhatsApp</button>
-                </div>
 
-                <div class="card card-glass"
-                    style="display: flex; align-items: center; justify-content: space-between; padding: 16px; margin-bottom: 12px;">
-                    <div>
-                        <h4 style="font-size: 13px; font-weight: 700; color: var(--text-main);">Into The Light Indonesia
-                        </h4>
-                        <p style="font-size: 10.5px; color: var(--text-sub); margin-top: 2px;">Rujukan bunuh diri &
-                            edukasi mental</p>
-                        <span
-                            style="font-weight: 700; color: var(--accent); font-size: 12.5px; display:inline-block; margin-top: 6px;">intothelightid.org</span>
+                    <div class="card card-glass emergency-item-card">
+                        <div>
+                            <h4 class="em-item-title">Into The Light Indonesia</h4>
+                            <p class="em-item-desc">Rujukan bunuh diri & edukasi mental</p>
+                            <span class="em-item-phone">intothelightid.org</span>
+                        </div>
+                        <button class="btn btn-danger btn-pill btn-small"
+                            onclick="openEmergencyDialog('Into The Light', 'intothelightid.org')">Situs Web</button>
                     </div>
-                    <button class="btn btn-danger" style="width: auto; padding: 8px 14px; font-size:11px;"
-                        onclick="openEmergencyDialog('Into The Light', 'intothelightid.org')">Situs Web</button>
                 </div>
             </div>
 
             <!-- OVERLAY: WATER LOG SYSTEM -->
             <div id="screen-water-log" class="screen no-nav">
                 <div class="sub-header">
-                    <div class="back-btn" onclick="navigateTo('screen-home')">
-                        <i data-lucide="arrow-left" style="width: 20px;"></i>
-                    </div>
+                    <button class="back-btn" onclick="navigateTo('screen-home')" aria-label="Kembali">
+                        <i data-lucide="arrow-left"></i>
+                    </button>
                     <h3>Catatan Hidrasi Air</h3>
                 </div>
 
-                <div class="water-graphic-container">
-                    <div class="water-bottle">
-                        <div id="gui-water-glass-fill" class="water-fill"></div>
+                <div class="card card-glass tracker-hero-card">
+                    <div class="water-graphic-container">
+                        <div class="water-bottle">
+                            <div id="gui-water-glass-fill" class="water-fill">
+                                <div class="water-wave"></div>
+                            </div>
+                        </div>
+                        <h3 id="water-logged-stat" class="water-stat-text">500 ml</h3>
+                        <p class="water-target-text">Target hari ini: 2000 ml</p>
                     </div>
-                    <h3 id="water-logged-stat" style="font-size: 24px; font-weight: 800; margin-top: 16px;">500 ml</h3>
-                    <p style="font-size: 12.5px; color: var(--text-sub);">Target hari ini: 2000 ml</p>
-                </div>
 
-                <div class="card card-glass"
-                    style="padding: 16px; margin-bottom: 24px; display: flex; justify-content: space-around;">
-                    <button class="btn btn-secondary" style="width: auto; flex: 1; max-width: 100px; padding: 10px;"
-                        onclick="logWaterDrink(250)">+250ml</button>
-                    <button class="btn btn-secondary" style="width: auto; flex: 1; max-width: 100px; padding: 10px;"
-                        onclick="logWaterDrink(500)">+500ml</button>
-                    <button class="btn btn-secondary" style="width: auto; flex: 1; max-width: 100px; padding: 10px;"
-                        onclick="logWaterDrink(1000)">+1000ml</button>
+                    <div class="water-btn-group">
+                        <button class="btn btn-secondary btn-pill btn-water" onclick="logWaterDrink(250)">+250ml</button>
+                        <button class="btn btn-secondary btn-pill btn-water" onclick="logWaterDrink(500)">+500ml</button>
+                        <button class="btn btn-secondary btn-pill btn-water" onclick="logWaterDrink(1000)">+1000ml</button>
+                    </div>
                 </div>
             </div>
 
             <!-- OVERLAY: SLEEP LOG SYSTEM -->
             <div id="screen-sleep-log" class="screen no-nav">
                 <div class="sub-header">
-                    <div class="back-btn" onclick="navigateTo('screen-home')">
-                        <i data-lucide="arrow-left" style="width: 20px;"></i>
-                    </div>
-                    <h3>Catatan Kualitas Tidur</h3>
+                    <button class="back-btn" onclick="navigateTo('screen-home')" aria-label="Kembali">
+                        <i data-lucide="arrow-left"></i>
+                    </button>
+                    <h3>Sleep Tracker</h3>
                 </div>
 
-                <div class="card card-glass"
-                    style="padding: 24px; display: flex; flex-direction: column; gap: 16px; margin-top: 20px;">
-                    <div class="form-group">
-                        <label>Durasi Tidur Semalam (Jam)</label>
-                        <input id="sleep-duration-input" class="input-field" type="number" min="1" max="24" step="0.5"
-                            value="7">
-                    </div>
+                <!-- Date selector -->
+                <div class="date-picker-row" style="margin-bottom: 20px;">
+                    <button class="date-nav-btn" aria-label="Hari Sebelumnya"><i data-lucide="chevron-left"></i></button>
+                    <span class="date-picker-current">16 Mei 2024</span>
+                    <button class="date-nav-btn" aria-label="Hari Berikutnya"><i data-lucide="chevron-right"></i></button>
+                </div>
 
-                    <div class="form-group" style="margin-bottom: 0;">
-                        <label>Nilai Kualitas Istirahat</label>
-                        <div
-                            style="display: flex; gap: 12px; margin-top: 10px; font-size: 32px; justify-content: center;">
-                            <span class="sleep-star-btn" style="cursor: pointer;"
-                                onclick="selectSleepQuality(1)">★</span>
-                            <span class="sleep-star-btn" style="cursor: pointer;"
-                                onclick="selectSleepQuality(2)">★</span>
-                            <span class="sleep-star-btn" style="cursor: pointer;"
-                                onclick="selectSleepQuality(3)">★</span>
-                            <span class="sleep-star-btn" style="cursor: pointer;"
-                                onclick="selectSleepQuality(4)">★</span>
-                            <span class="sleep-star-btn" style="cursor: pointer;"
-                                onclick="selectSleepQuality(5)">★</span>
+                <!-- Sleep Schedule Cards (Jam Tidur 23:30 / Jam Bangun 06:45) -->
+                <div class="stats-grid-2x2" style="margin-bottom: 20px;">
+                    <div class="card card-glass stat-tile">
+                        <div class="tile-icon-wrap sleep-icon-bg">
+                            <span>🌙</span>
+                        </div>
+                        <div class="tile-info">
+                            <span class="tile-label">Jam Tidur</span>
+                            <span class="tile-val">23:30</span>
+                        </div>
+                    </div>
+                    <div class="card card-glass stat-tile">
+                        <div class="tile-icon-wrap water-icon-bg" style="background: rgba(246, 196, 83, 0.2);">
+                            <span>☀️</span>
+                        </div>
+                        <div class="tile-info">
+                            <span class="tile-label">Jam Bangun</span>
+                            <span class="tile-val">06:45</span>
                         </div>
                     </div>
                 </div>
 
-                <button class="btn btn-primary" style="margin-top: auto;" onclick="saveSleepLog()">Simpan Catatan
-                    Tidur</button>
+                <div class="card card-glass tracker-hero-card" style="margin-bottom: 20px;">
+                    <div class="form-group">
+                        <label for="sleep-duration-input">Durasi Tidur</label>
+                        <input id="sleep-duration-input" class="input-field input-large" type="number" min="1" max="24" step="0.5"
+                            value="7">
+                        <span style="font-size: 13px; color: var(--text-sub); display: block; margin-top: 4px;">7 jam 15 menit</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Kualitas Tidur</label>
+                        <div style="font-size: 14px; font-weight: 700; color: var(--primary-dark); margin-bottom: 6px;">Baik</div>
+                        <div class="star-rating-group">
+                            <span class="sleep-star-btn" role="button" tabindex="0" onclick="selectSleepQuality(1)" aria-label="1 Bintang">★</span>
+                            <span class="sleep-star-btn" role="button" tabindex="0" onclick="selectSleepQuality(2)" aria-label="2 Bintang">★</span>
+                            <span class="sleep-star-btn" role="button" tabindex="0" onclick="selectSleepQuality(3)" aria-label="3 Bintang">★</span>
+                            <span class="sleep-star-btn" role="button" tabindex="0" onclick="selectSleepQuality(4)" aria-label="4 Bintang">★</span>
+                            <span class="sleep-star-btn" role="button" tabindex="0" onclick="selectSleepQuality(5)" aria-label="5 Bintang">★</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sleep Tip Card matching reference image -->
+                <div class="card card-glass sleep-tip-card" style="margin-bottom: 24px;">
+                    <div class="sleep-tip-inner">
+                        <div>
+                            <h5 class="sleep-tip-title">Tips untuk tidur lebih nyenyak</h5>
+                            <p class="sleep-tip-desc">Hindari screen time 1 jam sebelum tidur dan coba meditasi ringan.</p>
+                        </div>
+                        <div class="sleep-tip-icon">
+                            🌙✨
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary btn-pill btn-large" onclick="saveSleepLog()">
+                    <i data-lucide="moon"></i>
+                    <span>Simpan Catatan Tidur</span>
+                </button>
             </div>
+
+            <!-- Minimal Footer -->
+            <footer class="app-footer">
+                <div class="footer-content">
+                    <div class="footer-brand">
+                        <span>🌿 TemanJiwa</span>
+                        <p>Sahabat Setia Merawat Kesehatan Mental Indonesia 🇮🇩</p>
+                    </div>
+                    <div class="footer-copy">
+                        &copy; 2026 TemanJiwa Indonesia. All rights reserved.
+                    </div>
+                </div>
+            </footer>
 
         </div>
 
         <!-- Notification Toast Drawer -->
-        <div id="toast-container" class="toast-container"></div>
-
-        <!-- Sidebar replaces Bottom Navigation -->
+        <div id="toast-container" class="toast-container" aria-live="polite"></div>
 
         <!-- Emergency Dialog overlay popup confirmation -->
         <div id="emergency-dialog" class="modal-overlay">
-            <div class="modal-dialog">
+            <div class="modal-dialog card-glass">
                 <h4 id="em-dialog-title" class="modal-title">Menghubungi Layanan ☎️</h4>
-                <p class="modal-body">Apakah kamu setuju dibukakan panggil darurat ke <strong
-                        id="em-dialog-name">SEJIWA</strong> di nomor <span id="em-dialog-num">119 Ext. 8</span>?</p>
+                <p class="modal-body">
+                    Apakah kamu setuju dibukakan panggilan darurat ke <strong id="em-dialog-name">SEJIWA</strong> di nomor <span id="em-dialog-num">119 Ext. 8</span>?
+                </p>
                 <div class="modal-actions">
-                    <button class="btn btn-outline" style="padding: 10px;"
-                        onclick="closeEmergencyDialog()">Batal</button>
-                    <button class="btn btn-danger" style="flex:1; padding: 10px;" onclick="makeEmergencyCall()">Hubungi
-                        Sekarang</button>
+                    <button class="btn btn-outline btn-pill" onclick="closeEmergencyDialog()">Batal</button>
+                    <button class="btn btn-danger btn-pill" style="flex:1;" onclick="makeEmergencyCall()">Hubungi Sekarang</button>
                 </div>
             </div>
         </div>
 
     </div>
-
-    <!-- Toggle Switch style tweaks for Darkmode -->
-    <style>
-        .switch input:checked+span {
-            background-color: var(--primary);
-        }
-
-        .switch input:checked+span .slider-round {
-            transform: translateX(20px);
-        }
-
-        /* Custom animation for dark mode switch icon move */
-    </style>
 
     <!-- JS Link -->
     <script src="app.js"></script>

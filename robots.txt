@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://innercalm.example.org/sitemap.xml
+Sitemap: https://temanjiwa.id/sitemap.xml

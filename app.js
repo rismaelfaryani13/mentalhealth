@@ -31,25 +31,78 @@ const DEFAULT_STATE = {
 // Global App State
 let appState = {};
 
-// Load State from LocalStorage
-function loadState() {
-    const saved = localStorage.getItem('innercalm_state');
-    if (saved) {
+// Database helper functions (JSON Database in LocalStorage)
+function getDB() {
+    const dbStr = localStorage.getItem('temanjiwa_db');
+    if (dbStr) {
         try {
-            appState = JSON.parse(saved);
-            // Ensure compatibility if saved state misses new fields
-            appState = { ...DEFAULT_STATE, ...appState };
+            return JSON.parse(dbStr);
         } catch (e) {
-            appState = JSON.parse(JSON.stringify(DEFAULT_STATE));
+            // fallback
+        }
+    }
+    
+    // Seed default DB
+    const seedDB = {
+        users: {
+            "risma@example.com": {
+                password: "password123",
+                state: JSON.parse(JSON.stringify(DEFAULT_STATE))
+            }
+        },
+        currentUserEmail: "risma@example.com"
+    };
+    seedDB.users["risma@example.com"].state.profile.name = "Risma Adinda";
+    seedDB.users["risma@example.com"].state.profile.email = "risma@example.com";
+    
+    // Migrate old local storage data if exists
+    const oldSaved = localStorage.getItem('temanjiwa_state') || localStorage.getItem('innercalm_state');
+    if (oldSaved) {
+        try {
+            const oldState = JSON.parse(oldSaved);
+            seedDB.users["risma@example.com"].state = { ...DEFAULT_STATE, ...oldState };
+            if (!seedDB.users["risma@example.com"].state.profile.email) {
+                seedDB.users["risma@example.com"].state.profile.email = "risma@example.com";
+            }
+        } catch (e) {}
+    }
+    
+    saveDB(seedDB);
+    return seedDB;
+}
+
+function saveDB(db) {
+    localStorage.setItem('temanjiwa_db', JSON.stringify(db));
+}
+
+// Load State from JSON Database
+function loadState() {
+    const db = getDB();
+    const email = db.currentUserEmail;
+    if (email && db.users[email]) {
+        appState = db.users[email].state;
+        appState = { ...DEFAULT_STATE, ...appState };
+        if (!appState.profile.email) {
+            appState.profile.email = email;
         }
     } else {
         appState = JSON.parse(JSON.stringify(DEFAULT_STATE));
     }
 }
 
-// Save State to LocalStorage
+// Save State to JSON Database
 function saveState() {
-    localStorage.setItem('innercalm_state', JSON.stringify(appState));
+    const db = getDB();
+    const email = db.currentUserEmail;
+    if (email) {
+        if (!db.users[email]) {
+            db.users[email] = { password: 'password123' };
+        }
+        db.users[email].state = appState;
+        saveDB(db);
+    } else {
+        localStorage.setItem('temanjiwa_temp_state', JSON.stringify(appState));
+    }
 }
 
 // Show Toast Alert
@@ -161,13 +214,18 @@ function navigateTo(screenId) {
     if (screenId === 'screen-profile') {
         renderProfileTab();
     }
+
+    if (window.lucide && typeof window.lucide.createIcons === 'function') {
+        window.lucide.createIcons();
+    }
 }
 
 function updateActiveNav(screenId) {
     const navItems = document.querySelectorAll('.nav-item');
     navItems.forEach(item => {
         item.classList.remove('active');
-        if (item.getAttribute('onclick').includes(screenId)) {
+        const onclickAttr = item.getAttribute('onclick') || '';
+        if (onclickAttr.includes(screenId)) {
             item.classList.add('active');
         }
     });
@@ -175,11 +233,8 @@ function updateActiveNav(screenId) {
 
 // Dynamic UI Renderers
 function updateGUI() {
-    // Splash/Onboarding routing logic
-    if (appState.profile.name === '') {
-        // user hasn't set up profile
-        // we show splash, then they proceed
-    }
+    // Apply Dark Mode class to body
+    document.body.classList.toggle('dark', !!appState.profile.isDarkMode);
 
     // Apply Theme Color changes by dynamically mutating CSS variables
     const root = document.documentElement;
@@ -187,18 +242,33 @@ function updateGUI() {
         root.style.setProperty('--hue', '262');
         root.style.setProperty('--sat', '80%');
         root.style.setProperty('--lightness', '60%');
+        root.style.setProperty('--soft-blue', '#C4B5FD');
+        root.style.setProperty('--accent-blue', '#8B5CF6');
+        root.style.setProperty('--primary-dark', '#7C3AED');
     } else {
-        // Default theme: blue (#A8C5FF)
+        // Default theme: soft blue
         root.style.setProperty('--hue', '220');
         root.style.setProperty('--sat', '100%');
         root.style.setProperty('--lightness', '83%');
+        root.style.setProperty('--soft-blue', '#8EC5FC');
+        root.style.setProperty('--accent-blue', '#60A5FA');
+        root.style.setProperty('--primary-dark', '#3B82F6');
     }
 
     // Header updates
     const nameLabel = document.getElementById('gui-welcome-name');
+    const greetingTime = document.getElementById('gui-greeting-time');
     if (nameLabel) {
         const name = appState.profile.name || 'User';
-        nameLabel.textContent = `${name.split(' ')[0]} 👋`;
+        nameLabel.textContent = `Halo, ${name.split(' ')[0]} 👋`;
+    }
+    if (greetingTime) {
+        const hours = new Date().getHours();
+        let greeting = 'Selamat Pagi';
+        if (hours >= 12 && hours < 15) greeting = 'Selamat Siang';
+        else if (hours >= 15 && hours < 18) greeting = 'Selamat Sore';
+        else if (hours >= 18 || hours < 5) greeting = 'Selamat Malam';
+        greetingTime.textContent = `${greeting} 🌤️`;
     }
 
     const avatarBadge = document.getElementById('gui-avatar-badge');
@@ -242,6 +312,33 @@ function updateGUI() {
         const glasses = Math.round(appState.tracker.waterLogged / 250);
         waterBadgeLabel.textContent = `${glasses}/8 gelas`;
     }
+
+    // Update dynamic statistics numbers
+    const statJournals = document.getElementById('gui-stat-journals-count');
+    if (statJournals) {
+        statJournals.textContent = `${appState.journals.length} kali`;
+    }
+    
+    const statHabits = document.getElementById('gui-stat-habits-count');
+    if (statHabits) {
+        const completedCount = appState.habits.filter(h => h.completed).length;
+        statHabits.textContent = `${completedCount} aktivitas`;
+    }
+    
+    // Update Average Mood Score and Label
+    const avgMood = calculateAverageMood();
+    const avgScoreEl = document.getElementById('gui-avg-mood-score');
+    if (avgScoreEl) {
+        avgScoreEl.textContent = avgMood.score;
+    }
+    const avgLabelEl = document.getElementById('gui-avg-mood-label');
+    if (avgLabelEl) {
+        avgLabelEl.textContent = avgMood.label;
+    }
+    
+    // Call chart renderers
+    renderWeeklyMoodChart();
+    renderSparklineChart();
 
     renderDashboardHabits();
 }
@@ -385,7 +482,7 @@ function startBreathing() {
     const btn = document.getElementById('breath-start-btn');
     const circleOuter = document.querySelector('.breath-circle-outer');
     const circleInner = document.querySelector('.breath-circle-inner');
-    const textLabel = document.getElementById('breath-text-inst');
+    const textLabel = document.getElementById('breath-inst');
     const countdown = document.getElementById('breath-seconds');
 
     if (breathState === 'running') {
@@ -488,7 +585,7 @@ function renderMHQuestion() {
 
     // Set active option if answered
     const valSelected = qAnswers[question.id];
-    const options = document.querySelectorAll('.quiz-opt-btn');
+    const options = document.querySelectorAll('#screen-mhcheck .quiz-opt-btn');
     options.forEach(opt => {
         opt.classList.remove('active');
         const optVal = parseInt(opt.getAttribute('data-value'));
@@ -520,7 +617,7 @@ function selectMHOption(val) {
     qAnswers[q.id] = val;
 
     // Set visual active state
-    const options = document.querySelectorAll('.quiz-opt-btn');
+    const options = document.querySelectorAll('#screen-mhcheck .quiz-opt-btn');
     options.forEach(opt => {
         opt.classList.remove('active');
         if (parseInt(opt.getAttribute('data-value')) === val) {
@@ -825,7 +922,24 @@ function saveSleepLog() {
     updateGUI();
 }
 
-// Journal Compose Actions
+// Journal Compose & Category Filter Actions
+let selectedJournalCategory = 'Semua';
+
+function filterJournalCategory(cat) {
+    selectedJournalCategory = cat;
+    const screen = document.getElementById('screen-journal');
+    if (screen) {
+        const pills = screen.querySelectorAll('.cat-pill');
+        pills.forEach(p => {
+            p.classList.remove('active');
+            if (p.textContent.trim() === cat) {
+                p.classList.add('active');
+            }
+        });
+    }
+    renderJournalHistory();
+}
+
 function renderJournalHistory() {
     const list = document.getElementById('journals-list');
     if (!list) return;
@@ -842,19 +956,24 @@ function renderJournalHistory() {
         const card = document.createElement('div');
         card.className = 'card card-glass journal-item';
         card.innerHTML = `
-            <div class="journal-header">
+            <div class="journal-header" style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
                 <div>
-                    <h4 class="journal-title">${j.title}</h4>
-                    <span class="journal-date">${dateStr}</span>
+                    <h4 class="journal-title" style="font-size:15px; font-weight:700;">${j.title}</h4>
+                    <span class="journal-date" style="font-size:11px; color:var(--text-sub);">${dateStr}</span>
                 </div>
-                <div>
-                    <span class="journal-mood-tag">${j.mood === 'happy' ? '😊' : j.mood === 'sad' ? '😔' : j.mood === 'tired' ? '😴' : '🧘'}</span>
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span class="journal-mood-tag" style="font-size:16px;">${j.mood === 'happy' ? '😊' : j.mood === 'sad' ? '😔' : j.mood === 'tired' ? '😴' : '🧘'}</span>
+                    <i data-lucide="more-horizontal" style="width:16px; color:var(--text-muted); cursor:pointer;"></i>
                 </div>
             </div>
-            <p style="font-size: 12px; color: var(--text-sub); line-height: 1.5; margin-bottom: 8px;">${j.text}</p>
+            <p style="font-size: 13px; color: var(--text-sub); line-height: 1.6; margin-bottom: 12px;">${j.text}</p>
         `;
         list.appendChild(card);
     });
+
+    if (window.lucide && typeof window.lucide.createIcons === 'function') {
+        window.lucide.createIcons();
+    }
 }
 
 function saveJournal() {
@@ -1040,6 +1159,15 @@ function renderMoodHistoryList() {
 function renderProfileTab() {
     document.getElementById('profile-name-input').value = appState.profile.name || '';
 
+    const profileNameDisp = document.getElementById('profile-name-display');
+    const profileEmailDisp = document.getElementById('profile-email-display');
+    if (profileNameDisp) {
+        profileNameDisp.textContent = appState.profile.name || 'User';
+    }
+    if (profileEmailDisp) {
+        profileEmailDisp.textContent = appState.profile.email || '';
+    }
+
     // Set theme picker
     const themeLav = document.getElementById('btn-col-lavender');
     const themeBlu = document.getElementById('btn-col-blue');
@@ -1055,6 +1183,21 @@ function renderProfileTab() {
 
     // Set toggle switch
     document.getElementById('toggle-dark-mode').checked = appState.profile.isDarkMode;
+}
+
+function editProfile() {
+    const currentName = appState.profile.name || 'User';
+    const newName = prompt('Masukkan nama baru Anda:', currentName);
+    if (newName !== null) {
+        const trimmed = newName.trim();
+        if (trimmed !== '') {
+            appState.profile.name = trimmed;
+            saveState();
+            showToast('Nama profil berhasil diperbarui!');
+            updateGUI();
+            renderProfileTab();
+        }
+    }
 }
 
 function saveProfileName() {
@@ -1084,7 +1227,16 @@ function toggleDarkModeSwitch() {
 
 function triggerUserDataReset() {
     if (confirm('Apakah kamu yakin ingin menghapus semua data? Penyetelan profil dan XP level akan dikembalikan ke awal.')) {
-        localStorage.removeItem('innercalm_state');
+        const db = getDB();
+        const email = db.currentUserEmail;
+        if (email) {
+            db.users[email].state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+            db.users[email].state.profile.name = email.split('@')[0];
+            db.users[email].state.profile.email = email;
+            saveDB(db);
+        } else {
+            localStorage.removeItem('temanjiwa_db');
+        }
         loadState();
         updateGUI();
         navigateTo('screen-splash');
@@ -1094,7 +1246,7 @@ function triggerUserDataReset() {
 
 // Auth credentials verification
 function verifyUserLogin() {
-    const emInput = document.getElementById('login-email').value.trim();
+    const emInput = document.getElementById('login-email').value.trim().toLowerCase();
     const pwInput = document.getElementById('login-pass').value;
 
     if (emInput === '' || pwInput === '') {
@@ -1102,12 +1254,15 @@ function verifyUserLogin() {
         return;
     }
 
-    // standard validation matching login_screen.dart defaults
-    if (emInput === 'risma@example.com' && pwInput === 'password123') {
-        appState.profile.name = 'Risma Adinda';
-        saveState();
+    const db = getDB();
+    const user = db.users[emInput];
+    if (user && user.password === pwInput) {
+        db.currentUserEmail = emInput;
+        saveDB(db);
+        
+        loadState();
         updateGUI();
-        showToast('Berhasil masuk! Selamat datang ke InnerCalm. ✨');
+        showToast(`Berhasil masuk! Selamat datang kembali, ${appState.profile.name || 'User'}. ✨`);
         navigateTo('screen-home');
     } else {
         showToast('Kredensial salah! Gunakan: risma@example.com / password123', 'danger');
@@ -1116,7 +1271,7 @@ function verifyUserLogin() {
 
 function verifyUserRegister() {
     const nameVal = document.getElementById('reg-name').value.trim();
-    const emVal = document.getElementById('reg-email').value.trim();
+    const emVal = document.getElementById('reg-email').value.trim().toLowerCase();
     const pwVal = document.getElementById('reg-pass').value;
 
     if (nameVal === '' || emVal === '' || pwVal === '') {
@@ -1124,19 +1279,175 @@ function verifyUserRegister() {
         return;
     }
 
-    appState.profile.name = nameVal;
-    saveState();
+    const db = getDB();
+    if (db.users[emVal]) {
+        showToast('Email sudah terdaftar! Silakan gunakan email lain.', 'danger');
+        return;
+    }
+
+    // Create new state for this user
+    const newUserState = JSON.parse(JSON.stringify(DEFAULT_STATE));
+    newUserState.profile.name = nameVal;
+    newUserState.profile.email = emVal;
+
+    db.users[emVal] = {
+        password: pwVal,
+        state: newUserState
+    };
+    db.currentUserEmail = emVal;
+    saveDB(db);
+
+    loadState();
     updateGUI();
+    
+    // Clear registration fields
+    document.getElementById('reg-name').value = '';
+    document.getElementById('reg-email').value = '';
+    document.getElementById('reg-pass').value = '';
+
     showToast(`Akun berhasil dibuat! Halo ${nameVal}. ✨`);
     navigateTo('screen-home');
+}
+
+function logoutUser() {
+    const db = getDB();
+    db.currentUserEmail = "";
+    saveDB(db);
+    
+    // Load empty state
+    loadState();
+    
+    // Reset login inputs
+    document.getElementById('login-email').value = 'risma@example.com';
+    document.getElementById('login-pass').value = 'password123';
+    
+    showToast('Berhasil keluar dari akun.');
+    navigateTo('screen-login');
+}
+
+// Chart mapping helper functions
+function getMoodValue(moodKey) {
+    switch(moodKey) {
+        case 'sangat-bahagia': return 6;
+        case 'bahagia': return 5;
+        case 'biasa':
+        case 'lainnya': return 4;
+        case 'lelah': return 3;
+        case 'cemas':
+        case 'marah':
+        case 'stress': return 2;
+        case 'sedih': return 1;
+        default: return 4;
+    }
+}
+
+function renderWeeklyMoodChart() {
+    const fillPathEl = document.getElementById('weekly-chart-fill');
+    const linePathEl = document.getElementById('weekly-chart-line');
+    const pointsGroupEl = document.getElementById('weekly-chart-points');
+    
+    if (!fillPathEl || !linePathEl || !pointsGroupEl) return;
+    
+    const history = appState.moodHistory || [];
+    
+    // Get last 7 days of mood (chronologically left to right)
+    const last7 = [];
+    for (let i = 0; i < 7; i++) {
+        if (i < history.length) {
+            last7.push(history[i]);
+        } else {
+            last7.push({ mood: 'biasa' });
+        }
+    }
+    last7.reverse(); // oldest to newest
+    
+    // Map to coordinates (X: 10 to 310, Y: value 6 -> 20, value 1 -> 100)
+    const points = last7.map((entry, index) => {
+        const x = 10 + index * 50;
+        const val = getMoodValue(entry.mood);
+        const y = 100 - (val - 1) * 16;
+        return { x, y, emoji: entry.emoji || '😐', mood: entry.mood };
+    });
+    
+    const linePathD = "M " + points.map(p => `${p.x},${p.y}`).join(" L ");
+    const fillPathD = `M ${points[0].x},${points[0].y} ` + points.map(p => `L ${p.x},${p.y}`).join(" ") + ` L 310,110 L 10,110 Z`;
+    
+    linePathEl.setAttribute('d', linePathD);
+    fillPathEl.setAttribute('d', fillPathD);
+    
+    pointsGroupEl.innerHTML = '';
+    points.forEach((p, idx) => {
+        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circle.setAttribute('cx', p.x);
+        circle.setAttribute('cy', p.y);
+        circle.setAttribute('r', idx === 6 ? '6' : '5');
+        circle.setAttribute('class', 'chart-point' + (idx === 6 ? ' active-point' : ''));
+        
+        const title = document.createElementNS("http://www.w3.org/2000/svg", "title");
+        title.textContent = `${p.mood} (${p.emoji})`;
+        circle.appendChild(title);
+        
+        pointsGroupEl.appendChild(circle);
+    });
+}
+
+function renderSparklineChart() {
+    const container = document.getElementById('sparkline-bar-group');
+    if (!container) return;
+    
+    const history = appState.moodHistory || [];
+    const last7 = [];
+    for (let i = 0; i < 7; i++) {
+        if (i < history.length) {
+            last7.push(history[i]);
+        } else {
+            last7.push({ mood: 'biasa' });
+        }
+    }
+    last7.reverse();
+    
+    container.innerHTML = '';
+    last7.forEach((entry, index) => {
+        const val = getMoodValue(entry.mood);
+        const heightPct = Math.round((val / 6) * 100);
+        const bar = document.createElement('div');
+        bar.className = 'sparkbar-item' + (index === 6 ? ' active-spark' : '');
+        bar.style.height = `${heightPct}%`;
+        bar.title = `${entry.mood} (${val}/6)`;
+        container.appendChild(bar);
+    });
+}
+
+function calculateAverageMood() {
+    const history = appState.moodHistory || [];
+    if (history.length === 0) {
+        return { score: "4.0", label: "(Biasa)" };
+    }
+    
+    let sum = 0;
+    history.forEach(entry => {
+        sum += getMoodValue(entry.mood);
+    });
+    
+    const avg = sum / history.length;
+    const score = avg.toFixed(1);
+    
+    let label = '(Biasa)';
+    if (avg >= 5.0) label = '(Sangat Baik)';
+    else if (avg >= 4.0) label = '(Baik)';
+    else if (avg >= 3.0) label = '(Cukup)';
+    else if (avg >= 2.0) label = '(Kurang)';
+    else label = '(Buruk)';
+    
+    return { score, label };
 }
 
 // Onboarding sliders page cycles
 let currentOnboardIdx = 0;
 const ONBOARDING_SLIDES = [
-    { title: "Welcome!", desc: "A small step today for a better tomorrow.", emoji: "❤️" },
-    { title: "Monitor Kesehatan Harian", desc: "Catat dan kendalikan tingkat suasana hati (mood), waktu tidur, hingga hidrasi harianmu secara interaktif.", emoji: "📊" },
-    { title: "Fitur Gamifikasi Seru", desc: "Meningkatkan status mentalmu sembari menaikkan Level 'Inner Hero' dengan menyelesaikan kebiasaan baik harian.", emoji: "🌟" }
+    { title: "Selamat Datang di TemanJiwa", desc: "Sahabat setia yang siap mendampingi perjalanan kesehatan jiwa & ketenangan pikiranmu.", emoji: "❤️" },
+    { title: "Monitor Kesehatan Jiwa Harian", desc: "Catat mood, refleksi harian, hidrasi air, dan kualitas tidur tanpa rasa cemas.", emoji: "📊" },
+    { title: "Latihan Pernapasan Terpandu", desc: "Redakan kecemasan dan stres kapan pun kamu membutuhkan ruang aman.", emoji: "🌟" }
 ];
 
 function nextOnboardSlide() {
@@ -1210,14 +1521,43 @@ window.addEventListener('DOMContentLoaded', () => {
     // Start with splash screen
     navigateTo('screen-splash');
 
-    // Auto transition splash to onboarding / home
-    setTimeout(() => {
-        if (appState.profile.name) {
-            navigateTo('screen-home');
-        } else {
-            currentOnboardIdx = 0;
-            updateOnboardSlide();
-            navigateTo('screen-onboarding');
+    // Dynamic loading progress animation
+    const progressEl = document.getElementById('splash-loader-progress');
+    const pctEl = document.getElementById('splash-loader-pct');
+    const statusEl = document.getElementById('splash-loader-status');
+
+    let currentPct = 0;
+    const loadingInterval = setInterval(() => {
+        currentPct += Math.floor(Math.random() * 14) + 6;
+        if (currentPct >= 100) {
+            currentPct = 100;
+            clearInterval(loadingInterval);
         }
-    }, 2200);
+
+        if (progressEl) progressEl.style.width = `${currentPct}%`;
+        if (pctEl) pctEl.textContent = `${currentPct}%`;
+
+        if (statusEl) {
+            if (currentPct < 35) {
+                statusEl.textContent = 'Memuat ruang ketenangan...';
+            } else if (currentPct < 75) {
+                statusEl.textContent = 'Menyelaraskan pernapasan & mood...';
+            } else {
+                statusEl.textContent = 'Selamat datang di TemanJiwa ✨';
+            }
+        }
+
+        if (currentPct === 100) {
+            setTimeout(() => {
+                const db = getDB();
+                if (db.currentUserEmail && appState.profile.name) {
+                    navigateTo('screen-home');
+                } else {
+                    currentOnboardIdx = 0;
+                    updateOnboardSlide();
+                    navigateTo('screen-onboarding');
+                }
+            }, 350);
+        }
+    }, 110);
 });
