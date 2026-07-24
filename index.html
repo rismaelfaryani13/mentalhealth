@@ -715,6 +715,11 @@
                 <div class="max-w-lg mx-auto bg-white p-6 rounded-3xl border border-[#E9EEF7] shadow-lg">
                     <h3 class="text-base font-bold text-[#1E293B] mb-4">Riwayat Catatan Mood</h3>
                     <div class="space-y-3">
+                        <template x-if="$store.app.moodHistory.length === 0">
+                            <div class="text-center py-8 text-[#64748B] text-xs">
+                                Belum ada catatan mood yang disimpan.
+                            </div>
+                        </template>
                         <template x-for="item in $store.app.moodHistory" :key="item.id">
                             <div class="p-4 rounded-2xl bg-[#F8FAFD] border border-[#E9EEF7] flex items-start gap-3.5">
                                 <span class="text-3xl shrink-0" x-text="item.emoji"></span>
@@ -764,6 +769,13 @@
 
                 <!-- Journal Entries List -->
                 <div class="space-y-4">
+                    <template x-if="$store.app.journals.length === 0">
+                        <div class="text-center py-12 px-4 bg-white rounded-3xl border border-[#E9EEF7]">
+                            <span class="text-4xl">✍️</span>
+                            <h3 class="text-lg font-bold text-[#1E293B] mt-3">Belum ada jurnal ditulis</h3>
+                            <p class="text-xs text-[#64748B] mt-1">Luapkan pikiran dan perasaanmu hari ini ke dalam tulisan.</p>
+                        </div>
+                    </template>
                     <template x-for="j in $store.app.journals" :key="j.id">
                         <div class="p-6 rounded-3xl bg-white border border-[#E9EEF7] shadow-lg card-hover">
                             <div class="flex justify-between items-start mb-3">

@@ -16,7 +16,7 @@ document.addEventListener('alpine:init', () => {
         loadingMessage: 'Menyiapkan ruang ketenangan untuk jiwamu',
 
         // Auth State
-        isLoggedIn: true,
+        isLoggedIn: false,
         user: {
             name: 'Risma Elfaryani',
             email: 'risma@temanjiwa.id',
@@ -422,6 +422,8 @@ document.addEventListener('alpine:init', () => {
         },
 
         resetStateToDefault(userObj) {
+            const isDemoUser = !userObj || userObj.email.toLowerCase() === 'risma@temanjiwa.id';
+
             this.user = userObj || {
                 name: 'Risma Elfaryani',
                 email: 'risma@temanjiwa.id',
@@ -432,39 +434,74 @@ document.addEventListener('alpine:init', () => {
                 xp: 240,
                 joinedDate: 'Mei 2026'
             };
-            this.moodHistory = [
-                { id: 1, mood: 'very-happy', label: 'Sangat Bahagia', emoji: '😊', intensity: 9, note: 'Menyelesaikan proyek tepat waktu & minum teh sore', date: 'Hari ini, 14:30', dayName: 'Kam' },
-                { id: 2, mood: 'happy', label: 'Bahagia', emoji: '🙂', intensity: 7, note: 'Jalan-jalan di taman kota bersama sahabat', date: 'Kemarin, 19:15', dayName: 'Rabu' },
-                { id: 3, mood: 'neutral', label: 'Biasa Saja', emoji: '😐', intensity: 5, note: 'Beban kerja standar, istirahat cukup', date: '21 Jul, 20:00', dayName: 'Sel' },
-                { id: 4, mood: 'stressed', label: 'Stres / Cemas', emoji: '😢', intensity: 4, note: 'Deadline rapat pagi sempat membuat deg-degan', date: '20 Jul, 11:00', dayName: 'Sen' },
-                { id: 5, mood: 'happy', label: 'Bahagia', emoji: '🙂', intensity: 8, note: 'Tidur nyenyak 8 jam!', date: '19 Jul, 08:30', dayName: 'Min' },
-                { id: 6, mood: 'very-happy', label: 'Sangat Bahagia', emoji: '😊', intensity: 9, note: 'Akhir pekan yang menenangkan', date: '18 Jul, 16:00', dayName: 'Sab' }
-            ];
-            this.journals = [
-                { id: 1, title: 'Menemukan Ketenangan Dalam Hal Kecil', content: 'Hari ini saya mencoba berhenti sejenak dari media sosial selama 3 jam. Memfokuskan mata pada dedaunan hijau di luar jendela dan menyeduh teh chamomillle. Rasanya pikiran yang tadinya bising perlahan menjadi jernih.', date: '23 Juli 2026', mood: '😊 Bahagia', tag: 'Refleksi' },
-                { id: 2, title: 'Catatan Mempraktikkan Teknik Grounding 5-4-3-2-1', content: 'Saat cemas melanda sehabis presentasi, saya mempraktikkan grounding 5-4-3-2-1. Menyebutkan 5 benda di sekitar dan meraba tekstur meja kayu. Efektif sekali mengurangi detak jantung kencang.', date: '21 Juli 2026', mood: '😐 Biasa', tag: 'Mindfulness' },
-                { id: 3, title: 'Rasa Syukur Hari Minggu', content: 'Sangat bersyukur keluarga dalam keadaan sehat. Kami makan siang bersama dan tertawa melihat foto-foto lama.', date: '19 Juli 2026', mood: '😊 Bahagia', tag: 'Rasa Syukur' }
-            ];
-            this.habits = [
-                { id: 1, name: 'Meditasi Pernapasan 5 Menit', icon: 'wind', completed: true, streak: 5, category: 'Mindfulness' },
-                { id: 2, name: 'Minum 2 Liter Air Bersih', icon: 'droplet', completed: true, streak: 12, category: 'Kesehatan' },
-                { id: 3, name: 'Tulis 1 Hal Yang Disyukuri', icon: 'book-open', completed: false, streak: 4, category: 'Jurnal' },
-                { id: 4, name: 'Jalan Kaki Ringan 15 Menit', icon: 'footprints', completed: false, streak: 2, category: 'Fisik' },
-                { id: 5, name: 'Tidur Sebelum Jam 23:00', icon: 'moon', completed: true, streak: 7, category: 'Istirahat' }
-            ];
-            this.waterLogged = 1250;
-            this.waterTarget = 2000;
-            this.sleepInput = { bedtime: '22:30', waketime: '06:30', quality: 4 };
-            this.sleepToday = { duration: 8.0, quality: 4, bedtime: '22:30', waketime: '06:30' };
-            this.sleepHistory = [
-                { day: 'Sen', duration: 7.2, quality: 4 },
-                { day: 'Sel', duration: 6.8, quality: 3 },
-                { day: 'Rab', duration: 8.0, quality: 5 },
-                { day: 'Kam', duration: 7.5, quality: 4 },
-                { day: 'Jum', duration: 8.2, quality: 5 },
-                { day: 'Sab', duration: 8.5, quality: 5 },
-                { day: 'Min', duration: 8.0, quality: 4 }
-            ];
+
+            if (isDemoUser) {
+                this.moodHistory = [
+                    { id: 1, mood: 'very-happy', label: 'Sangat Bahagia', emoji: '😊', intensity: 9, note: 'Menyelesaikan proyek tepat waktu & minum teh sore', date: 'Hari ini, 14:30', dayName: 'Kam' },
+                    { id: 2, mood: 'happy', label: 'Bahagia', emoji: '🙂', intensity: 7, note: 'Jalan-jalan di taman kota bersama sahabat', date: 'Kemarin, 19:15', dayName: 'Rabu' },
+                    { id: 3, mood: 'neutral', label: 'Biasa Saja', emoji: '😐', intensity: 5, note: 'Beban kerja standar, istirahat cukup', date: '21 Jul, 20:00', dayName: 'Sel' },
+                    { id: 4, mood: 'stressed', label: 'Stres / Cemas', emoji: '😢', intensity: 4, note: 'Deadline rapat pagi sempat membuat deg-degan', date: '20 Jul, 11:00', dayName: 'Sen' },
+                    { id: 5, mood: 'happy', label: 'Bahagia', emoji: '🙂', intensity: 8, note: 'Tidur nyenyak 8 jam!', date: '19 Jul, 08:30', dayName: 'Min' },
+                    { id: 6, mood: 'very-happy', label: 'Sangat Bahagia', emoji: '😊', intensity: 9, note: 'Akhir pekan yang menenangkan', date: '18 Jul, 16:00', dayName: 'Sab' }
+                ];
+                this.journals = [
+                    { id: 1, title: 'Menemukan Ketenangan Dalam Hal Kecil', content: 'Hari ini saya mencoba berhenti sejenak dari media sosial selama 3 jam. Memfokuskan mata pada dedaunan hijau di luar jendela dan menyeduh teh chamomillle. Rasanya pikiran yang tadinya bising perlahan menjadi jernih.', date: '23 Juli 2026', mood: '😊 Bahagia', tag: 'Refleksi' },
+                    { id: 2, title: 'Catatan Mempraktikkan Teknik Grounding 5-4-3-2-1', content: 'Saat cemas melanda sehabis presentasi, saya mempraktikkan grounding 5-4-3-2-1. Menyebutkan 5 benda di sekitar dan meraba tekstur meja kayu. Efektif sekali mengurangi detak jantung kencang.', date: '21 Juli 2026', mood: '😐 Biasa', tag: 'Mindfulness' },
+                    { id: 3, title: 'Rasa Syukur Hari Minggu', content: 'Sangat bersyukur keluarga dalam keadaan sehat. Kami makan siang bersama dan tertawa melihat foto-foto lama.', date: '19 Juli 2026', mood: '😊 Bahagia', tag: 'Rasa Syukur' }
+                ];
+                this.habits = [
+                    { id: 1, name: 'Meditasi Pernapasan 5 Menit', icon: 'wind', completed: true, streak: 5, category: 'Mindfulness' },
+                    { id: 2, name: 'Minum 2 Liter Air Bersih', icon: 'droplet', completed: true, streak: 12, category: 'Kesehatan' },
+                    { id: 3, name: 'Tulis 1 Hal Yang Disyukuri', icon: 'book-open', completed: false, streak: 4, category: 'Jurnal' },
+                    { id: 4, name: 'Jalan Kaki Ringan 15 Menit', icon: 'footprints', completed: false, streak: 2, category: 'Fisik' },
+                    { id: 5, name: 'Tidur Sebelum Jam 23:00', icon: 'moon', completed: true, streak: 7, category: 'Istirahat' }
+                ];
+                this.waterLogged = 1250;
+                this.waterTarget = 2000;
+                this.sleepInput = { bedtime: '22:30', waketime: '06:30', quality: 4 };
+                this.sleepToday = { duration: 8.0, quality: 4, bedtime: '22:30', waketime: '06:30' };
+                this.sleepHistory = [
+                    { day: 'Sen', duration: 7.2, quality: 4 },
+                    { day: 'Sel', duration: 6.8, quality: 3 },
+                    { day: 'Rab', duration: 8.0, quality: 5 },
+                    { day: 'Kam', duration: 7.5, quality: 4 },
+                    { day: 'Jum', duration: 8.2, quality: 5 },
+                    { day: 'Sab', duration: 8.5, quality: 5 },
+                    { day: 'Min', duration: 8.0, quality: 4 }
+                ];
+                this.notifications = [
+                    { id: 1, title: 'Hebat! Streak 5 Hari Meditasi', message: 'Kamu telah konsisten merawat pikiran selama 5 hari berturut-turut.', time: '10 menit lalu', read: false, icon: 'award' },
+                    { id: 2, title: 'Pengingat Minum Air', message: 'Waktunya minum 250ml air untuk tetap terhidrasi.', time: '1 jam lalu', read: false, icon: 'droplet' },
+                    { id: 3, title: 'Kutipan Bijak Hari Ini', message: '"Ketenangan tidak ditemukan dengan melarikan diri, tetapi dengan berdamai."', time: '3 jam lalu', read: true, icon: 'sparkles' }
+                ];
+            } else {
+                this.moodHistory = [];
+                this.journals = [];
+                this.habits = [
+                    { id: 1, name: 'Meditasi Pernapasan 5 Menit', icon: 'wind', completed: false, streak: 0, category: 'Mindfulness' },
+                    { id: 2, name: 'Minum 2 Liter Air Bersih', icon: 'droplet', completed: false, streak: 0, category: 'Kesehatan' },
+                    { id: 3, name: 'Tulis 1 Hal Yang Disyukuri', icon: 'book-open', completed: false, streak: 0, category: 'Jurnal' },
+                    { id: 4, name: 'Jalan Kaki Ringan 15 Menit', icon: 'footprints', completed: false, streak: 0, category: 'Fisik' },
+                    { id: 5, name: 'Tidur Sebelum Jam 23:00', icon: 'moon', completed: false, streak: 0, category: 'Istirahat' }
+                ];
+                this.waterLogged = 0;
+                this.waterTarget = 2000;
+                this.sleepInput = { bedtime: '22:00', waketime: '06:00', quality: 3 };
+                this.sleepToday = { duration: 0.0, quality: 0, bedtime: '--:--', waketime: '--:--' };
+                this.sleepHistory = [
+                    { day: 'Sen', duration: 0, quality: 0 },
+                    { day: 'Sel', duration: 0, quality: 0 },
+                    { day: 'Rab', duration: 0, quality: 0 },
+                    { day: 'Kam', duration: 0, quality: 0 },
+                    { day: 'Jum', duration: 0, quality: 0 },
+                    { day: 'Sab', duration: 0, quality: 0 },
+                    { day: 'Min', duration: 0, quality: 0 }
+                ];
+                this.notifications = [
+                    { id: 1, title: 'Selamat Datang di TemanJiwa! 🌿', message: 'Mulai petualangan ketenangan jiwamu dengan mencatat mood, menulis jurnal, atau bernapas lega.', time: 'Baru saja', read: false, icon: 'sparkles' }
+                ];
+            }
+
             this.breathing = {
                 active: false,
                 phase: 'Siap',
@@ -486,11 +523,6 @@ document.addEventListener('alpine:init', () => {
                 { id: 2, title: 'Minum Air Segar', time: '15:30', type: 'Hidrasi', enabled: true },
                 { id: 3, title: 'Persiapan Tidur & Meditasi', time: '21:30', type: 'Self Care', enabled: true }
             ];
-            this.notifications = [
-                { id: 1, title: 'Hebat! Streak 5 Hari Meditasi', message: 'Kamu telah konsisten merawat pikiran selama 5 hari berturut-turut.', time: '10 menit lalu', read: false, icon: 'award' },
-                { id: 2, title: 'Pengingat Minum Air', message: 'Waktunya minum 250ml air untuk tetap terhidrasi.', time: '1 jam lalu', read: false, icon: 'droplet' },
-                { id: 3, title: 'Kutipan Bijak Hari Ini', message: '"Ketenangan tidak ditemukan dengan melarikan diri, tetapi dengan berdamai."', time: '3 jam lalu', read: true, icon: 'sparkles' }
-            ];
             this.aiChat = {
                 userMessage: '',
                 isTyping: false,
@@ -498,7 +530,7 @@ document.addEventListener('alpine:init', () => {
                     {
                         id: 1,
                         sender: 'ai',
-                        text: 'Halo! Saya TemanJiwa AI Companion 🌿. Saya di sini untuk mendengarkan tanpa penghakiman. Apa yang sedang kamu rasakan atau pikirkan hari ini?',
+                        text: `Halo ${this.user.name}! Saya TemanJiwa AI Companion 🌿. Saya di sini untuk mendengarkan tanpa penghakiman. Apa yang sedang kamu rasakan atau pikirkan hari ini?`,
                         time: 'Baru saja'
                     }
                 ]
@@ -781,10 +813,6 @@ Pesan Curhat Pengguna: ${promptText}`;
 
         loadFromStorage() {
             let activeEmail = localStorage.getItem('temanjiwa_active_email');
-
-            if (!activeEmail && this.user && this.user.email) {
-                activeEmail = this.user.email.toLowerCase();
-            }
 
             if (activeEmail) {
                 const saved = localStorage.getItem(`temanjiwa_app_data_${activeEmail}`);

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'innercalm-v3';
+const CACHE_NAME = 'innercalm-v4';
 const ASSETS = [
     './index.html',
     './style.css',
