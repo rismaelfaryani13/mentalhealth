@@ -1,5 +1,7 @@
 /* TemanJiwa - Alpine.js State Management & Business Logic */
 
+let meditationAudio = null;
+
 document.addEventListener('alpine:init', () => {
     Alpine.store('app', {
         // Navigation & UI State
@@ -703,6 +705,16 @@ Pesan Curhat Pengguna: ${promptText}`;
 
         // Navigation Helper
         navigateTo(screen) {
+            // Stop other running exercises/audio when leaving their screen
+            if (screen !== 'meditation') {
+                this.stopMeditation();
+            }
+            if (screen !== 'breathing') {
+                if (this.breathing.active) {
+                    this.stopBreathing();
+                }
+            }
+
             this.previousScreen = this.currentScreen;
             this.currentScreen = screen;
 
@@ -1003,14 +1015,26 @@ Pesan Curhat Pengguna: ${promptText}`;
             if (this.meditation.isPlaying) {
                 this.meditation.isPlaying = false;
                 if (this.meditation.timer) clearInterval(this.meditation.timer);
+                if (meditationAudio) {
+                    meditationAudio.pause();
+                }
             } else {
                 this.meditation.isPlaying = true;
+                if (!meditationAudio) {
+                    meditationAudio = new Audio('https://www.gstatic.com/voice_delight/sounds/long/rain.mp3');
+                    meditationAudio.loop = true;
+                }
+                meditationAudio.play().catch(e => console.error("Audio playback error:", e));
                 this.meditation.timer = setInterval(() => {
                     if (this.meditation.timeLeft > 0) {
                         this.meditation.timeLeft -= 1;
                     } else {
                         this.meditation.isPlaying = false;
                         clearInterval(this.meditation.timer);
+                        if (meditationAudio) {
+                            meditationAudio.pause();
+                            meditationAudio.currentTime = 0;
+                        }
                         this.user.xp += 30;
                         this.saveToStorage();
                         this.showToast('Meditasi selesai! Nikmati hari dengan tenang. (+30 XP)');
@@ -1019,11 +1043,23 @@ Pesan Curhat Pengguna: ${promptText}`;
             }
         },
 
+        stopMeditation() {
+            this.meditation.isPlaying = false;
+            if (this.meditation.timer) clearInterval(this.meditation.timer);
+            if (meditationAudio) {
+                meditationAudio.pause();
+            }
+        },
+
         resetMeditation(seconds = 300) {
             if (this.meditation.timer) clearInterval(this.meditation.timer);
             this.meditation.isPlaying = false;
             this.meditation.totalTime = seconds;
             this.meditation.timeLeft = seconds;
+            if (meditationAudio) {
+                meditationAudio.pause();
+                meditationAudio.currentTime = 0;
+            }
         },
 
         formatTime(seconds) {
