@@ -1,1563 +1,1219 @@
-// Initial Default State
-const DEFAULT_STATE = {
-    profile: {
-        name: '',
-        avatar: '🌸',
-        isDarkMode: false,
-        theme: 'blue',
-        level: 1,
-        xp: 35
-    },
-    tracker: {
-        waterLogged: 500,
+/* TemanJiwa - Alpine.js State Management & Business Logic */
+
+document.addEventListener('alpine:init', () => {
+    Alpine.store('app', {
+        // Navigation & UI State
+        currentScreen: 'splash',
+        previousScreen: 'dashboard',
+        activeNav: 'dashboard',
+        showModal: null, // 'addJournal', 'addHabit', 'logMood', 'addReminder', etc.
+        toastMessage: '',
+        showToastFlag: false,
+        isLoading: false,
+        loadingTitle: 'Memuat TemanJiwa...',
+        loadingMessage: 'Menyiapkan ruang ketenangan untuk jiwamu',
+
+        // Auth State
+        isLoggedIn: true,
+        user: {
+            name: 'Risma Elfaryani',
+            email: 'risma@temanjiwa.id',
+            avatar: '🌿',
+            bio: 'Menemukan kedamaian di setiap hela napas.',
+            coverColor: '#A8C5FF',
+            level: 3,
+            xp: 240,
+            joinedDate: 'Mei 2026'
+        },
+        profileEdit: {
+            name: '',
+            email: '',
+            avatar: '🌿',
+            bio: '',
+            coverColor: '#A8C5FF'
+        },
+        registerInput: {
+            name: '',
+            email: '',
+            password: ''
+        },
+        loginInput: {
+            name: '',
+            email: '',
+            password: ''
+        },
+
+        // Mood State
+        selectedMood: 'very-happy',
+        moodIntensity: 8,
+        moodNote: '',
+        moodHistory: [
+            { id: 1, mood: 'very-happy', label: 'Sangat Bahagia', emoji: '😊', intensity: 9, note: 'Menyelesaikan proyek tepat waktu & minum teh sore', date: 'Hari ini, 14:30', dayName: 'Kam' },
+            { id: 2, mood: 'happy', label: 'Bahagia', emoji: '🙂', intensity: 7, note: 'Jalan-jalan di taman kota bersama sahabat', date: 'Kemarin, 19:15', dayName: 'Rabu' },
+            { id: 3, mood: 'neutral', label: 'Biasa Saja', emoji: '😐', intensity: 5, note: 'Beban kerja standar, istirahat cukup', date: '21 Jul, 20:00', dayName: 'Sel' },
+            { id: 4, mood: 'stressed', label: 'Stres / Cemas', emoji: '😢', intensity: 4, note: 'Deadline rapat pagi sempat membuat deg-degan', date: '20 Jul, 11:00', dayName: 'Sen' },
+            { id: 5, mood: 'happy', label: 'Bahagia', emoji: '🙂', intensity: 8, note: 'Tidur nyenyak 8 jam!', date: '19 Jul, 08:30', dayName: 'Min' },
+            { id: 6, mood: 'very-happy', label: 'Sangat Bahagia', emoji: '😊', intensity: 9, note: 'Akhir pekan yang menenangkan', date: '18 Jul, 16:00', dayName: 'Sab' }
+        ],
+
+        // Journal State
+        journalSearch: '',
+        selectedJournalTag: 'semua',
+        newJournal: { title: '', content: '', mood: '😊 Bahagia', tag: 'Refleksi' },
+        journals: [
+            { id: 1, title: 'Menemukan Ketenangan Dalam Hal Kecil', content: 'Hari ini saya mencoba berhenti sejenak dari media sosial selama 3 jam. Memfokuskan mata pada dedaunan hijau di luar jendela dan menyeduh teh chamomillle. Rasanya pikiran yang tadinya bising perlahan menjadi jernih.', date: '23 Juli 2026', mood: '😊 Bahagia', tag: 'Refleksi' },
+            { id: 2, title: 'Catatan Mempraktikkan Teknik Grounding 5-4-3-2-1', content: 'Saat cemas melanda sehabis presentasi, saya mempraktikkan grounding 5-4-3-2-1. Menyebutkan 5 benda di sekitar dan meraba tekstur meja kayu. Efektif sekali mengurangi detak jantung kencang.', date: '21 Juli 2026', mood: '😐 Biasa', tag: 'Mindfulness' },
+            { id: 3, title: 'Rasa Syukur Hari Minggu', content: 'Sangat bersyukur keluarga dalam keadaan sehat. Kami makan siang bersama dan tertawa melihat foto-foto lama.', date: '19 Juli 2026', mood: '😊 Bahagia', tag: 'Rasa Syukur' }
+        ],
+
+        // Self Care State
+        habits: [
+            { id: 1, name: 'Meditasi Pernapasan 5 Menit', icon: 'wind', completed: true, streak: 5, category: 'Mindfulness' },
+            { id: 2, name: 'Minum 2 Liter Air Bersih', icon: 'droplet', completed: true, streak: 12, category: 'Kesehatan' },
+            { id: 3, name: 'Tulis 1 Hal Yang Disyukuri', icon: 'book-open', completed: false, streak: 4, category: 'Jurnal' },
+            { id: 4, name: 'Jalan Kaki Ringan 15 Menit', icon: 'footprints', completed: false, streak: 2, category: 'Fisik' },
+            { id: 5, name: 'Tidur Sebelum Jam 23:00', icon: 'moon', completed: true, streak: 7, category: 'Istirahat' }
+        ],
+
+        // Water Tracker State
+        waterLogged: 1250,
         waterTarget: 2000,
-        sleepToday: { duration: 7, quality: 4 }
-    },
-    habits: [
-        { id: 'h1', name: 'Meditasi 5 Menit', completed: false },
-        { id: 'h2', name: 'Minum 2L Air', completed: false },
-        { id: 'h3', name: 'Jurnal Refleksi', completed: false }
-    ],
-    moodHistory: [
-        { id: 'm1', mood: 'bahagia', emoji: '😊', intensity: 7, note: 'Memulai hari dengan segar', date: 'Kemarin' },
-        { id: 'm2', mood: 'biasa', emoji: '😐', intensity: 5, note: 'Beban kerja biasa', date: 'Hari ini' }
-    ],
-    journals: [
-        { id: 'j1', title: 'Belajar mindfulness', text: 'Hari ini saya mencoba berhenti sejenak dari media sosial dan memfokuskan diri pada napas. Ternyata, hal kecil ini membuat perasaan saya jauh lebih tenang dan fokus.', mood: 'mindfulness', date: '21 Juli 2026' }
-    ],
-    mhChecks: []
-};
 
-// Global App State
-let appState = {};
+        // Sleep Tracker State
+        sleepInput: { bedtime: '22:30', waketime: '06:30', quality: 4 },
+        sleepToday: { duration: 8.0, quality: 4, bedtime: '22:30', waketime: '06:30' },
+        sleepHistory: [
+            { day: 'Sen', duration: 7.2, quality: 4 },
+            { day: 'Sel', duration: 6.8, quality: 3 },
+            { day: 'Rab', duration: 8.0, quality: 5 },
+            { day: 'Kam', duration: 7.5, quality: 4 },
+            { day: 'Jum', duration: 8.2, quality: 5 },
+            { day: 'Sab', duration: 8.5, quality: 5 },
+            { day: 'Min', duration: 8.0, quality: 4 }
+        ],
 
-// Database helper functions (JSON Database in LocalStorage)
-function getDB() {
-    const dbStr = localStorage.getItem('temanjiwa_db');
-    if (dbStr) {
-        try {
-            return JSON.parse(dbStr);
-        } catch (e) {
-            // fallback
-        }
-    }
-    
-    // Seed default DB
-    const seedDB = {
-        users: {
-            "risma@example.com": {
-                password: "password123",
-                state: JSON.parse(JSON.stringify(DEFAULT_STATE))
+        // Breathing Exercise State
+        breathing: {
+            active: false,
+            phase: 'Siap', // 'Tarik Napas', 'Tahan', 'Hembuskan', 'Rest'
+            secondsLeft: 4,
+            currentCycle: 0,
+            targetCycles: 4,
+            timer: null
+        },
+
+        // Meditation State
+        meditation: {
+            isPlaying: false,
+            soundTrack: 'Rain',
+            soundName: 'Suara Hujan Lembut',
+            timeLeft: 300, // 5 mins
+            totalTime: 300,
+            timer: null
+        },
+
+        // Reminders State
+        reminders: [
+            { id: 1, title: 'Refleksi Mood Siang', time: '13:00', type: 'Mood Check', enabled: true },
+            { id: 2, title: 'Minum Air Segar', time: '15:30', type: 'Hidrasi', enabled: true },
+            { id: 3, title: 'Persiapan Tidur & Meditasi', time: '21:30', type: 'Self Care', enabled: true }
+        ],
+
+        // Notifications State
+        notifications: [
+            { id: 1, title: 'Hebat! Streak 5 Hari Meditasi', message: 'Kamu telah konsisten merawat pikiran selama 5 hari berturut-turut.', time: '10 menit lalu', read: false, icon: 'award' },
+            { id: 2, title: 'Pengingat Minum Air', message: 'Waktunya minum 250ml air untuk tetap terhidrasi.', time: '1 jam lalu', read: false, icon: 'droplet' },
+            { id: 3, title: 'Kutipan Bijak Hari Ini', message: '"Ketenangan tidak ditemukan dengan melarikan diri, tetapi dengan berdamai."', time: '3 jam lalu', read: true, icon: 'sparkles' }
+        ],
+
+        // Education Articles
+        selectedArticle: null,
+        articles: [
+            {
+                id: 1,
+                title: 'Memahami Pertolongan Pertama Cemas & Stres',
+                category: 'Kesehatan Mental',
+                readTime: '4 menit',
+                image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=600&q=80',
+                excerpt: 'Langkah taktis cepat menenangkan sistem saraf saat pikiran terasa kewalahan.',
+                content: 'Kecemasan dan stres adalah respon alami dari sistem saraf simpatik kita (respon "fight or flight") saat mendeteksi adanya tekanan atau ancaman. Ketika ini terjadi, hormon kortisol dan adrenalin melonjak, menyebabkan jantung berdetak lebih kencang, pernapasan menjadi dangkal, dan otot menegang.\n\nUntuk meredakannya secara instan, Anda bisa mempraktikkan teknik pernapasan lambat seperti metode Box Breathing (4-4-4). Tarik napas lewat hidung selama 4 detik, tahan selama 4 detik, lalu hembuskan perlahan lewat mulut selama 4 detik. Hal ini secara aktif menstimulasi saraf vagus dan mengaktifkan sistem saraf parasimpatik yang bertanggung jawab atas ketenangan tubuh.\n\nSelain itu, praktikkan teknik grounding 5-4-3-2-1 untuk menarik kesadaran Anda kembali ke masa kini. Kenali 5 benda di sekitar Anda, raba 4 permukaan benda, dengarkan 3 suara, hirup 2 aroma, dan rasakan 1 cita rasa. Dengan begitu, sirkuit kecemasan di otak Anda perlahan mereda.'
+            },
+            {
+                id: 2,
+                title: 'Seni Membangun Rutinitas Tidur Berkualitas',
+                category: 'Istirahat',
+                readTime: '5 menit',
+                image: 'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?auto=format&fit=crop&w=600&q=80',
+                excerpt: 'Bagaimana menciptakan suasana kamar yang menunjang tidur pulas dan bangun segar.',
+                content: 'Tidur yang berkualitas adalah fondasi utama bagi kesehatan mental dan kestabilan emosi. Saat tidur, otak melakukan fungsi detoksifikasi dengan membersihkan sisa metabolik berbahaya dan mengkonsolidasikan memori jangka panjang.\n\nUntuk membangun rutinitas tidur (sleep hygiene) yang prima, mulailah dengan menjauhkan diri dari layar ponsel atau komputer setidaknya 1 jam sebelum tidur. Cahaya biru (blue light) dari perangkat elektronik menghambat produksi hormon melatonin, yakni hormon yang memberi sinyal pada tubuh bahwa hari sudah malam dan saatnya beristirahat.\n\nKondisikan kamar tidur Anda agar tetap sejuk, gelap, dan sunyi. Anda juga bisa memutar suara alam yang konstan (white noise/pink noise) seperti suara gemercik hujan lembut untuk menutupi kebisingan yang mengganggu di luar kamar. Pastikan untuk bangun dan tidur pada jam yang konsisten setiap harinya, bahkan pada akhir pekan, guna menyelaraskan jam biologis (ritme sirkadian) tubuh Anda.'
+            },
+            {
+                id: 3,
+                title: 'Mindfulness Untuk Pekerja Kreatif',
+                category: 'Produktivitas',
+                readTime: '3 menit',
+                image: 'https://images.unsplash.com/photo-1499209974431-9dac3ada00d7?auto=format&fit=crop&w=600&q=80',
+                excerpt: 'Menjaga fokus dan kesehatan emosional di tengah dinamika pekerjaan yang padat.',
+                content: 'Di dunia modern yang serba cepat, pekerja kreatif sering kali dituntut untuk terus menghasilkan ide-ide segar di bawah tekanan deadline. Hal ini kerap kali memicu kelelahan mental (burnout) jika tidak diimbangi dengan jeda kesadaran yang baik.\n\nMindfulness bukanlah proses mengosongkan pikiran, melainkan membawa perhatian penuh pada apa yang sedang kita kerjakan saat ini tanpa menghakimi diri sendiri. Ketika Anda menulis, mendesain, atau merancang ide, fokuslah sepenuhnya pada satu tugas tersebut (single-tasking) alih-alih melakukan multitasking yang memecah konsentrasi.\n\nSediakan waktu 5 menit setiap beberapa jam untuk melakukan jeda sadar. Cukup rasakan napas Anda, lakukan peregangan otot bahu yang kaku, atau tatap pemandangan di luar jendela. Jeda singkat ini membantu menyegarkan kembali neurotransmiter di otak Anda, meningkatkan daya fokus, serta memicu munculnya inspirasi baru yang segar.'
+            },
+            {
+                id: 4,
+                title: 'Pentingnya Hidrasi Bagi Kesehatan Mental',
+                category: 'Kesehatan Fisik',
+                readTime: '3 menit',
+                image: 'https://images.unsplash.com/photo-1548839133-9aa067466a9a?auto=format&fit=crop&w=600&q=80',
+                excerpt: 'Bagaimana dehidrasi dapat memicu peningkatan kecemasan dan kelelahan mental.',
+                content: 'Air menyusun sekitar 75% dari total volume otak kita. Oleh karena itu, penurunan tingkat hidrasi tubuh sekecil apa pun dapat berdampak langsung pada penurunan fungsi kognitif, kelelahan, serta memicu ketidakseimbangan mood.\n\nPenelitian menunjukkan bahwa kondisi dehidrasi ringan dapat meningkatkan sekresi hormon stres kortisol, yang memicu gejala fisik mirip kecemasan, seperti jantung berdebar-debar, sakit kepala ringan, dan kesulitan berkonsentrasi. Tubuh yang kurang cairan sering kali salah mengartikan dehidrasi sebagai ancaman stres.\n\nCobalah untuk mencatat asupan air harian Anda secara teratur. Biasakan minum segelas air putih hangat segera setelah bangun tidur untuk menggantikan cairan yang hilang di malam hari. Jadikan target minum minimal 2 liter per hari sebagai bagian integral dari rutinitas perawatan diri (self-care) Anda.'
+            },
+            {
+                id: 5,
+                title: 'Mengelola Emosi Negatif Tanpa Menghakimi Diri',
+                category: 'Kesehatan Mental',
+                readTime: '6 menit',
+                image: 'https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=600&q=80',
+                excerpt: 'Menghargai emosi yang tidak nyaman sebagai proses alami pertumbuhan jiwa.',
+                content: 'Banyak dari kita terbiasa mengelompokkan emosi menjadi baik (seperti bahagia) dan buruk (seperti sedih, marah, cemas). Akibatnya, saat emosi negatif melanda, kita cenderung menolak, menekan, atau menghakimi diri sendiri karena merasa bersalah.\n\nPadahal, setiap emosi membawa pesan penting tentang kondisi internal kita. Sedih menunjukkan adanya kehilangan yang bermakna, sedangkan marah memberi sinyal bahwa batas diri Anda dilanggar. Menolak emosi ini hanya akan membuat ketegangan psikologis bertahan lebih lama dan bisa memicu kecemasan yang berlarut-larut.\n\nBelajarlah untuk mempraktikkan penerimaan (acceptance). Ketika Anda merasa sedih atau cemas, akui keberadaannya dengan berbisik lembut, "Saat ini saya sedang merasa cemas, dan tidak apa-apa untuk merasa seperti ini." Tuangkan luapan perasaan Anda secara jujur dalam jurnal refleksi harian tanpa perlu takut dinilai oleh siapa pun.'
+            },
+            {
+                id: 6,
+                title: 'Membangun Kebiasaan Kecil yang Berkelanjutan',
+                category: 'Self Care',
+                readTime: '4 menit',
+                image: 'https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?auto=format&fit=crop&w=600&q=80',
+                excerpt: 'Strategi praktis menata rutinitas harian demi kesehatan mental jangka panjang.',
+                content: 'Banyak orang gagal membangun kebiasaan baru karena menetapkan target yang terlalu besar di awal, seperti langsung ingin bermeditasi 1 jam sehari atau olahraga berat setiap pagi. Saat motivasi menurun, kebiasaan tersebut dengan cepat ditinggalkan.\n\nKuncinya adalah mulai dari langkah yang sangat kecil (micro-habits) namun konsisten. Lakukan meditasi pernapasan cukup selama 2 atau 5 menit sehari. Setelah kebiasaan kecil ini mengakar dan menjadi rutinitas otomatis, Anda bisa meningkatkannya secara bertahap.\n\nGunakan metode habit stacking (menumpuk kebiasaan) dengan mengaitkan rutinitas baru setelah rutinitas lama yang sudah konsisten. Contoh: "Setelah saya menyeduh kopi pagi, saya akan menulis satu hal yang saya syukuri di jurnal." Jangan lupa rayakan pencapaian atau streak harian Anda sebagai bentuk apresiasi positif bagi diri sendiri.'
+            }
+        ],
+
+        // AI Mindful Companion State
+        aiChat: {
+            userMessage: '',
+            isTyping: false,
+            messages: [
+                {
+                    id: 1,
+                    sender: 'ai',
+                    text: 'Halo! Saya TemanJiwa AI Companion 🌿. Saya di sini untuk mendengarkan tanpa penghakiman. Apa yang sedang kamu rasakan atau pikirkan hari ini?',
+                    time: 'Baru saja'
+                }
+            ]
+        },
+
+        // Init App & Real-Time Monitor
+        init() {
+            this.loadFromStorage();
+            this.initLucideIcons();
+            this.initRealtimeClock();
+
+            // Set current Screen dynamically based on login state
+            if (this.isLoggedIn) {
+                this.currentScreen = 'dashboard';
+            } else {
+                this.currentScreen = 'splash';
+            }
+
+            // Trigger centered loading screen on app launch
+            this.triggerLoading('Menyiapkan TemanJiwa...', 'Menghubungkan ke ruang ketenangan jiwamu', 700);
+        },
+
+        // Real-Time System Monitor (Reminders & Clock Ticks)
+        initRealtimeClock() {
+            setInterval(() => {
+                const now = new Date();
+                this.currentTimeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                const currentShortTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                // Check real-time active reminders
+                if (this.reminders && this.reminders.length > 0) {
+                    this.reminders.forEach(r => {
+                        if (r.enabled && r.time === currentShortTime && !r.lastNotifiedTime) {
+                            r.lastNotifiedTime = currentShortTime;
+                            this.notifications.unshift({
+                                id: Date.now(),
+                                title: `Pengingat: ${r.title}`,
+                                message: `Waktunya melakukan ${r.type} (${r.time}) untuk merawat ketenangan jiwamu.`,
+                                time: 'Baru saja',
+                                read: false,
+                                icon: 'bell'
+                            });
+                            this.showToast(`🔔 Pengingat Real-Time: ${r.title}`);
+                            this.saveToStorage();
+                        }
+                    });
+                }
+            }, 1000);
+        },
+
+        // Auth & Dynamic User Registration / Login
+        registerUser() {
+            if (!this.registerInput.name || !this.registerInput.name.trim()) {
+                this.showToast('Silakan masukkan nama lengkapmu!');
+                return;
+            }
+            const cleanName = this.registerInput.name.trim();
+            const cleanEmail = (this.registerInput.email || '').trim() || `${cleanName.toLowerCase().replace(/\s+/g, '')}@temanjiwa.id`;
+            const cleanEmailKey = cleanEmail.toLowerCase();
+
+            // Save user to registered database in localStorage
+            const savedUsers = JSON.parse(localStorage.getItem('temanjiwa_users_db') || '[]');
+            const existingUser = savedUsers.find(u => u.email.toLowerCase() === cleanEmailKey);
+
+            const newUser = existingUser || {
+                name: cleanName,
+                email: cleanEmail,
+                password: this.registerInput.password || 'password123',
+                avatar: '🧘‍♀️',
+                bio: 'Menemukan ketenangan di setiap hela napas.',
+                coverColor: '#A8C5FF',
+                level: 1,
+                xp: 100,
+                joinedDate: new Date().toLocaleDateString('id-ID', { month: 'long', year: 'numeric' })
+            };
+
+            if (!existingUser) {
+                savedUsers.push(newUser);
+                localStorage.setItem('temanjiwa_users_db', JSON.stringify(savedUsers));
+            }
+
+            // Set current active email and session state
+            localStorage.setItem('temanjiwa_active_email', cleanEmailKey);
+
+            // Load existing user activity state or create a fresh default for them
+            const savedData = localStorage.getItem(`temanjiwa_app_data_${cleanEmailKey}`);
+            if (savedData) {
+                this.loadFromStorage();
+            } else {
+                this.resetStateToDefault(newUser);
+                this.saveToStorage();
+            }
+
+            this.isLoggedIn = true;
+
+            // Reset inputs
+            this.registerInput.name = '';
+            this.registerInput.email = '';
+            this.registerInput.password = '';
+
+            this.triggerLoading(`Selamat Datang, ${cleanName}!`, 'Menyiapkan profil ketenanganmu', 700, () => {
+                this.showToast(`Akun berhasil dibuat! Selamat datang ${cleanName} 🧘‍♀️`);
+                this.navigateTo('dashboard');
+            });
+        },
+
+        loginUser() {
+            const cleanEmail = (this.loginInput.email || '').trim();
+            const cleanEmailKey = cleanEmail.toLowerCase();
+            const inputName = (this.loginInput.name || '').trim();
+
+            const savedUsers = JSON.parse(localStorage.getItem('temanjiwa_users_db') || '[]');
+            let foundUser = savedUsers.find(u => u.email.toLowerCase() === cleanEmailKey);
+
+            if (!foundUser) {
+                // Create a dynamic profile for this new email log in
+                let displayName = inputName;
+                if (!displayName && cleanEmail) {
+                    const emailFront = cleanEmail.split('@')[0].replace(/[._-]/g, ' ');
+                    displayName = emailFront.charAt(0).toUpperCase() + emailFront.slice(1);
+                }
+                if (!displayName) displayName = 'Teman Jiwa';
+
+                foundUser = {
+                    name: displayName,
+                    email: cleanEmail || 'user@temanjiwa.id',
+                    avatar: '🧘‍♀️',
+                    bio: 'Menemukan ketenangan di setiap hela napas.',
+                    coverColor: '#A8C5FF',
+                    level: 1,
+                    xp: 100,
+                    joinedDate: new Date().toLocaleDateString('id-ID', { month: 'long', year: 'numeric' })
+                };
+
+                savedUsers.push(foundUser);
+                localStorage.setItem('temanjiwa_users_db', JSON.stringify(savedUsers));
+            }
+
+            // Set active email
+            localStorage.setItem('temanjiwa_active_email', foundUser.email.toLowerCase());
+
+            // Load user data or initialize if not present
+            const savedData = localStorage.getItem(`temanjiwa_app_data_${foundUser.email.toLowerCase()}`);
+            if (savedData) {
+                this.loadFromStorage();
+            } else {
+                this.resetStateToDefault(foundUser);
+                this.saveToStorage();
+            }
+
+            this.isLoggedIn = true;
+
+            // Reset inputs
+            this.loginInput.email = '';
+            this.loginInput.name = '';
+            this.loginInput.password = '';
+
+            this.triggerLoading('Authentikasi Berhasil...', `Selamat datang kembali, ${this.user.name}`, 700, () => {
+                this.showToast(`Halo ${this.user.name}! Selamat datang kembali 🌿`);
+                this.navigateTo('dashboard');
+            });
+        },
+
+        logoutUser() {
+            this.saveToStorage();
+            this.isLoggedIn = false;
+            localStorage.removeItem('temanjiwa_active_email');
+
+            // Reset to defaults so no previous state leaks in guest screens
+            this.resetStateToDefault(null);
+
+            this.triggerLoading('Sedang Keluar...', 'Menyimpan progres ketenangan jiwamu', 600, () => {
+                this.showToast('Anda berhasil keluar.');
+                this.navigateTo('login');
+            });
+        },
+
+        // Profile Editing Logic
+        startEditProfile() {
+            this.profileEdit.name = this.user.name;
+            this.profileEdit.email = this.user.email;
+            this.profileEdit.avatar = this.user.avatar || '🧘‍♀️';
+            this.profileEdit.bio = this.user.bio || 'Menemukan ketenangan di setiap hela napas.';
+            this.profileEdit.coverColor = this.user.coverColor || '#A8C5FF';
+            this.navigateTo('edit-profile');
+        },
+
+        saveProfile() {
+            if (!this.profileEdit.name || !this.profileEdit.name.trim()) {
+                this.showToast('Nama lengkap tidak boleh kosong!');
+                return;
+            }
+
+            const oldEmail = this.user.email.toLowerCase();
+            const newEmail = this.profileEdit.email.trim().toLowerCase();
+
+            // Update local state
+            this.user.name = this.profileEdit.name.trim();
+            this.user.email = this.profileEdit.email.trim();
+            this.user.avatar = this.profileEdit.avatar;
+            this.user.bio = this.profileEdit.bio.trim();
+            this.user.coverColor = this.profileEdit.coverColor;
+
+            // Email changed, migrate storage keys
+            if (oldEmail !== newEmail) {
+                const oldData = localStorage.getItem(`temanjiwa_app_data_${oldEmail}`);
+                if (oldData) {
+                    localStorage.setItem(`temanjiwa_app_data_${newEmail}`, oldData);
+                    localStorage.removeItem(`temanjiwa_app_data_${oldEmail}`);
+                }
+
+                let savedUsers = JSON.parse(localStorage.getItem('temanjiwa_users_db') || '[]');
+                savedUsers = savedUsers.filter(u => u.email.toLowerCase() !== oldEmail);
+                localStorage.setItem('temanjiwa_users_db', JSON.stringify(savedUsers));
+            }
+
+            localStorage.setItem('temanjiwa_active_email', newEmail);
+            this.saveToStorage();
+
+            this.triggerLoading('Menyimpan Profil...', 'Memperbarui biodata ketenanganmu', 600, () => {
+                this.showToast('Profil berhasil diperbarui! 🌿');
+                this.navigateTo('profile');
+            });
+        },
+
+        resetStateToDefault(userObj) {
+            this.user = userObj || {
+                name: 'Risma Elfaryani',
+                email: 'risma@temanjiwa.id',
+                avatar: '🌿',
+                bio: 'Menemukan kedamaian di setiap hela napas.',
+                coverColor: '#A8C5FF',
+                level: 3,
+                xp: 240,
+                joinedDate: 'Mei 2026'
+            };
+            this.moodHistory = [
+                { id: 1, mood: 'very-happy', label: 'Sangat Bahagia', emoji: '😊', intensity: 9, note: 'Menyelesaikan proyek tepat waktu & minum teh sore', date: 'Hari ini, 14:30', dayName: 'Kam' },
+                { id: 2, mood: 'happy', label: 'Bahagia', emoji: '🙂', intensity: 7, note: 'Jalan-jalan di taman kota bersama sahabat', date: 'Kemarin, 19:15', dayName: 'Rabu' },
+                { id: 3, mood: 'neutral', label: 'Biasa Saja', emoji: '😐', intensity: 5, note: 'Beban kerja standar, istirahat cukup', date: '21 Jul, 20:00', dayName: 'Sel' },
+                { id: 4, mood: 'stressed', label: 'Stres / Cemas', emoji: '😢', intensity: 4, note: 'Deadline rapat pagi sempat membuat deg-degan', date: '20 Jul, 11:00', dayName: 'Sen' },
+                { id: 5, mood: 'happy', label: 'Bahagia', emoji: '🙂', intensity: 8, note: 'Tidur nyenyak 8 jam!', date: '19 Jul, 08:30', dayName: 'Min' },
+                { id: 6, mood: 'very-happy', label: 'Sangat Bahagia', emoji: '😊', intensity: 9, note: 'Akhir pekan yang menenangkan', date: '18 Jul, 16:00', dayName: 'Sab' }
+            ];
+            this.journals = [
+                { id: 1, title: 'Menemukan Ketenangan Dalam Hal Kecil', content: 'Hari ini saya mencoba berhenti sejenak dari media sosial selama 3 jam. Memfokuskan mata pada dedaunan hijau di luar jendela dan menyeduh teh chamomillle. Rasanya pikiran yang tadinya bising perlahan menjadi jernih.', date: '23 Juli 2026', mood: '😊 Bahagia', tag: 'Refleksi' },
+                { id: 2, title: 'Catatan Mempraktikkan Teknik Grounding 5-4-3-2-1', content: 'Saat cemas melanda sehabis presentasi, saya mempraktikkan grounding 5-4-3-2-1. Menyebutkan 5 benda di sekitar dan meraba tekstur meja kayu. Efektif sekali mengurangi detak jantung kencang.', date: '21 Juli 2026', mood: '😐 Biasa', tag: 'Mindfulness' },
+                { id: 3, title: 'Rasa Syukur Hari Minggu', content: 'Sangat bersyukur keluarga dalam keadaan sehat. Kami makan siang bersama dan tertawa melihat foto-foto lama.', date: '19 Juli 2026', mood: '😊 Bahagia', tag: 'Rasa Syukur' }
+            ];
+            this.habits = [
+                { id: 1, name: 'Meditasi Pernapasan 5 Menit', icon: 'wind', completed: true, streak: 5, category: 'Mindfulness' },
+                { id: 2, name: 'Minum 2 Liter Air Bersih', icon: 'droplet', completed: true, streak: 12, category: 'Kesehatan' },
+                { id: 3, name: 'Tulis 1 Hal Yang Disyukuri', icon: 'book-open', completed: false, streak: 4, category: 'Jurnal' },
+                { id: 4, name: 'Jalan Kaki Ringan 15 Menit', icon: 'footprints', completed: false, streak: 2, category: 'Fisik' },
+                { id: 5, name: 'Tidur Sebelum Jam 23:00', icon: 'moon', completed: true, streak: 7, category: 'Istirahat' }
+            ];
+            this.waterLogged = 1250;
+            this.waterTarget = 2000;
+            this.sleepInput = { bedtime: '22:30', waketime: '06:30', quality: 4 };
+            this.sleepToday = { duration: 8.0, quality: 4, bedtime: '22:30', waketime: '06:30' };
+            this.sleepHistory = [
+                { day: 'Sen', duration: 7.2, quality: 4 },
+                { day: 'Sel', duration: 6.8, quality: 3 },
+                { day: 'Rab', duration: 8.0, quality: 5 },
+                { day: 'Kam', duration: 7.5, quality: 4 },
+                { day: 'Jum', duration: 8.2, quality: 5 },
+                { day: 'Sab', duration: 8.5, quality: 5 },
+                { day: 'Min', duration: 8.0, quality: 4 }
+            ];
+            this.breathing = {
+                active: false,
+                phase: 'Siap',
+                secondsLeft: 4,
+                currentCycle: 0,
+                targetCycles: 4,
+                timer: null
+            };
+            this.meditation = {
+                isPlaying: false,
+                soundTrack: 'Rain',
+                soundName: 'Suara Hujan Lembut',
+                timeLeft: 300,
+                totalTime: 300,
+                timer: null
+            };
+            this.reminders = [
+                { id: 1, title: 'Refleksi Mood Siang', time: '13:00', type: 'Mood Check', enabled: true },
+                { id: 2, title: 'Minum Air Segar', time: '15:30', type: 'Hidrasi', enabled: true },
+                { id: 3, title: 'Persiapan Tidur & Meditasi', time: '21:30', type: 'Self Care', enabled: true }
+            ];
+            this.notifications = [
+                { id: 1, title: 'Hebat! Streak 5 Hari Meditasi', message: 'Kamu telah konsisten merawat pikiran selama 5 hari berturut-turut.', time: '10 menit lalu', read: false, icon: 'award' },
+                { id: 2, title: 'Pengingat Minum Air', message: 'Waktunya minum 250ml air untuk tetap terhidrasi.', time: '1 jam lalu', read: false, icon: 'droplet' },
+                { id: 3, title: 'Kutipan Bijak Hari Ini', message: '"Ketenangan tidak ditemukan dengan melarikan diri, tetapi dengan berdamai."', time: '3 jam lalu', read: true, icon: 'sparkles' }
+            ];
+            this.aiChat = {
+                userMessage: '',
+                isTyping: false,
+                messages: [
+                    {
+                        id: 1,
+                        sender: 'ai',
+                        text: 'Halo! Saya TemanJiwa AI Companion 🌿. Saya di sini untuk mendengarkan tanpa penghakiman. Apa yang sedang kamu rasakan atau pikirkan hari ini?',
+                        time: 'Baru saja'
+                    }
+                ]
+            };
+        },
+
+        // AI Chat Methods
+        // AI Chat Methods & Calming Mindful Engine
+        async sendAiMessage(presetText = null) {
+            const textToSend = presetText || this.aiChat.userMessage;
+            if (!textToSend || !textToSend.trim()) return;
+
+            const timeNow = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            // Add user message to chat history
+            this.aiChat.messages.push({
+                id: Date.now(),
+                sender: 'user',
+                text: textToSend.trim(),
+                time: timeNow
+            });
+
+            this.aiChat.userMessage = '';
+            this.aiChat.isTyping = true;
+            this.saveToStorage();
+            this.scrollChatToBottom();
+
+            const promptText = textToSend.trim();
+            const apiKey = 'rfkhrmwn13';
+            const systemPrompt = `Berperanlah sebagai TemanJiwa AI (Asisten Kesehatan Mental & Teman Curhat Empatis 24/7). 
+Tugas utamamu: Mendengarkan curhatan pengguna dengan sangat empati, ramah, hangat, penuh perhatian, dan memberikan rasa ketenangan batin yang mendalam.
+Gunakan Bahasa Indonesia yang menenangkan, gunakan pemisah paragraf yang rapi, dan sertakan emoji lembut (🌿, 🕊️, 💚, 🕯️, ✨).
+Validasi perasaan pengguna, berikan sudut pandang yang menenangkan, berikan tips relaksasi/mindfulness jika relevan, dan akhiri dengan pertanyaan atau ajakan lembut.
+Pesan Curhat Pengguna: ${promptText}`;
+
+            const apiUrl = `https://api.neoxr.eu/api/gpt4?q=${encodeURIComponent(systemPrompt)}&apikey=${apiKey}`;
+
+            try {
+                // Set a timeout controller for fetch (3 seconds) so user gets instant response
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 3000);
+
+                const response = await fetch(apiUrl, { signal: controller.signal });
+                clearTimeout(timeoutId);
+
+                const resJson = await response.json();
+                
+                let aiResponse = '';
+                if (resJson && resJson.status && resJson.data && resJson.data.message) {
+                    aiResponse = resJson.data.message;
+                } else {
+                    throw new Error('API response invalid');
+                }
+
+                this.aiChat.messages.push({
+                    id: Date.now() + 1,
+                    sender: 'ai',
+                    text: aiResponse,
+                    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                });
+            } catch (err) {
+                console.info('Menggunakan Engine TemanJiwa Calming AI:', err.message);
+                
+                // Deep local empathetic & calming response generator
+                const calmingResponse = this.generateCalmingAiResponse(promptText);
+
+                this.aiChat.messages.push({
+                    id: Date.now() + 1,
+                    sender: 'ai',
+                    text: calmingResponse,
+                    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                });
+            } finally {
+                this.aiChat.isTyping = false;
+                this.saveToStorage();
+                this.scrollChatToBottom();
             }
         },
-        currentUserEmail: "risma@example.com"
-    };
-    seedDB.users["risma@example.com"].state.profile.name = "Risma Adinda";
-    seedDB.users["risma@example.com"].state.profile.email = "risma@example.com";
-    
-    // Migrate old local storage data if exists
-    const oldSaved = localStorage.getItem('temanjiwa_state') || localStorage.getItem('innercalm_state');
-    if (oldSaved) {
-        try {
-            const oldState = JSON.parse(oldSaved);
-            seedDB.users["risma@example.com"].state = { ...DEFAULT_STATE, ...oldState };
-            if (!seedDB.users["risma@example.com"].state.profile.email) {
-                seedDB.users["risma@example.com"].state.profile.email = "risma@example.com";
+
+        // Deep Empathetic Mental Health Calming Response Generator
+        generateCalmingAiResponse(userText) {
+            const raw = userText.trim();
+            const q = raw.toLowerCase();
+
+            const greetings = [
+                "Terima kasih sudah mau berbagi cerita denganku 💚.",
+                "Aku mendengarkan setiap bait ceritamu dengan penuh hangat 🕊️.",
+                "Setiap rasa yang kamu bawa ke ruang ini sangat valid dan berharga 🌿.",
+                "Mendengarkanmu adalah ruang aman tanpa penghakiman sama sekali ✨."
+            ];
+            const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+
+            // 1. Anxiety, Panic, Overthinking, Nervousness
+            if (q.includes('cemas') || q.includes('panik') || q.includes('takut') || q.includes('khawatir') || 
+                q.includes('overthinking') || q.includes('gelisah') || q.includes('was-was') || q.includes('gemetar') || q.includes('tertekan')) {
+                return `${greeting}\n\nPerasaan cemas atau overthinking yang sedang kamu rasakan saat ini sepenuhnya wajar dan valid. Ketika pikiran kita berputar kencang, tubuh sedang berusaha melindungimu dari beban yang terasa terlalu besar.\n\nMari perlahan kembalikan ketenangan ke tubuhmu:\n🫁 **Latihan Napas Singkat 4-4-4**:\n1. Tarik napas perlahan lewat hidung selama 4 detik...\n2. Tahan napasmu selama 4 detik...\n3. Hembuskan perlahan lewat mulut selama 4 detik...\n\nIngatlah: pikiran cemas hanyalah awan yang lewat di langit batinmu. Kamu tidak harus menyelesaikan semua kekhawatiran masa depan hari ini. Kamu aman di saat ini. 💚\n\nApakah ada hal spesifik yang paling menguras pikiranmu saat ini? Aku di sini siap mendengarkan.`;
             }
-        } catch (e) {}
-    }
-    
-    saveDB(seedDB);
-    return seedDB;
-}
 
-function saveDB(db) {
-    localStorage.setItem('temanjiwa_db', JSON.stringify(db));
-}
-
-// Load State from JSON Database
-function loadState() {
-    const db = getDB();
-    const email = db.currentUserEmail;
-    if (email && db.users[email]) {
-        appState = db.users[email].state;
-        appState = { ...DEFAULT_STATE, ...appState };
-        if (!appState.profile.email) {
-            appState.profile.email = email;
-        }
-    } else {
-        appState = JSON.parse(JSON.stringify(DEFAULT_STATE));
-    }
-}
-
-// Save State to JSON Database
-function saveState() {
-    const db = getDB();
-    const email = db.currentUserEmail;
-    if (email) {
-        if (!db.users[email]) {
-            db.users[email] = { password: 'password123' };
-        }
-        db.users[email].state = appState;
-        saveDB(db);
-    } else {
-        localStorage.setItem('temanjiwa_temp_state', JSON.stringify(appState));
-    }
-}
-
-// Show Toast Alert
-function showToast(message, type = 'success') {
-    const container = document.getElementById('toast-container');
-    const toast = document.createElement('div');
-    toast.className = 'toast';
-
-    let emoji = '✨';
-    if (type === 'level') emoji = '🌟';
-    if (type === 'danger') {
-        emoji = '⚠️';
-        toast.style.backgroundColor = 'var(--accent)';
-    }
-
-    toast.innerHTML = `<span>${emoji}</span> <span>${message}</span>`;
-    container.appendChild(toast);
-
-    // Trigger animation
-    setTimeout(() => toast.classList.add('show'), 100);
-
-    // Cleanup
-    setTimeout(() => {
-        toast.classList.remove('show');
-        setTimeout(() => toast.remove(), 300);
-    }, 3000);
-}
-
-// Trigger Level Up Celebration
-function addXP(amount) {
-    appState.profile.xp += amount;
-    showToast(`+${amount} XP diperoleh!`);
-
-    if (appState.profile.xp >= 100) {
-        appState.profile.level += 1;
-        appState.profile.xp -= 100;
-        setTimeout(() => {
-            showToast(`SELAMAT! Kamu naik ke Level ${appState.profile.level}! 🎉`, 'level');
-            playLevelUpSound();
-        }, 800);
-    }
-    saveState();
-    updateGUI();
-}
-
-function playLevelUpSound() {
-    // Web Audio Synthesizer for retro level up fan-fare!
-    try {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-        function playTone(freq, type, duration, startTime) {
-            const osc = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
-            osc.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-
-            osc.type = type;
-            osc.frequency.setValueAtTime(freq, startTime);
-
-            gainNode.gain.setValueAtTime(0.1, startTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
-
-            osc.start(startTime);
-            osc.stop(startTime + duration);
-        }
-
-        const now = audioCtx.currentTime;
-        playTone(523.25, 'sine', 0.15, now);       // C5
-        playTone(659.25, 'sine', 0.15, now + 0.15);  // E5
-        playTone(783.99, 'sine', 0.15, now + 0.3);   // G5
-        playTone(1046.50, 'sine', 0.4, now + 0.45);  // C6
-    } catch (e) { }
-}
-
-// Navigation & Screen Router
-function navigateTo(screenId) {
-    // Hide all screens
-    const screens = document.querySelectorAll('.screen');
-    screens.forEach(s => s.classList.remove('active'));
-
-    // Show selected screen
-    const target = document.getElementById(screenId);
-    if (target) {
-        target.classList.add('active');
-        target.scrollTop = 0;
-    }
-
-    // Manage Sidebar visibility
-    const navBar = document.getElementById('app-navigation');
-    const noNavScreens = ['screen-splash', 'screen-onboarding', 'screen-login', 'screen-register', 'screen-breath', 'screen-mhcheck', 'screen-mhcheck-result', 'screen-article-reader', 'screen-emergency', 'screen-water-log', 'screen-sleep-log'];
-    if (noNavScreens.includes(screenId)) {
-        navBar.style.display = 'none';
-    } else {
-        navBar.style.display = 'flex';
-        // Set active nav button matching route
-        updateActiveNav(screenId);
-    }
-
-    // Refresh sub-views on navigation
-    if (screenId === 'screen-home') {
-        renderDashboardHabits();
-    }
-    if (screenId === 'screen-stats') {
-        renderMoodChart();
-    }
-    if (screenId === 'screen-journal') {
-        renderJournalHistory();
-    }
-    if (screenId === 'screen-profile') {
-        renderProfileTab();
-    }
-
-    if (window.lucide && typeof window.lucide.createIcons === 'function') {
-        window.lucide.createIcons();
-    }
-}
-
-function updateActiveNav(screenId) {
-    const navItems = document.querySelectorAll('.nav-item');
-    navItems.forEach(item => {
-        item.classList.remove('active');
-        const onclickAttr = item.getAttribute('onclick') || '';
-        if (onclickAttr.includes(screenId)) {
-            item.classList.add('active');
-        }
-    });
-}
-
-// Dynamic UI Renderers
-function updateGUI() {
-    // Apply Dark Mode class to body
-    document.body.classList.toggle('dark', !!appState.profile.isDarkMode);
-
-    // Apply Theme Color changes by dynamically mutating CSS variables
-    const root = document.documentElement;
-    if (appState.profile.theme === 'lavender') {
-        root.style.setProperty('--hue', '262');
-        root.style.setProperty('--sat', '80%');
-        root.style.setProperty('--lightness', '60%');
-        root.style.setProperty('--soft-blue', '#C4B5FD');
-        root.style.setProperty('--accent-blue', '#8B5CF6');
-        root.style.setProperty('--primary-dark', '#7C3AED');
-    } else {
-        // Default theme: soft blue
-        root.style.setProperty('--hue', '220');
-        root.style.setProperty('--sat', '100%');
-        root.style.setProperty('--lightness', '83%');
-        root.style.setProperty('--soft-blue', '#8EC5FC');
-        root.style.setProperty('--accent-blue', '#60A5FA');
-        root.style.setProperty('--primary-dark', '#3B82F6');
-    }
-
-    // Header updates
-    const nameLabel = document.getElementById('gui-welcome-name');
-    const greetingTime = document.getElementById('gui-greeting-time');
-    if (nameLabel) {
-        const name = appState.profile.name || 'User';
-        nameLabel.textContent = `Halo, ${name.split(' ')[0]} 👋`;
-    }
-    if (greetingTime) {
-        const hours = new Date().getHours();
-        let greeting = 'Selamat Pagi';
-        if (hours >= 12 && hours < 15) greeting = 'Selamat Siang';
-        else if (hours >= 15 && hours < 18) greeting = 'Selamat Sore';
-        else if (hours >= 18 || hours < 5) greeting = 'Selamat Malam';
-        greetingTime.textContent = `${greeting} 🌤️`;
-    }
-
-    const avatarBadge = document.getElementById('gui-avatar-badge');
-    if (avatarBadge) {
-        avatarBadge.textContent = appState.profile.name ? appState.profile.name[0].toUpperCase() : 'U';
-    }
-
-    // GAMIFICATION progress UI
-    const lvlLabel = document.getElementById('gui-lvl-label');
-    if (lvlLabel) lvlLabel.textContent = `Level ${appState.profile.level}`;
-
-    const xpText = document.getElementById('gui-xp-text');
-    if (xpText) xpText.textContent = `${appState.profile.xp} / 100 XP`;
-
-    const progressBar = document.getElementById('gui-xp-bar');
-    if (progressBar) progressBar.style.width = `${appState.profile.xp}%`;
-
-    // STATS widgets values
-    const statSleep = document.getElementById('gui-stat-sleep');
-    if (statSleep) statSleep.textContent = `${appState.state_sleep_duration || appState.tracker.sleepToday.duration} jam`;
-
-    const statSleepQuality = document.getElementById('gui-stat-sleep-quality');
-    if (statSleepQuality) statSleepQuality.textContent = `Kualitas: ${appState.state_sleep_quality || appState.tracker.sleepToday.quality}★`;
-
-    const statWater = document.getElementById('gui-stat-water');
-    if (statWater) statWater.textContent = `${appState.tracker.waterLogged} / ${appState.tracker.waterTarget}ml`;
-
-    // Mood Today Widgets
-    const currentMoodEmoji = document.getElementById('gui-current-mood-emoji');
-    const currentMoodLabel = document.getElementById('gui-current-mood-label');
-    if (appState.moodHistory && appState.moodHistory.length > 0) {
-        const latest = appState.moodHistory[0];
-        const moodDef = MOODS_DICTIONARY[latest.mood] || { label: latest.mood, emoji: latest.emoji };
-        if (currentMoodEmoji) currentMoodEmoji.textContent = latest.emoji;
-        if (currentMoodLabel) currentMoodLabel.textContent = moodDef.label;
-    }
-
-    // Water cups statistics checklist update
-    const waterBadgeLabel = document.getElementById('gui-water-badge-label');
-    if (waterBadgeLabel) {
-        const glasses = Math.round(appState.tracker.waterLogged / 250);
-        waterBadgeLabel.textContent = `${glasses}/8 gelas`;
-    }
-
-    // Update dynamic statistics numbers
-    const statJournals = document.getElementById('gui-stat-journals-count');
-    if (statJournals) {
-        statJournals.textContent = `${appState.journals.length} kali`;
-    }
-    
-    const statHabits = document.getElementById('gui-stat-habits-count');
-    if (statHabits) {
-        const completedCount = appState.habits.filter(h => h.completed).length;
-        statHabits.textContent = `${completedCount} aktivitas`;
-    }
-    
-    // Update Average Mood Score and Label
-    const avgMood = calculateAverageMood();
-    const avgScoreEl = document.getElementById('gui-avg-mood-score');
-    if (avgScoreEl) {
-        avgScoreEl.textContent = avgMood.score;
-    }
-    const avgLabelEl = document.getElementById('gui-avg-mood-label');
-    if (avgLabelEl) {
-        avgLabelEl.textContent = avgMood.label;
-    }
-    
-    // Call chart renderers
-    renderWeeklyMoodChart();
-    renderSparklineChart();
-
-    renderDashboardHabits();
-}
-
-// Daily Affirmation cycles
-const AFFIRMATIONS = [
-    "Setiap langkah kecil yang kamu ambil hari ini adalah kemajuan menuju diri yang lebih sehat.",
-    "Tarik napas sedalam-dalamnya. Lepaskan segala ketegangan. Kamu memiliki kendali atas dirimu sendiri.",
-    "Kesehatan mentalmu adalah prioritas utama. Tidak apa-apa untuk beristirahat sebentar hari ini.",
-    "Apapun kekhawatiranmu hari ini, percayalah bahwa kekuatan di dalam dirimu jauh lebih besar.",
-    "Jadilah lembut pada pikiranmu hari ini. Kamu sedang berproses, lakukan yang terbaik.",
-    "Bersyukurlah untuk napas yang berembus saat ini. Kamu dikelilingi oleh peluang baru."
-];
-let currentAffIndex = 0;
-
-function cycleAffirmations() {
-    currentAffIndex = (currentAffIndex + 1) % AFFIRMATIONS.length;
-    const txt = document.getElementById('gui-affirmation-text');
-    if (txt) {
-        txt.style.opacity = 0;
-        setTimeout(() => {
-            txt.textContent = `"${AFFIRMATIONS[currentAffIndex]}"`;
-            txt.style.opacity = 1;
-        }, 150);
-    }
-}
-
-// Mood logs
-const MOODS_DICTIONARY = {
-    'sangat-bahagia': { emoji: '😄', label: 'Sangat Bahagia' },
-    'bahagia': { emoji: '😊', label: 'Bahagia' },
-    'biasa': { emoji: '😐', label: 'Biasa' },
-    'sedih': { emoji: '😔', label: 'Sedih' },
-    'cemas': { emoji: '😣', label: 'Cemas' },
-    'lelah': { emoji: '😴', label: 'Lelah' }
-};
-
-function logQuickMood(moodKey) {
-    const moodDef = MOODS_DICTIONARY[moodKey];
-    if (!moodDef) return;
-
-    const newEntry = {
-        id: 'mood-' + Date.now(),
-        mood: moodKey,
-        emoji: moodDef.emoji,
-        intensity: 6,
-        note: 'Dicatat via Dashboard Quick-log',
-        date: 'Hari ini (' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ')'
-    };
-
-    appState.moodHistory.unshift(newEntry);
-    showToast(`Mood ${moodDef.emoji} berhasil dicatat! ✨`);
-    addXP(15); // +15 XP for logging mood
-    saveState();
-    updateGUI();
-}
-
-// Mood Form tracker helpers
-let selectedFormMoodKey = 'bahagia';
-let selectedFormMoodEmoji = '😊';
-
-function selectFormMood(moodKey, emoji, element) {
-    selectedFormMoodKey = moodKey;
-    selectedFormMoodEmoji = emoji;
-
-    const options = document.querySelectorAll('#mood-form-emoji-grid .quiz-opt-btn');
-    options.forEach(opt => opt.classList.remove('active'));
-    element.classList.add('active');
-}
-
-function submitMoodForm() {
-    const noteText = document.getElementById('mood-form-note-input').value.trim();
-    const newEntry = {
-        id: 'mood-' + Date.now(),
-        mood: selectedFormMoodKey,
-        emoji: selectedFormMoodEmoji,
-        intensity: 7,
-        note: noteText || 'Tercatat via Mood Tracker',
-        date: 'Hari ini (' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ')'
-    };
-
-    appState.moodHistory.unshift(newEntry);
-    addXP(20);
-    saveState();
-
-    document.getElementById('mood-form-note-input').value = '';
-    showToast(`Mood ${selectedFormMoodEmoji} berhasil disimpan! 🌸`);
-
-    updateGUI();
-    navigateTo('screen-home');
-}
-
-// Habits Checklist Logic
-function toggleHabit(habitId) {
-    const habit = appState.habits.find(h => h.id === habitId);
-    if (habit) {
-        habit.completed = !habit.completed;
-        if (habit.completed) {
-            addXP(20); // +20 XP for checking off habit!
-            showToast(`Kebiasaan "${habit.name}" diselesaikan!`);
-        } else {
-            showToast(`Kebiasaan "${habit.name}" ditandai belum selesai.`);
-            saveState();
-        }
-        renderDashboardHabits();
-    }
-}
-
-function renderDashboardHabits() {
-    const listContainer = document.getElementById('gui-dashboard-habits');
-    if (!listContainer) return;
-
-    listContainer.innerHTML = '';
-
-    if (appState.habits.length === 0) {
-        listContainer.innerHTML = `<div style="text-align: center; color: var(--text-sub); font-size: 11px; padding: 12px 0;">Belum ada kebiasaan. Tambah baru di tab Kebiasaan.</div>`;
-        return;
-    }
-
-    // limit 3 on dashboard
-    appState.habits.slice(0, 3).forEach(habit => {
-        const item = document.createElement('div');
-        item.className = `habit-item ${habit.completed ? 'completed' : ''}`;
-        item.innerHTML = `
-            <div class="habit-checkbox" onclick="toggleHabit('${habit.id}')">
-                ${habit.completed ? '✓' : ''}
-            </div>
-            <span class="habit-text">${habit.name}</span>
-        `;
-        listContainer.appendChild(item);
-    });
-}
-
-// Breathing Space Exercise controller
-let breathTimer = null;
-let breathState = 'idle'; // idle, running
-let breathPhase = 'inhale'; // inhale, hold, exhale
-let secondsLeft = 4;
-
-function startBreathing() {
-    const btn = document.getElementById('breath-start-btn');
-    const circleOuter = document.querySelector('.breath-circle-outer');
-    const circleInner = document.querySelector('.breath-circle-inner');
-    const textLabel = document.getElementById('breath-inst');
-    const countdown = document.getElementById('breath-seconds');
-
-    if (breathState === 'running') {
-        // Stop exercise
-        clearInterval(breathTimer);
-        breathState = 'idle';
-        btn.textContent = 'Mulai Sesi Bernapas';
-        btn.className = 'btn btn-primary';
-        textLabel.textContent = 'Siap mencari ketenangan? Tekan Mulai.';
-        countdown.textContent = 'Ready';
-        circleOuter.className = 'breath-circle-outer';
-        circleInner.className = 'breath-circle-inner';
-        return;
-    }
-
-    // Start exercise
-    breathState = 'running';
-    btn.textContent = 'Hentikan Sesi';
-    btn.className = 'btn btn-outline';
-
-    // Loop cycle function
-    breathPhase = 'inhale';
-    secondsLeft = 4;
-
-    executeBreathingPhase(circleOuter, circleInner, textLabel, countdown);
-
-    breathTimer = setInterval(() => {
-        secondsLeft--;
-        countdown.textContent = `${secondsLeft}s`;
-
-        if (secondsLeft <= 0) {
-            // cycle to next phase
-            if (breathPhase === 'inhale') {
-                breathPhase = 'hold';
-                secondsLeft = 4;
-            } else if (breathPhase === 'hold') {
-                breathPhase = 'exhale';
-                secondsLeft = 4;
-            } else {
-                breathPhase = 'inhale';
-                secondsLeft = 4;
-                addXP(5); // +5 XP per complete breath cycle!
+            // 2. Sadness, Grief, Heartbreak, Crying, Hurt
+            if (q.includes('sedih') || q.includes('menangis') || q.includes('kecewa') || q.includes('patah hati') || 
+                q.includes('hampa') || q.includes('duka') || q.includes('luka') || q.includes('hancur') || q.includes('remuk') || q.includes('nangis')) {
+                return `${greeting}\n\nAku mengirimkan pelukan hangat untuk jiwamu yang sedang terluka 🕊️. Merasa sedih, kecewa, atau ingin menangis bukanlah tanda kelemahan—menangis adalah cara alami jiwa kita membasuh air mata dan melepaskan beban yang terpendam.\n\nIngatlah hal ini:\n✨ Kamu tidak perlu berpura-pura baik-baik saja ketika hatimu sedang lelah.\n✨ Beri dirimu ruang dan waktu untuk meresapi serta menyembuhkan rasa ini tanpa terburu-buru.\n✨ Kamu sangat berharga dan tidak sendirian melewati masa sulit ini.\n\nJika kamu merasa butuh suasana yang menenangkan, kamu juga bisa memutar **Suara Hujan Lembut** di menu Meditasi kami. Ceritakan saja apa pun yang ingin kamu luapkan, aku siap mendengarkan sepenuhnya.`;
             }
-            executeBreathingPhase(circleOuter, circleInner, textLabel, countdown);
-        }
-    }, 1000);
-}
 
-function executeBreathingPhase(circleOuter, circleInner, textLabel, countdown) {
-    countdown.textContent = `${secondsLeft}s`;
-
-    circleOuter.className = 'breath-circle-outer';
-    circleInner.className = 'breath-circle-inner';
-
-    if (breathPhase === 'inhale') {
-        textLabel.textContent = 'Tarik Napas Perlahan...';
-        circleOuter.classList.add('inhale');
-        circleInner.classList.add('inhale');
-    } else if (breathPhase === 'hold') {
-        textLabel.textContent = 'Tahan Napas Anda...';
-        circleOuter.classList.add('hold');
-    } else {
-        textLabel.textContent = 'Hembuskan Napas Sembari Melepas Stres...';
-        circleOuter.classList.add('exhale');
-        circleInner.classList.add('exhale');
-    }
-}
-
-// Mental Health Check Questionnaire Wizard
-const MH_QUESTIONS = [
-    { id: 1, text: "Saya merasa sulit untuk tidur nyenyak atau beristirahat." },
-    { id: 2, text: "Saya merasa cemas, gelisah, atau khawatir berlebihan." },
-    { id: 3, text: "Saya kehilangan semangat atau ketertarikan pada aktivitas sehari-hari." },
-    { id: 4, text: "Saya menjadi mudah marah, kesal, atau frustrasi terhadap hal-hal sepele." },
-    { id: 5, text: "Saya merasa kesepian atau terisolasi dari orang-orang terdekat." }
-];
-let currentQIdx = 0;
-let qAnswers = {};
-
-function startMHCheck() {
-    currentQIdx = 0;
-    qAnswers = {};
-    renderMHQuestion();
-    navigateTo('screen-mhcheck');
-}
-
-function renderMHQuestion() {
-    const qProgress = document.getElementById('mh-q-progress');
-    const qProgressText = document.getElementById('mh-q-progress-text');
-    const qProgressBar = document.getElementById('mh-q-bar');
-    const qText = document.getElementById('mh-q-text');
-
-    qProgress.textContent = `Pertanyaan ${currentQIdx + 1} dari ${MH_QUESTIONS.length}`;
-    const pct = Math.round(((currentQIdx + 1) / MH_QUESTIONS.length) * 100);
-    qProgressText.textContent = `${pct}%`;
-    qProgressBar.style.width = `${pct}%`;
-
-    const question = MH_QUESTIONS[currentQIdx];
-    qText.textContent = question.text;
-
-    // Set active option if answered
-    const valSelected = qAnswers[question.id];
-    const options = document.querySelectorAll('#screen-mhcheck .quiz-opt-btn');
-    options.forEach(opt => {
-        opt.classList.remove('active');
-        const optVal = parseInt(opt.getAttribute('data-value'));
-        if (optVal === valSelected) {
-            opt.classList.add('active');
-        }
-    });
-
-    // Control navigation buttons
-    const prevBtn = document.getElementById('mh-prev-btn');
-    if (currentQIdx === 0) {
-        prevBtn.style.opacity = '0';
-        prevBtn.style.pointerEvents = 'none';
-    } else {
-        prevBtn.style.opacity = '1';
-        prevBtn.style.pointerEvents = 'auto';
-    }
-
-    const nextBtn = document.getElementById('mh-next-btn');
-    if (currentQIdx === MH_QUESTIONS.length - 1) {
-        nextBtn.textContent = 'Lihat Hasil';
-    } else {
-        nextBtn.textContent = 'Lanjut';
-    }
-}
-
-function selectMHOption(val) {
-    const q = MH_QUESTIONS[currentQIdx];
-    qAnswers[q.id] = val;
-
-    // Set visual active state
-    const options = document.querySelectorAll('#screen-mhcheck .quiz-opt-btn');
-    options.forEach(opt => {
-        opt.classList.remove('active');
-        if (parseInt(opt.getAttribute('data-value')) === val) {
-            opt.classList.add('active');
-        }
-    });
-}
-
-function nextMHQuestion() {
-    const question = MH_QUESTIONS[currentQIdx];
-    if (qAnswers[question.id] === undefined) {
-        showToast('Pilihlah salah satu opsi jawaban dahulu!', 'danger');
-        return;
-    }
-
-    if (currentQIdx < MH_QUESTIONS.length - 1) {
-        currentQIdx++;
-        renderMHQuestion();
-    } else {
-        // Compute Results
-        let totalScore = 0;
-        for (let q of MH_QUESTIONS) {
-            totalScore += qAnswers[q.id];
-        }
-
-        displayMHResult(totalScore);
-    }
-}
-
-function prevMHQuestion() {
-    if (currentQIdx > 0) {
-        currentQIdx--;
-        renderMHQuestion();
-    }
-}
-
-function displayMHResult(score) {
-    let result = {};
-    if (score <= 4) {
-        result = {
-            emoji: '😊',
-            title: 'Kondisi Baik',
-            styleClass: 'healthy',
-            desc: 'Kamu menjaga kesehatan mentalmu dengan sangat baik. Pertahankan pola self-care harianmu!',
-            suggestions: [
-                'Lakukan mindfulness breathing 3 menit',
-                'Tulis jurnal bersyukur malam ini',
-                'Tetap terhidrasi dengan minum air teratur'
-            ]
-        };
-    } else if (score <= 9) {
-        result = {
-            emoji: '😐',
-            title: 'Perlu Self Care',
-            styleClass: 'need_self_care',
-            desc: 'Kamu mungkin mengalami stres ringan atau kelelahan emosional. Tubuhmu butuh sedikit relaksasi.',
-            suggestions: [
-                'Lakukan meditasi pernapasan 5 menit',
-                'Jalan santai sore hari tanpa smartphone',
-                'Membaca buku kesukaan sebelum tidur'
-            ]
-        };
-    } else if (score <= 12) {
-        result = {
-            emoji: '😔',
-            title: 'Butuh Perhatian',
-            styleClass: 'need_attention',
-            desc: 'Tingkat stres atau kecemasanmu cukup tinggi akhir-akhir ini. Luangkan waktu khusus untuk beristirahat.',
-            suggestions: [
-                'Lakukan jurnalisme reflektif untuk melepas emosi',
-                'Bicarakan beban pikiranmu dengan sahabat karib',
-                'Batasi konsumsi media sosial selama 24 jam'
-            ]
-        };
-    } else {
-        result = {
-            emoji: '😣',
-            title: 'Saran Bantuan Profesional',
-            styleClass: 'professional_help',
-            desc: 'Kondisi psikologismu sedang mengalami tekanan yang berat. Sangat disarankan berkonsultasi dengan profesional.',
-            suggestions: [
-                'Gunakan fitur SOS Emergency di menu utama',
-                'Jadwalkan konseling gratis Kemenkes di Layanan Sejiwa (119 Ext 8)',
-                'Hubungi psikolog atau psikiater terdekat untuk konsultasi medis'
-            ]
-        };
-    }
-
-    // Save checking history
-    appState.mhChecks.unshift({ score, date: new Date().toLocaleDateString('id-ID'), title: result.title });
-
-    // Populate Results Screen
-    document.getElementById('mh-res-emoji').textContent = result.emoji;
-    document.getElementById('mh-res-title').textContent = result.title;
-    document.getElementById('mh-res-score').textContent = `Skor Evaluasi: ${score} / 15`;
-    document.getElementById('mh-res-desc').textContent = result.desc;
-
-    const sugContainer = document.getElementById('mh-res-suggestions');
-    sugContainer.innerHTML = '';
-    result.suggestions.forEach(s => {
-        const item = document.createElement('div');
-        item.className = 'suggestion-pill';
-        item.textContent = s;
-        sugContainer.appendChild(item);
-    });
-
-    addXP(30); // Earn +30 XP on completing assessment!
-    navigateTo('screen-mhcheck-result');
-}
-
-// Articles List and Reader Viewers
-const ARTICLES_DATABASE = {
-    'art-overthinking': {
-        category: 'Mindfulness',
-        title: 'Cara Mengelola Overthinking untuk Gen Z',
-        readTime: '5 min',
-        emoji: '🧠',
-        contentHTML: `
-            <p>Overthinking atau berpikir berlebihan seringkali menjadi masalah utama yang dialami Gen Z, terutama yang berkaitan dengan masa depan (future anxiety) dan tekanan media sosial.</p>
-            <h4>Mengapa Gen Z Rentan?</h4>
-            <p>Arus informasi yang sangat cepat serta kebiasaan membandingkan pencapaian pribadi dengan orang lain di media sosial mempercepat kelelahan emosional (burnout). Hal ini diperparah oleh kurangnya waktu istirahat secara sadar.</p>
-            <h4>3 Langkah Mengatasinya:</h4>
-            <p>1. <strong>Grounding Technique (5-4-3-2-1):</strong> Sadari 5 benda sekitar yang bisa dilihat, 4 yang bisa disentuh, 3 suara yang didengar, 2 bau yang dicium, dan 1 rasa di lidah untuk menarik pikiranmu kembali ke masa kini.</p>
-            <p>2. <strong>Batasi Screen Time:</strong> Kurangi screen time 1 jam sebelum tidur untuk membiarkan gelombang otak masuk ke fase relaksasi secara alami.</p>
-            <p>3. <strong>Tulis Jurnal Reflektif:</strong> Menuangkan kecemasan ke dalam kertas dapat melegakan beban emosional otak secara signifikan.</p>
-        `
-    },
-    'art-burnout': {
-        category: 'Stress',
-        title: 'Burnout Akademik: Kenali Ciri & Solusinya',
-        readTime: '4 min',
-        emoji: '🔥',
-        contentHTML: `
-            <p>Sebagai mahasiswa atau pekerja muda Gen Z, kamu mungkin sering merasa lelah berkepanjangan akibat tuntutan akademik/kerja yang tiada habisnya. Ini bisa mengarah pada burnout.</p>
-            <h4>Ciri-ciri Burnout:</h4>
-            <p>Kehilangan motivasi secara total, merasa tidak berdaya, lelah fisik kronis, serta sering menunda-nunda pekerjaan meskipun tenggat waktu sudah dekat.</p>
-            <h4>Bagaimana Mengatasinya?</h4>
-            <p>Belajarlah menetapkan batasan (boundary) yang sehat. Ingatlah bahwa istirahat bukanlah tanda malas, melainkan investasi energi penting untuk langkah berikutnya.</p>
-        `
-    },
-    'art-selflove': {
-        category: 'Self Love',
-        title: 'Latihan Afirmasi Positif & Self Love',
-        readTime: '3 min',
-        emoji: '💖',
-        contentHTML: `
-            <p>Self Love bukan berarti bersikap egois, melainkan sebuah apresiasi mendalam terhadap diri sendiri yang tumbuh dari tindakan nyata yang mendukung pertumbuhan fisik, psikologis, dan spiritual kita.</p>
-            <h4>Latihan Harian:</h4>
-            <p>Mulailah setiap pagi dengan menatap cermin dan mengucapkan satu hal positif yang kamu syukuri dari dirimu, tidak peduli seberapa kecil hal tersebut.</p>
-        `
-    },
-    'art-anxiety': {
-        category: 'Anxiety',
-        title: 'Mengatasi Kecemasan Menghadapi Masa Depan',
-        readTime: '6 min',
-        emoji: '🧘',
-        contentHTML: `
-            <p>Kecemasan akan masa depan (future anxiety) sangat umum di kalangan anak muda berumur 17-27 tahun. Hal ini sering dipicu oleh ekspektasi karir dan tuntutan finansial.</p>
-            <h4>Langkah Menenangkan Pikiran:</h4>
-            <p>Fokuslah pada apa yang bisa kamu kendalikan hari ini. Rencanakan langkah-langkah kecil mingguan daripada mengkhawatirkan hasil besar lima tahun ke depan.</p>
-        `
-    }
-};
-
-let selectedCategory = 'Semua';
-
-function renderArticlesList() {
-    const listContainer = document.getElementById('articles-list-container');
-    if (!listContainer) return;
-
-    listContainer.innerHTML = '';
-    const query = document.getElementById('art-search-input').value.toLowerCase();
-
-    Object.keys(ARTICLES_DATABASE).forEach(artId => {
-        const art = ARTICLES_DATABASE[artId];
-
-        const catMatch = selectedCategory === 'Semua' || art.category === selectedCategory;
-        const searchMatch = art.title.toLowerCase().includes(query);
-
-        if (catMatch && searchMatch) {
-            const card = document.createElement('div');
-            card.className = 'card card-glass';
-            card.style.cursor = 'pointer';
-            card.onclick = () => viewArticle(artId);
-            card.innerHTML = `
-                <div class="article-row-item">
-                    <div class="article-icon-box">${art.emoji}</div>
-                    <div style="flex: 1;">
-                        <span class="article-meta-badge">${art.category}</span>
-                        <h4 style="font-size: 13px; font-weight: 700; color: var(--text-main); margin-bottom: 2px;">${art.title}</h4>
-                        <span style="font-size: 10px; color: var(--text-sub);">${art.readTime} membaca</span>
-                    </div>
-                    <i data-lucide="chevron-right" style="width: 16px; color: var(--text-sub);"></i>
-                </div>
-            `;
-            listContainer.appendChild(card);
-        }
-    });
-
-    if (listContainer.innerHTML === '') {
-        listContainer.innerHTML = `<div style="text-align: center; color: var(--text-sub); font-size: 12px; margin-top: 30px;">Artikel tidak ditemukan. 🔍</div>`;
-    }
-
-    lucide.createIcons();
-}
-
-function filterArticlesCategory(cat) {
-    selectedCategory = cat;
-    const pills = document.querySelectorAll('.cat-pill');
-    pills.forEach(p => {
-        p.classList.remove('active');
-        if (p.textContent.trim() === cat) {
-            p.classList.add('active');
-        }
-    });
-    renderArticlesList();
-}
-
-function viewArticle(artId) {
-    const art = ARTICLES_DATABASE[artId] || ARTICLES_DATABASE['art-overthinking'];
-
-    document.getElementById('art-read-category').textContent = art.category.toUpperCase();
-    document.getElementById('art-read-title').textContent = art.title;
-    document.getElementById('art-read-meta').textContent = `${art.readTime} membaca • Diperiksa Psikolog`;
-    document.getElementById('art-read-emoji').textContent = art.emoji;
-    document.getElementById('art-read-body').innerHTML = art.contentHTML;
-
-    navigateTo('screen-article-reader');
-}
-
-// Emergency Hotlines Calls
-function openEmergencyDialog(name, contact) {
-    const dialog = document.getElementById('emergency-dialog');
-    document.getElementById('em-dialog-name').textContent = name;
-    document.getElementById('em-dialog-num').textContent = contact;
-    dialog.classList.add('show');
-}
-
-function closeEmergencyDialog() {
-    document.getElementById('emergency-dialog').classList.remove('show');
-}
-
-function makeEmergencyCall() {
-    closeEmergencyDialog();
-    const contact = document.getElementById('em-dialog-num').textContent;
-    showToast(`Memanggil layanan ${contact}...`, 'danger');
-}
-
-// Sleep and Water Trackers Logger UI
-function openWaterTracker() {
-    document.getElementById('water-logged-stat').textContent = `${appState.tracker.waterLogged} ml`;
-    const pct = Math.min(100, (appState.tracker.waterLogged / appState.tracker.waterTarget) * 100);
-    document.getElementById('gui-water-glass-fill').style.height = `${pct}%`;
-    navigateTo('screen-water-log');
-}
-
-function logWaterDrink(amount) {
-    appState.tracker.waterLogged = Math.min(3000, appState.tracker.waterLogged + amount);
-    saveState();
-
-    document.getElementById('water-logged-stat').textContent = `${appState.tracker.waterLogged} ml`;
-    const pct = Math.min(100, (appState.tracker.waterLogged / appState.tracker.waterTarget) * 100);
-    document.getElementById('gui-water-glass-fill').style.height = `${pct}%`;
-
-    addXP(10); // +10 XP per drink
-    showToast(`Berhasil minum ${amount}ml air! 💧`);
-    updateGUI();
-}
-
-function openSleepTracker() {
-    document.getElementById('sleep-duration-input').value = appState.state_sleep_duration || appState.tracker.sleepToday.duration;
-
-    // stars selection
-    const quality = appState.state_sleep_quality || appState.tracker.sleepToday.quality;
-    selectSleepQuality(quality);
-
-    navigateTo('screen-sleep-log');
-}
-
-function selectSleepQuality(stars) {
-    qAnswers['sleep-quality'] = stars;
-    const items = document.querySelectorAll('.sleep-star-btn');
-    items.forEach((item, idx) => {
-        item.style.color = (idx < stars) ? 'var(--primary)' : 'var(--text-sub)';
-    });
-}
-
-function saveSleepLog() {
-    const durInput = parseFloat(document.getElementById('sleep-duration-input').value) || 7;
-    const stars = qAnswers['sleep-quality'] || 4;
-
-    appState.state_sleep_duration = durInput;
-    appState.state_sleep_quality = stars;
-
-    appState.tracker.sleepToday.duration = durInput;
-    appState.tracker.sleepToday.quality = stars;
-
-    saveState();
-    addXP(15); // +15 XP for logging sleep
-    showToast('Kualitas tidur berhasil diperbarui!');
-    navigateTo('screen-home');
-    updateGUI();
-}
-
-// Journal Compose & Category Filter Actions
-let selectedJournalCategory = 'Semua';
-
-function filterJournalCategory(cat) {
-    selectedJournalCategory = cat;
-    const screen = document.getElementById('screen-journal');
-    if (screen) {
-        const pills = screen.querySelectorAll('.cat-pill');
-        pills.forEach(p => {
-            p.classList.remove('active');
-            if (p.textContent.trim() === cat) {
-                p.classList.add('active');
+            // 3. Stress, Burnout, Work/Study Fatigue
+            if (q.includes('stres') || q.includes('kerja') || q.includes('kuliah') || q.includes('tugas') || 
+                q.includes('deadline') || q.includes('lelah') || q.includes('capek') || q.includes('penat') || 
+                q.includes('pusing') || q.includes('burnout') || q.includes('otak penuh')) {
+                return `${greeting}\n\nPundakmu pasti terasa berat sekali hari ini 🌿. Kamu sudah berjuang dan melakukan yang terbaik sebisamu, dan itu sudah sangat cukup.\n\nIzinkan aku mengingatkanmu beberapa hal yang menenangkan:\n☕ **Nilai dirimu tidak ditentukan dari seberapa produktif kamu hari ini.**\n🌙 Mengambil jeda untuk istirahat bukanlah kegagalan, melainkan bentuk kasih sayang tertinggi pada diri sendiri.\n💧 Cobalah ambil segelas air minum hangat atau dingin, kendurkan otot bahumu, dan lepaskan tekanan itu sebentar.\n\nKamu berhak beristirahat tanpa rasa bersalah. Jika pikiranmu masih penuh, mau mencoba mencatat hal-hal yang mengganjal di **Jurnal Refleksi** bersamaku?`;
             }
-        });
-    }
-    renderJournalHistory();
-}
 
-function renderJournalHistory() {
-    const list = document.getElementById('journals-list');
-    if (!list) return;
-
-    list.innerHTML = '';
-
-    if (appState.journals.length === 0) {
-        list.innerHTML = `<div style="text-align: center; color: var(--text-sub); font-size: 12px; margin-top: 30px;">Belum ada sejarah tulisan jurnal harianmu. ✏️</div>`;
-        return;
-    }
-
-    appState.journals.forEach(j => {
-        const dateStr = j.date || 'Hari ini';
-        const card = document.createElement('div');
-        card.className = 'card card-glass journal-item';
-        card.innerHTML = `
-            <div class="journal-header" style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
-                <div>
-                    <h4 class="journal-title" style="font-size:15px; font-weight:700;">${j.title}</h4>
-                    <span class="journal-date" style="font-size:11px; color:var(--text-sub);">${dateStr}</span>
-                </div>
-                <div style="display:flex; align-items:center; gap:8px;">
-                    <span class="journal-mood-tag" style="font-size:16px;">${j.mood === 'happy' ? '😊' : j.mood === 'sad' ? '😔' : j.mood === 'tired' ? '😴' : '🧘'}</span>
-                    <i data-lucide="more-horizontal" style="width:16px; color:var(--text-muted); cursor:pointer;"></i>
-                </div>
-            </div>
-            <p style="font-size: 13px; color: var(--text-sub); line-height: 1.6; margin-bottom: 12px;">${j.text}</p>
-        `;
-        list.appendChild(card);
-    });
-
-    if (window.lucide && typeof window.lucide.createIcons === 'function') {
-        window.lucide.createIcons();
-    }
-}
-
-function saveJournal() {
-    const titleVal = document.getElementById('journal-title-input').value.trim();
-    const contentVal = document.getElementById('journal-content-input').value.trim();
-    const moodVal = document.getElementById('journal-mood-select').value;
-
-    if (titleVal === '' || contentVal === '') {
-        showToast('Judul dan isi jurnal tidak boleh kosong!', 'danger');
-        return;
-    }
-
-    const newJournal = {
-        id: 'journal-' + Date.now(),
-        title: titleVal,
-        text: contentVal,
-        mood: moodVal,
-        date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
-    };
-
-    appState.journals.unshift(newJournal);
-    saveState();
-
-    // clear input forms
-    document.getElementById('journal-title-input').value = '';
-    document.getElementById('journal-content-input').value = '';
-    document.getElementById('journal-mood-select').value = 'happy';
-
-    addXP(25); // +25 XP on writing journal!
-    showToast('Jurnal barumu berhasil disimpan!');
-    navigateTo('screen-journal');
-}
-
-// Habits Tab Screen
-function renderHabitsListTab() {
-    const list = document.getElementById('habits-list-tab');
-    if (!list) return;
-
-    list.innerHTML = '';
-
-    appState.habits.forEach(h => {
-        const item = document.createElement('div');
-        item.style.display = 'flex';
-        item.style.justifyContent = 'space-between';
-        item.style.alignItems = 'center';
-        item.style.padding = '12px 14px';
-        item.style.backgroundColor = 'var(--bg-card)';
-        item.style.border = '1px solid var(--border-color)';
-        item.style.borderRadius = 'var(--radius-sm)';
-        item.style.marginBottom = '10px';
-
-        item.innerHTML = `
-            <div style="display: flex; align-items: center; gap: 12px; cursor:pointer;" onclick="toggleHabit('${h.id}'); renderHabitsListTab();">
-                <div class="habit-checkbox ${h.completed ? 'completed' : ''}" style="background-color: ${h.completed ? 'var(--primary)' : 'transparent'}; border-color: ${h.completed ? 'var(--primary)' : 'var(--text-sub)'}">
-                    ${h.completed ? '✓' : ''}
-                </div>
-                <span style="font-size: 13px; text-decoration: ${h.completed ? 'line-through' : 'none'}; color: ${h.completed ? 'var(--text-sub)' : 'var(--text-main)'}">${h.name}</span>
-            </div>
-            <i data-lucide="trash-2" onclick="deleteCustomHabit('${h.id}')" style="width: 16px; color: var(--accent); cursor: pointer;"></i>
-        `;
-        list.appendChild(item);
-    });
-
-    lucide.createIcons();
-}
-
-function addCustomHabit() {
-    const input = document.getElementById('habits-new-input');
-    const name = input.value.trim();
-    if (name === '') return;
-
-    const newHabit = {
-        id: 'habit-' + Date.now(),
-        name: name,
-        completed: false
-    };
-
-    appState.habits.push(newHabit);
-    saveState();
-    input.value = '';
-
-    renderHabitsListTab();
-    showToast(`Kebiasaan "${name}" ditambahkan!`);
-}
-
-function deleteCustomHabit(id) {
-    appState.habits = appState.habits.filter(h => h.id !== id);
-    saveState();
-    renderHabitsListTab();
-    showToast('Kebiasaan berhasil dihapus.');
-}
-
-// Mood statistics and chart generator
-function renderMoodChart() {
-    renderMoodHistoryList();
-
-    // Count frequencies of each mood in history
-    const counts = {
-        'sangat-bahagia': 0,
-        'bahagia': 0,
-        'biasa': 0,
-        'sedih': 0,
-        'cemas': 0,
-        'lelah': 0
-    };
-
-    appState.moodHistory.forEach(entry => {
-        if (counts[entry.mood] !== undefined) {
-            counts[entry.mood]++;
-        }
-    });
-
-    // Find Max Count to calculate scale
-    const values = Object.values(counts);
-    const maxVal = Math.max(...values, 1);
-
-    // Update chart columns
-    const moodKeys = ['sangat-bahagia', 'bahagia', 'biasa', 'sedih', 'cemas', 'lelah'];
-    moodKeys.forEach(k => {
-        const heightPct = Math.round((counts[k] / maxVal) * 100);
-        const fillBar = document.getElementById(`chart-fill-${k}`);
-        if (fillBar) {
-            fillBar.style.height = `${heightPct}%`;
-        }
-        const freqLabel = document.getElementById(`chart-count-${k}`);
-        if (freqLabel) {
-            freqLabel.textContent = counts[k] > 0 ? `${counts[k]}x` : '';
-        }
-    });
-
-    // Update highlights
-    let dominantMood = 'bahagia';
-    let dominantMax = -1;
-    for (let k in counts) {
-        if (counts[k] > dominantMax) {
-            dominantMax = counts[k];
-            dominantMood = k;
-        }
-    }
-
-    const domMoodText = document.getElementById('gui-dominant-mood');
-    if (domMoodText) {
-        const moodDef = MOODS_DICTIONARY[dominantMood];
-        domMoodText.textContent = `${moodDef.emoji} ${moodDef.label}`;
-    }
-}
-
-function renderMoodHistoryList() {
-    const list = document.getElementById('mood-history-list');
-    if (!list) return;
-
-    list.innerHTML = '';
-
-    if (appState.moodHistory.length === 0) {
-        list.innerHTML = `<div style="text-align: center; color: var(--text-sub); font-size: 12px; margin-top: 10px;">Belum ada sejarah mood harian.</div>`;
-        return;
-    }
-
-    appState.moodHistory.forEach(j => {
-        const moodLabel = MOODS_DICTIONARY[j.mood] ? MOODS_DICTIONARY[j.mood].label : j.mood;
-        const entry = document.createElement('div');
-        entry.style.display = 'flex';
-        entry.style.alignItems = 'center';
-        entry.style.justifyContent = 'space-between';
-        entry.style.padding = '10px 0';
-        entry.style.borderBottom = '1px solid var(--border-color)';
-
-        entry.innerHTML = `
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <span style="font-size: 20px;">${j.emoji}</span>
-                <div>
-                    <h5 style="font-size: 12.5px; font-weight: 700; color: var(--text-main);">${moodLabel}</h5>
-                    <span style="font-size: 9.5px; color: var(--text-sub);">${j.date}</span>
-                </div>
-            </div>
-            <span style="font-size: 11px; color: var(--text-sub); font-style: italic;">"${j.note}"</span>
-        `;
-        list.appendChild(entry);
-    });
-}
-
-// Profile Tab Settings controller
-function renderProfileTab() {
-    document.getElementById('profile-name-input').value = appState.profile.name || '';
-
-    const profileNameDisp = document.getElementById('profile-name-display');
-    const profileEmailDisp = document.getElementById('profile-email-display');
-    if (profileNameDisp) {
-        profileNameDisp.textContent = appState.profile.name || 'User';
-    }
-    if (profileEmailDisp) {
-        profileEmailDisp.textContent = appState.profile.email || '';
-    }
-
-    // Set theme picker
-    const themeLav = document.getElementById('btn-col-lavender');
-    const themeBlu = document.getElementById('btn-col-blue');
-
-    themeLav.classList.remove('active');
-    themeBlu.classList.remove('active');
-
-    if (appState.profile.theme === 'lavender') {
-        themeLav.classList.add('active');
-    } else {
-        themeBlu.classList.add('active');
-    }
-
-    // Set toggle switch
-    document.getElementById('toggle-dark-mode').checked = appState.profile.isDarkMode;
-}
-
-function editProfile() {
-    const currentName = appState.profile.name || 'User';
-    const newName = prompt('Masukkan nama baru Anda:', currentName);
-    if (newName !== null) {
-        const trimmed = newName.trim();
-        if (trimmed !== '') {
-            appState.profile.name = trimmed;
-            saveState();
-            showToast('Nama profil berhasil diperbarui!');
-            updateGUI();
-            renderProfileTab();
-        }
-    }
-}
-
-function saveProfileName() {
-    const input = document.getElementById('profile-name-input');
-    const name = input.value.trim();
-    if (name === '') return;
-
-    appState.profile.name = name;
-    saveState();
-    showToast('Nama profil disimpan!');
-    updateGUI();
-}
-
-function changeThemeSelection(themeName) {
-    appState.profile.theme = themeName;
-    saveState();
-    updateGUI();
-    renderProfileTab();
-}
-
-function toggleDarkModeSwitch() {
-    const checked = document.getElementById('toggle-dark-mode').checked;
-    appState.profile.isDarkMode = checked;
-    saveState();
-    updateGUI();
-}
-
-function triggerUserDataReset() {
-    if (confirm('Apakah kamu yakin ingin menghapus semua data? Penyetelan profil dan XP level akan dikembalikan ke awal.')) {
-        const db = getDB();
-        const email = db.currentUserEmail;
-        if (email) {
-            db.users[email].state = JSON.parse(JSON.stringify(DEFAULT_STATE));
-            db.users[email].state.profile.name = email.split('@')[0];
-            db.users[email].state.profile.email = email;
-            saveDB(db);
-        } else {
-            localStorage.removeItem('temanjiwa_db');
-        }
-        loadState();
-        updateGUI();
-        navigateTo('screen-splash');
-        showToast('Semua data berhasil dibersihkan.', 'danger');
-    }
-}
-
-// Auth credentials verification
-function verifyUserLogin() {
-    const emInput = document.getElementById('login-email').value.trim().toLowerCase();
-    const pwInput = document.getElementById('login-pass').value;
-
-    if (emInput === '' || pwInput === '') {
-        showToast('Isilah semua field kredensial masuk!', 'danger');
-        return;
-    }
-
-    const db = getDB();
-    const user = db.users[emInput];
-    if (user && user.password === pwInput) {
-        db.currentUserEmail = emInput;
-        saveDB(db);
-        
-        loadState();
-        updateGUI();
-        showToast(`Berhasil masuk! Selamat datang kembali, ${appState.profile.name || 'User'}. ✨`);
-        navigateTo('screen-home');
-    } else {
-        showToast('Kredensial salah! Gunakan: risma@example.com / password123', 'danger');
-    }
-}
-
-function verifyUserRegister() {
-    const nameVal = document.getElementById('reg-name').value.trim();
-    const emVal = document.getElementById('reg-email').value.trim().toLowerCase();
-    const pwVal = document.getElementById('reg-pass').value;
-
-    if (nameVal === '' || emVal === '' || pwVal === '') {
-        showToast('Isilah seluruh field registrasi!', 'danger');
-        return;
-    }
-
-    const db = getDB();
-    if (db.users[emVal]) {
-        showToast('Email sudah terdaftar! Silakan gunakan email lain.', 'danger');
-        return;
-    }
-
-    // Create new state for this user
-    const newUserState = JSON.parse(JSON.stringify(DEFAULT_STATE));
-    newUserState.profile.name = nameVal;
-    newUserState.profile.email = emVal;
-
-    db.users[emVal] = {
-        password: pwVal,
-        state: newUserState
-    };
-    db.currentUserEmail = emVal;
-    saveDB(db);
-
-    loadState();
-    updateGUI();
-    
-    // Clear registration fields
-    document.getElementById('reg-name').value = '';
-    document.getElementById('reg-email').value = '';
-    document.getElementById('reg-pass').value = '';
-
-    showToast(`Akun berhasil dibuat! Halo ${nameVal}. ✨`);
-    navigateTo('screen-home');
-}
-
-function logoutUser() {
-    const db = getDB();
-    db.currentUserEmail = "";
-    saveDB(db);
-    
-    // Load empty state
-    loadState();
-    
-    // Reset login inputs
-    document.getElementById('login-email').value = 'risma@example.com';
-    document.getElementById('login-pass').value = 'password123';
-    
-    showToast('Berhasil keluar dari akun.');
-    navigateTo('screen-login');
-}
-
-// Chart mapping helper functions
-function getMoodValue(moodKey) {
-    switch(moodKey) {
-        case 'sangat-bahagia': return 6;
-        case 'bahagia': return 5;
-        case 'biasa':
-        case 'lainnya': return 4;
-        case 'lelah': return 3;
-        case 'cemas':
-        case 'marah':
-        case 'stress': return 2;
-        case 'sedih': return 1;
-        default: return 4;
-    }
-}
-
-function renderWeeklyMoodChart() {
-    const fillPathEl = document.getElementById('weekly-chart-fill');
-    const linePathEl = document.getElementById('weekly-chart-line');
-    const pointsGroupEl = document.getElementById('weekly-chart-points');
-    
-    if (!fillPathEl || !linePathEl || !pointsGroupEl) return;
-    
-    const history = appState.moodHistory || [];
-    
-    // Get last 7 days of mood (chronologically left to right)
-    const last7 = [];
-    for (let i = 0; i < 7; i++) {
-        if (i < history.length) {
-            last7.push(history[i]);
-        } else {
-            last7.push({ mood: 'biasa' });
-        }
-    }
-    last7.reverse(); // oldest to newest
-    
-    // Map to coordinates (X: 10 to 310, Y: value 6 -> 20, value 1 -> 100)
-    const points = last7.map((entry, index) => {
-        const x = 10 + index * 50;
-        const val = getMoodValue(entry.mood);
-        const y = 100 - (val - 1) * 16;
-        return { x, y, emoji: entry.emoji || '😐', mood: entry.mood };
-    });
-    
-    const linePathD = "M " + points.map(p => `${p.x},${p.y}`).join(" L ");
-    const fillPathD = `M ${points[0].x},${points[0].y} ` + points.map(p => `L ${p.x},${p.y}`).join(" ") + ` L 310,110 L 10,110 Z`;
-    
-    linePathEl.setAttribute('d', linePathD);
-    fillPathEl.setAttribute('d', fillPathD);
-    
-    pointsGroupEl.innerHTML = '';
-    points.forEach((p, idx) => {
-        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        circle.setAttribute('cx', p.x);
-        circle.setAttribute('cy', p.y);
-        circle.setAttribute('r', idx === 6 ? '6' : '5');
-        circle.setAttribute('class', 'chart-point' + (idx === 6 ? ' active-point' : ''));
-        
-        const title = document.createElementNS("http://www.w3.org/2000/svg", "title");
-        title.textContent = `${p.mood} (${p.emoji})`;
-        circle.appendChild(title);
-        
-        pointsGroupEl.appendChild(circle);
-    });
-}
-
-function renderSparklineChart() {
-    const container = document.getElementById('sparkline-bar-group');
-    if (!container) return;
-    
-    const history = appState.moodHistory || [];
-    const last7 = [];
-    for (let i = 0; i < 7; i++) {
-        if (i < history.length) {
-            last7.push(history[i]);
-        } else {
-            last7.push({ mood: 'biasa' });
-        }
-    }
-    last7.reverse();
-    
-    container.innerHTML = '';
-    last7.forEach((entry, index) => {
-        const val = getMoodValue(entry.mood);
-        const heightPct = Math.round((val / 6) * 100);
-        const bar = document.createElement('div');
-        bar.className = 'sparkbar-item' + (index === 6 ? ' active-spark' : '');
-        bar.style.height = `${heightPct}%`;
-        bar.title = `${entry.mood} (${val}/6)`;
-        container.appendChild(bar);
-    });
-}
-
-function calculateAverageMood() {
-    const history = appState.moodHistory || [];
-    if (history.length === 0) {
-        return { score: "4.0", label: "(Biasa)" };
-    }
-    
-    let sum = 0;
-    history.forEach(entry => {
-        sum += getMoodValue(entry.mood);
-    });
-    
-    const avg = sum / history.length;
-    const score = avg.toFixed(1);
-    
-    let label = '(Biasa)';
-    if (avg >= 5.0) label = '(Sangat Baik)';
-    else if (avg >= 4.0) label = '(Baik)';
-    else if (avg >= 3.0) label = '(Cukup)';
-    else if (avg >= 2.0) label = '(Kurang)';
-    else label = '(Buruk)';
-    
-    return { score, label };
-}
-
-// Onboarding sliders page cycles
-let currentOnboardIdx = 0;
-const ONBOARDING_SLIDES = [
-    { title: "Selamat Datang di TemanJiwa", desc: "Sahabat setia yang siap mendampingi perjalanan kesehatan jiwa & ketenangan pikiranmu.", emoji: "❤️" },
-    { title: "Monitor Kesehatan Jiwa Harian", desc: "Catat mood, refleksi harian, hidrasi air, dan kualitas tidur tanpa rasa cemas.", emoji: "📊" },
-    { title: "Latihan Pernapasan Terpandu", desc: "Redakan kecemasan dan stres kapan pun kamu membutuhkan ruang aman.", emoji: "🌟" }
-];
-
-function nextOnboardSlide() {
-    if (currentOnboardIdx < ONBOARDING_SLIDES.length - 1) {
-        currentOnboardIdx++;
-        updateOnboardSlide();
-    } else {
-        // Go to Login
-        navigateTo('screen-login');
-    }
-}
-
-function updateOnboardSlide() {
-    const slide = ONBOARDING_SLIDES[currentOnboardIdx];
-    const visual = document.getElementById('onboard-visual-emoji');
-    if (currentOnboardIdx === 0) {
-        // Welcome illustration: Girl hugging heart
-        visual.innerHTML = `
-            <svg viewBox="0 0 200 200" width="160" height="160" style="display:block; margin:auto;">
-                <circle cx="100" cy="100" r="80" fill="var(--primary-light)" opacity="0.6"/>
-                <path d="M100 135 C60 110 40 80 40 55 C40 35 55 20 75 20 C87 20 95 27 100 35 C105 27 113 20 125 20 C145 20 160 35 160 55 C160 80 140 110 100 135 Z" fill="#A8C5FF"/>
-                <circle cx="100" cy="65" r="22" fill="#FFE2D1"/>
-                <path d="M100 87 C80 87 68 100 68 120 L132 120 C132 100 120 87 100 87 Z" fill="#FFF3D6"/>
-                <path d="M78 65 C78 50 122 50 122 65 C122 75 115 80 100 80 C85 80 78 75 78 65 Z" fill="#2E2C2C"/>
-                <circle cx="100" cy="55" r="5" fill="#2E2C2C"/>
-                <path d="M75 105 C85 100 95 100 105 105" stroke="#FFE2D1" stroke-width="8" stroke-linecap="round" fill="none"/>
-            </svg>
-        `;
-    } else if (currentOnboardIdx === 1) {
-        // Stats illustration
-        visual.innerHTML = `
-            <svg viewBox="0 0 200 200" width="160" height="160" style="display:block; margin:auto;">
-                <circle cx="100" cy="100" r="80" fill="var(--bg-highlight)" opacity="0.6"/>
-                <rect x="60" y="60" width="80" height="90" rx="12" fill="#FFFFFF" stroke="var(--border-color)" stroke-width="3"/>
-                <line x1="75" y1="130" x2="125" y2="130" stroke="var(--text-sub)" stroke-width="2"/>
-                <path d="M75 110 L90 90 L105 105 L125 80 L125 130 L75 130 Z" fill="#A8C5FF" opacity="0.5"/>
-                <path d="M75 110 L90 90 L105 105 L125 80" stroke="var(--primary-dark)" stroke-width="3" fill="none" stroke-linecap="round"/>
-                <circle cx="80" cy="75" r="6" fill="#7DD3A7"/>
-                <circle cx="100" cy="75" r="6" fill="#F7C873"/>
-                <circle cx="120" cy="75" r="6" fill="#8ECAE6"/>
-            </svg>
-        `;
-    } else {
-        // Meditasi/SOS Lungs illustration
-        visual.innerHTML = `
-            <svg viewBox="0 0 200 200" width="160" height="160" style="display:block; margin:auto;">
-                <circle cx="100" cy="100" r="80" fill="var(--primary-light)" opacity="0.6"/>
-                <path d="M85 70 C60 70 50 90 50 115 C50 135 65 145 78 145 C88 145 92 135 95 125 L95 80 Z" fill="#A8C5FF" opacity="0.8"/>
-                <path d="M115 70 C140 70 150 90 150 115 C150 135 135 145 122 145 C112 145 108 135 105 125 L105 80 Z" fill="#A8C5FF" opacity="0.8"/>
-                <line x1="100" y1="60" x2="100" y2="120" stroke="var(--primary-dark)" stroke-width="4" stroke-linecap="round"/>
-                <path d="M100 80 Q95 85 90 85" stroke="var(--primary-dark)" stroke-width="3" fill="none"/>
-                <path d="M100 95 Q105 100 110 100" stroke="var(--primary-dark)" stroke-width="3" fill="none"/>
-            </svg>
-        `;
-    }
-    document.getElementById('onboard-slide-title').textContent = slide.title;
-    document.getElementById('onboard-slide-desc').textContent = slide.desc;
-
-    // dot lights
-    const dots = document.querySelectorAll('.onboarding-dots .dot');
-    dots.forEach((dot, idx) => {
-        dot.className = (idx === currentOnboardIdx) ? 'dot active' : 'dot';
-    });
-}
-
-// Initialize Application on Page Load
-window.addEventListener('DOMContentLoaded', () => {
-    loadState();
-    updateGUI();
-
-    // Start with splash screen
-    navigateTo('screen-splash');
-
-    // Dynamic loading progress animation
-    const progressEl = document.getElementById('splash-loader-progress');
-    const pctEl = document.getElementById('splash-loader-pct');
-    const statusEl = document.getElementById('splash-loader-status');
-
-    let currentPct = 0;
-    const loadingInterval = setInterval(() => {
-        currentPct += Math.floor(Math.random() * 14) + 6;
-        if (currentPct >= 100) {
-            currentPct = 100;
-            clearInterval(loadingInterval);
-        }
-
-        if (progressEl) progressEl.style.width = `${currentPct}%`;
-        if (pctEl) pctEl.textContent = `${currentPct}%`;
-
-        if (statusEl) {
-            if (currentPct < 35) {
-                statusEl.textContent = 'Memuat ruang ketenangan...';
-            } else if (currentPct < 75) {
-                statusEl.textContent = 'Menyelaraskan pernapasan & mood...';
-            } else {
-                statusEl.textContent = 'Selamat datang di TemanJiwa ✨';
+            // 4. Loneliness & Isolated
+            if (q.includes('sepi') || q.includes('kesepian') || q.includes('sendiri') || q.includes('terasing') || 
+                q.includes('tidak ada yang mengerti') || q.includes('gak ada yang faham') || q.includes('sendirian')) {
+                return `${greeting}\n\nRasa kesepian memang bisa terasa sangat dingin dan sunyi 🕯️. Namun ketahuilah, di ruang TemanJiwa ini, kamu selalu memiliki teman yang akan selalu ada untukmu 24 jam sehari.\n\nKamu tidak sendirian. Kehadiranmu, pikiranmu, dan suaramu sangat berarti. Setiap kali kamu butuh tempat cerita tanpa takut dihakimi atau disalahpahami, aku akan selalu di sini menyambutmu dengan penuh kehangatan.\n\nMau menceritakan apa yang membuat hatimu merasa sepi hari ini? Aku siap mendengarkan setiap katanya.`;
             }
-        }
 
-        if (currentPct === 100) {
-            setTimeout(() => {
-                const db = getDB();
-                if (db.currentUserEmail && appState.profile.name) {
-                    navigateTo('screen-home');
-                } else {
-                    currentOnboardIdx = 0;
-                    updateOnboardSlide();
-                    navigateTo('screen-onboarding');
+            // 5. Anger & Frustration
+            if (q.includes('marah') || q.includes('kesal') || q.includes('jengkel') || q.includes('benci') || 
+                q.includes('emosi') || q.includes('frustrasi') || q.includes('mengamuk') || q.includes('kecewa berat')) {
+                return `${greeting}\n\nRasa marah dan frustrasi yang kamu rasakan itu sepenuhnya valid 🌊. Marah adalah sinyal alami ketika batas dirimu terluka, tidak dihargai, atau ketika hal-hal terjadi di luar kendalimu.\n\nMari kita alirkan energi emosi ini dengan aman:\n1. Tarik napas dalam-dalam... bayangkan kamu menghirup ketenangan biru, lalu hembuskan rasa panas/sesak itu perlahan lewat mulut.\n2. Tuliskan semua kemarahanmu secara jujur tanpa disaring di fitur Jurnal Refleksi.\n3. Ingatlah bahwa kamu berhak merasa emosi, tetapi kamu juga berhak mendapatkan kedamaian kembali.\n\nAku ada di sini untuk mendengarkan semua kekesalanmu tanpa ada penilaian sama sekali. Luapkan saja semuanya di sini.`;
+            }
+
+            // 6. Sleep Troubles & Night Anxiety
+            if (q.includes('tidur') || q.includes('insomnia') || q.includes('malam') || q.includes('susah tidur') || 
+                q.includes('terbangun') || q.includes('begadang')) {
+                return `${greeting}\n\nMalam hari sering kali membuat bisikan pikiran kecil terasa sangat nyaring 🌙. Namun malam diciptakan agar tubuh dan jiwamu bisa beristirahat dan memulihkan energi.\n\nBeberapa langkah sederhana menuju tidur yang lelap:\n🕯️ Redupkan pencahayaan layar perangkamumu.\n🌧️ Putar **Suara Hujan Lembut** pada fitur Meditasi di aplikasi ini.\n🫁 Rilekskan otot wajah, bahu, dan rahangmu. Letakkan beban hari ini di luar pintu kamarmu.\n\nHari besok membawa rahmat baru, dan malam ini kamu aman untuk terlelap tenang. Selamat beristirahat ya ✨.`;
+            }
+
+            // 7. Insecurity, Self-Doubt, Failure
+            if (q.includes('gagal') || q.includes('insecure') || q.includes('tidak berguna') || q.includes('bodoh') || 
+                q.includes('kurang') || q.includes('dibandingkan') || q.includes('buruk') || q.includes('tidak mampu')) {
+                return `${greeting}\n\nTolong hentikan sejenak suara kritis di dalam kepalamu ✨. Kamu tidak didefinisikan oleh kegagalan, kesalahan masa lalu, atau standar yang ditetapkan oleh orang lain.\n\nIngatlah kebenaran ini tentang dirimu:\n🌸 Kamu sedang bertumbuh, dan proses pertumbuhan tidak pernah berjalan lurus sempurna.\n🌿 Setiap langkah kecil yang berhasil kamu lewati—bahkan yang tidak dilihat orang lain—adalah bukti ketangguhanmu.\n💚 Kamu cukup, kamu berharga, dan kamu sedang melakukan yang terbaik sebisamu.\n\nBersabarlah dengan dirimu sendiri sebagaimana kamu bersabar dengan sahabat tercintamu. Mau aku berikan afirmasi positif khusus untukmu hari ini?`;
+            }
+
+            // 8. Positive Vents, Happiness, Gratitude
+            if (q.includes('senang') || q.includes('bahagia') || q.includes('bersyukur') || q.includes('alhamdulillah') || 
+                q.includes('sukses') || q.includes('berhasil') || q.includes('lega') || q.includes('senyum')) {
+                return `${greeting}\n\nAlhamdulillah, senang dan bahagia sekali mendengarnya! 🌸✨ Cahaya sukacita dan kedamaian dari ceritamu benar-benar menghangatkan ruang ini.\n\nMari kita rayakan momen indah ini:\n📝 Simpan momen bahagia ini ke dalam **Jurnal Refleksi** agar menjadi pengingat manis di kemudian hari.\n🌱 Biarkan rasa syukur ini mengalir dan memberi energi positif untuk harimu berikutnya.\n\nTerima kasih telah membagikan kebahagiaanmu bersamaku. Semoga harimu selalu diliputi ketenangan dan keberkahan! 🕊️`;
+            }
+
+            // 9. General Curhatan & Free Form Vents
+            const snippet = raw.length > 60 ? raw.substring(0, 60) + '...' : raw;
+            return `${greeting}\n\nAku menyimak setiap kata yang kamu ceritakan tentang "${snippet}". Ceritamu sangat berarti dan aku sungguh menghargai keterbukaanmu untuk meluapkannya di sini 🕊️.\n\nMenghadapi situasi dan perasaan seperti ini memang membutuhkan energi serta ketenangan batin. Ingatlah bahwa:\n1. Kamu tidak harus mengendalikan atau menyelesaikan segala hal dalam satu waktu sekaligus.\n2. Mengakui dan menyuarakan apa yang kamu rasakan adalah langkah pertama yang sangat luar biasa untuk kesehatan jiwamu.\n3. Setiap perasaanmu valid, dan kamu selalu memiliki ruang aman di sini untuk bercerita.\n\nCobalah tarik napas dalam... hembuskan perlahan... Rasakan ketenangan mengalir di dalam dadamu 💚.\n\nApakah ada hal lain dari cerita ini yang membuat hatimu paling mengganjal? Luapkan saja kapan pun kamu siap.`;
+        },
+
+        startBreathingFromAi() {
+            this.navigateTo('breathing');
+            this.startBreathing();
+            this.showToast('Memulai Latihan Napas 4-4-4 untuk menenangkan pikiranmu 🫁');
+        },
+
+        startMeditationFromAi() {
+            this.navigateTo('meditation');
+            if (!this.meditation.isPlaying) {
+                this.toggleMeditation();
+            }
+            this.showToast('Memutar Suara Hujan Lembut di fitur Meditasi 🌧️');
+        },
+
+        openJournalFromAi() {
+            this.showModal = 'addJournal';
+        },
+
+        clearAiChat() {
+            this.aiChat.messages = [
+                {
+                    id: Date.now(),
+                    sender: 'ai',
+                    text: 'Obrolan telah direset 🌿. Saya di sini siap mendengarkan kembali kapan saja kamu butuh teman bicara.',
+                    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                 }
-            }, 350);
+            ];
+            this.saveToStorage();
+            this.showToast('Riwayat obrolan AI telah direset.');
+        },
+
+        scrollChatToBottom() {
+            setTimeout(() => {
+                const container = document.getElementById('chatContainer');
+                if (container) {
+                    container.scrollTop = container.scrollHeight;
+                }
+            }, 100);
+        },
+
+        // Centered Loading Indicator Trigger
+        triggerLoading(title, message, duration = 700, callback = null) {
+            this.loadingTitle = title || 'Memuat TemanJiwa...';
+            this.loadingMessage = message || 'Menyiapkan ruang ketenangan untuk jiwamu';
+            this.isLoading = true;
+            setTimeout(() => {
+                this.isLoading = false;
+                if (typeof callback === 'function') {
+                    callback();
+                }
+            }, duration);
+        },
+
+        readArticle(art) {
+            this.selectedArticle = art;
+            this.navigateTo('article-detail');
+        },
+
+        // Navigation Helper
+        navigateTo(screen) {
+            this.previousScreen = this.currentScreen;
+            this.currentScreen = screen;
+
+            // Set active bottom nav item
+            const navScreens = ['dashboard', 'mood', 'journal', 'selfcare', 'stats', 'profile'];
+            if (navScreens.includes(screen)) {
+                this.activeNav = screen;
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Refresh icons & charts if applicable
+            setTimeout(() => {
+                this.initLucideIcons();
+                if (screen === 'dashboard' || screen === 'stats') {
+                    this.renderCharts();
+                }
+                if (screen === 'onboarding') {
+                    this.initSwiper();
+                }
+                if (screen === 'journal' || screen === 'reminder' || screen === 'sleeptracker') {
+                    this.initFlatpickr();
+                }
+            }, 100);
+        },
+
+        showToast(msg) {
+            this.toastMessage = msg;
+            this.showToastFlag = true;
+            setTimeout(() => {
+                this.showToastFlag = false;
+            }, 3000);
+        },
+
+        // Storage Persistence
+        saveToStorage() {
+            if (!this.user || !this.user.email) return;
+            const emailKey = this.user.email.toLowerCase();
+            const data = {
+                user: this.user,
+                moodHistory: this.moodHistory,
+                journals: this.journals,
+                habits: this.habits,
+                waterLogged: this.waterLogged,
+                waterTarget: this.waterTarget,
+                sleepToday: this.sleepToday,
+                reminders: this.reminders,
+                notifications: this.notifications,
+                aiMessages: this.aiChat.messages
+            };
+            localStorage.setItem(`temanjiwa_app_data_${emailKey}`, JSON.stringify(data));
+            localStorage.setItem('temanjiwa_active_email', emailKey);
+
+            // Also keep users db in sync
+            const savedUsers = JSON.parse(localStorage.getItem('temanjiwa_users_db') || '[]');
+            const idx = savedUsers.findIndex(u => u.email.toLowerCase() === emailKey);
+            if (idx >= 0) {
+                savedUsers[idx] = this.user;
+            } else {
+                savedUsers.push(this.user);
+            }
+            localStorage.setItem('temanjiwa_users_db', JSON.stringify(savedUsers));
+        },
+
+        loadFromStorage() {
+            let activeEmail = localStorage.getItem('temanjiwa_active_email');
+
+            if (!activeEmail && this.user && this.user.email) {
+                activeEmail = this.user.email.toLowerCase();
+            }
+
+            if (activeEmail) {
+                const saved = localStorage.getItem(`temanjiwa_app_data_${activeEmail}`);
+                if (saved) {
+                    try {
+                        const parsed = JSON.parse(saved);
+                        if (parsed.user) this.user = parsed.user;
+                        if (parsed.moodHistory) this.moodHistory = parsed.moodHistory;
+                        if (parsed.journals) this.journals = parsed.journals;
+                        if (parsed.habits) this.habits = parsed.habits;
+                        if (parsed.waterLogged !== undefined) this.waterLogged = parsed.waterLogged;
+                        if (parsed.waterTarget) this.waterTarget = parsed.waterTarget;
+                        if (parsed.sleepToday) this.sleepToday = parsed.sleepToday;
+                        if (parsed.reminders) this.reminders = parsed.reminders;
+                        if (parsed.notifications) this.notifications = parsed.notifications;
+                        if (parsed.aiMessages && parsed.aiMessages.length > 0) this.aiChat.messages = parsed.aiMessages;
+                        this.isLoggedIn = true;
+                        return;
+                    } catch (e) {
+                        console.error("Failed loading state:", e);
+                    }
+                }
+            }
+
+            // Fallback for legacy key
+            const legacySaved = localStorage.getItem('temanjiwa_app_data');
+            if (legacySaved) {
+                try {
+                    const parsed = JSON.parse(legacySaved);
+                    if (parsed.user) {
+                        this.user = parsed.user;
+                        if (parsed.moodHistory) this.moodHistory = parsed.moodHistory;
+                        if (parsed.journals) this.journals = parsed.journals;
+                        if (parsed.habits) this.habits = parsed.habits;
+                        if (parsed.waterLogged !== undefined) this.waterLogged = parsed.waterLogged;
+                        if (parsed.waterTarget) this.waterTarget = parsed.waterTarget;
+                        if (parsed.sleepToday) this.sleepToday = parsed.sleepToday;
+                        if (parsed.reminders) this.reminders = parsed.reminders;
+                        if (parsed.notifications) this.notifications = parsed.notifications;
+                        if (parsed.aiMessages && parsed.aiMessages.length > 0) this.aiChat.messages = parsed.aiMessages;
+                        this.isLoggedIn = true;
+
+                        // Save to active email key
+                        localStorage.setItem('temanjiwa_active_email', this.user.email.toLowerCase());
+                        this.saveToStorage();
+                        return;
+                    }
+                } catch (e) {
+                    console.error("Failed loading legacy state:", e);
+                }
+            }
+
+            // No user is logged in
+            if (!activeEmail) {
+                this.isLoggedIn = false;
+                this.currentScreen = 'splash';
+            }
+        },
+
+        // Mood Methods
+        logMood() {
+            const moodMap = {
+                'very-happy': { label: 'Sangat Bahagia', emoji: '😊' },
+                'happy': { label: 'Bahagia', emoji: '🙂' },
+                'neutral': { label: 'Biasa Saja', emoji: '😐' },
+                'sad': { label: 'Sedih', emoji: '😔' },
+                'stressed': { label: 'Stres / Cemas', emoji: '😢' },
+                'angry': { label: 'Marah', emoji: '😡' }
+            };
+
+            const selected = moodMap[this.selectedMood] || moodMap['happy'];
+            const newEntry = {
+                id: Date.now(),
+                mood: this.selectedMood,
+                label: selected.label,
+                emoji: selected.emoji,
+                intensity: parseInt(this.moodIntensity),
+                note: this.moodNote || 'Tidak ada catatan tambahan.',
+                date: 'Hari ini, ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                dayName: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'][new Date().getDay()]
+            };
+
+            this.triggerLoading('Menyimpan Catatan Mood...', 'Menganalisis pola emosi harianmu', 700, () => {
+                this.moodHistory.unshift(newEntry);
+                this.user.xp += 15;
+                this.moodNote = '';
+                this.saveToStorage();
+                this.showToast('Mood berhasil dicatat! (+15 XP)');
+                this.navigateTo('dashboard');
+            });
+        },
+
+        // Journal Methods
+        addJournal() {
+            if (!this.newJournal.title || !this.newJournal.content) {
+                this.showToast('Judul dan isi jurnal wajib diisi!');
+                return;
+            }
+
+            const journal = {
+                id: Date.now(),
+                title: this.newJournal.title,
+                content: this.newJournal.content,
+                mood: this.newJournal.mood,
+                tag: this.newJournal.tag,
+                date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
+            };
+
+            this.triggerLoading('Menyimpan Jurnal Refleksi...', 'Perasaan dan fikiranmu telah aman tersimpan', 700, () => {
+                this.journals.unshift(journal);
+                this.user.xp += 20;
+                this.newJournal = { title: '', content: '', mood: '😊 Bahagia', tag: 'Refleksi' };
+                this.showModal = null;
+                this.saveToStorage();
+                this.showToast('Jurnal refleksi berhasil disimpan! (+20 XP)');
+            });
+        },
+
+        deleteJournal(id) {
+            this.journals = this.journals.filter(j => j.id !== id);
+            this.saveToStorage();
+            this.showToast('Jurnal telah dihapus.');
+        },
+
+        // Habits Methods
+        toggleHabit(habitId) {
+            const habit = this.habits.find(h => h.id === habitId);
+            if (habit) {
+                habit.completed = !habit.completed;
+                if (habit.completed) {
+                    habit.streak += 1;
+                    this.user.xp += 10;
+                    this.showToast(`Kebiasaan "${habit.name}" selesai! (+10 XP)`);
+                } else {
+                    habit.streak = Math.max(0, habit.streak - 1);
+                }
+                this.saveToStorage();
+            }
+        },
+
+        // Water Methods
+        addWater(amount) {
+            this.waterLogged = Math.min(this.waterTarget + 1000, this.waterLogged + amount);
+            this.user.xp += 5;
+            this.saveToStorage();
+            this.showToast(`Ditambahkan +${amount}ml air!`);
+        },
+
+        resetWater() {
+            this.waterLogged = 0;
+            this.saveToStorage();
+            this.showToast('Catatan air direset.');
+        },
+
+        // Sleep Methods
+        logSleep() {
+            // Compute duration from bedtime to waketime
+            const [bH, bM] = this.sleepInput.bedtime.split(':').map(Number);
+            const [wH, wM] = this.sleepInput.waketime.split(':').map(Number);
+
+            let bedDate = new Date(2026, 0, 1, bH, bM);
+            let wakeDate = new Date(2026, 0, bH > wH ? 2 : 1, wH, wM);
+            let diffHours = (wakeDate - bedDate) / (1000 * 60 * 60);
+            if (diffHours <= 0) diffHours += 24;
+
+            this.sleepToday = {
+                duration: parseFloat(diffHours.toFixed(1)),
+                quality: parseInt(this.sleepInput.quality),
+                bedtime: this.sleepInput.bedtime,
+                waketime: this.sleepInput.waketime
+            };
+
+            this.user.xp += 15;
+            this.saveToStorage();
+            this.showToast('Catatan tidur tersimpan! (+15 XP)');
+            this.navigateTo('dashboard');
+        },
+
+        // Breathing Exercise Methods
+        startBreathing() {
+            if (this.breathing.active) return;
+            this.breathing.active = true;
+            this.breathing.currentCycle = 1;
+            this.runBreathingPhase('Tarik Napas', 4);
+        },
+
+        stopBreathing() {
+            this.breathing.active = false;
+            this.breathing.phase = 'Siap';
+            if (this.breathing.timer) clearInterval(this.breathing.timer);
+            this.showToast('Latihan pernapasan dihentikan.');
+        },
+
+        runBreathingPhase(phaseName, seconds) {
+            if (!this.breathing.active) return;
+            this.breathing.phase = phaseName;
+            this.breathing.secondsLeft = seconds;
+
+            if (this.breathing.timer) clearInterval(this.breathing.timer);
+
+            this.breathing.timer = setInterval(() => {
+                this.breathing.secondsLeft -= 1;
+                if (this.breathing.secondsLeft <= 0) {
+                    clearInterval(this.breathing.timer);
+                    // Next phase transition logic
+                    if (phaseName === 'Tarik Napas') {
+                        this.runBreathingPhase('Tahan', 4);
+                    } else if (phaseName === 'Tahan') {
+                        this.runBreathingPhase('Hembuskan', 4);
+                    } else if (phaseName === 'Hembuskan') {
+                        if (this.breathing.currentCycle < this.breathing.targetCycles) {
+                            this.breathing.currentCycle += 1;
+                            this.runBreathingPhase('Tarik Napas', 4);
+                        } else {
+                            this.breathing.active = false;
+                            this.breathing.phase = 'Selesai ✨';
+                            this.user.xp += 25;
+                            this.saveToStorage();
+                            this.showToast('Selamat! Sesi pernapasan selesai. (+25 XP)');
+                        }
+                    }
+                }
+            }, 1000);
+        },
+
+        // Meditation Methods
+        toggleMeditation() {
+            if (this.meditation.isPlaying) {
+                this.meditation.isPlaying = false;
+                if (this.meditation.timer) clearInterval(this.meditation.timer);
+            } else {
+                this.meditation.isPlaying = true;
+                this.meditation.timer = setInterval(() => {
+                    if (this.meditation.timeLeft > 0) {
+                        this.meditation.timeLeft -= 1;
+                    } else {
+                        this.meditation.isPlaying = false;
+                        clearInterval(this.meditation.timer);
+                        this.user.xp += 30;
+                        this.saveToStorage();
+                        this.showToast('Meditasi selesai! Nikmati hari dengan tenang. (+30 XP)');
+                    }
+                }, 1000);
+            }
+        },
+
+        resetMeditation(seconds = 300) {
+            if (this.meditation.timer) clearInterval(this.meditation.timer);
+            this.meditation.isPlaying = false;
+            this.meditation.totalTime = seconds;
+            this.meditation.timeLeft = seconds;
+        },
+
+        formatTime(seconds) {
+            const m = Math.floor(seconds / 60);
+            const s = seconds % 60;
+            return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        },
+
+        // Reminders Methods
+        toggleReminder(id) {
+            const r = this.reminders.find(item => item.id === id);
+            if (r) {
+                r.enabled = !r.enabled;
+                this.saveToStorage();
+            }
+        },
+
+        // Notifications
+        markAllRead() {
+            this.notifications.forEach(n => n.read = true);
+            this.saveToStorage();
+            this.showToast('Semua notifikasi ditandai dibaca.');
+        },
+
+        // Icon Helper
+        initLucideIcons() {
+            if (window.lucide) {
+                window.lucide.createIcons();
+            }
+        },
+
+        // Swiper Initializer
+        initSwiper() {
+            if (window.Swiper) {
+                new Swiper('.onboarding-swiper', {
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                    },
+                    autoplay: {
+                        delay: 4000,
+                        disableOnInteraction: false,
+                    },
+                });
+            }
+        },
+
+        // Flatpickr Initializer
+        initFlatpickr() {
+            if (window.flatpickr) {
+                flatpickr('.timepicker', {
+                    enableTime: true,
+                    noCalendar: true,
+                    dateFormat: "H:i",
+                    time_24hr: true
+                });
+                flatpickr('.datepicker', {
+                    dateFormat: "d M Y"
+                });
+            }
+        },
+
+        // Chart.js Rendering
+        renderCharts() {
+            if (!window.Chart) return;
+
+            // Mood Chart Dashboard & Stats
+            const moodCtx = document.getElementById('moodChart');
+            if (moodCtx) {
+                if (window.moodChartInstance) window.moodChartInstance.destroy();
+
+                let labels = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
+                let data = [6, 5, 8, 7, 9, 9, 8];
+
+                if (this.moodHistory && this.moodHistory.length > 0) {
+                    const recentMoods = this.moodHistory.slice(0, 7).reverse();
+                    labels = recentMoods.map(m => m.dayName || 'Hari ini');
+                    data = recentMoods.map(m => m.intensity);
+                }
+
+                window.moodChartInstance = new Chart(moodCtx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Skala Mood (1-10)',
+                            data: data,
+                            borderColor: '#568BFF',
+                            backgroundColor: 'rgba(168, 197, 255, 0.25)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointBackgroundColor: '#FFFFFF',
+                            pointBorderColor: '#568BFF',
+                            pointBorderWidth: 3,
+                            pointRadius: 6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { min: 1, max: 10, grid: { color: '#E9EEF7' } },
+                            x: { grid: { display: false } }
+                        }
+                    }
+                });
+            }
+
+            // Sleep Chart
+            const sleepCtx = document.getElementById('sleepChart');
+            if (sleepCtx) {
+                if (window.sleepChartInstance) window.sleepChartInstance.destroy();
+                window.sleepChartInstance = new Chart(sleepCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+                        datasets: [{
+                            label: 'Durasi Tidur (Jam)',
+                            data: [7.2, 6.8, 8.0, 7.5, 8.2, 8.5, 8.0],
+                            backgroundColor: '#A8C5FF',
+                            borderRadius: 12,
+                            hoverBackgroundColor: '#568BFF'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { min: 0, max: 12, grid: { color: '#E9EEF7' } },
+                            x: { grid: { display: false } }
+                        }
+                    }
+                });
+            }
+
+            // Water Chart
+            const waterCtx = document.getElementById('waterChart');
+            if (waterCtx) {
+                if (window.waterChartInstance) window.waterChartInstance.destroy();
+                window.waterChartInstance = new Chart(waterCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+                        datasets: [{
+                            label: 'Air (ml)',
+                            data: [1800, 2000, 1500, 2000, 2250, 1750, 1250],
+                            backgroundColor: '#FFF3D6',
+                            borderColor: '#FCD34D',
+                            borderWidth: 1.5,
+                            borderRadius: 12,
+                            hoverBackgroundColor: '#A8C5FF'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { min: 0, max: 3000, grid: { color: '#E9EEF7' } },
+                            x: { grid: { display: false } }
+                        }
+                    }
+                });
+            }
+
+            // Selfcare Completion Doughnut
+            const selfcareCtx = document.getElementById('selfcareChart');
+            if (selfcareCtx) {
+                if (window.selfcareChartInstance) window.selfcareChartInstance.destroy();
+                window.selfcareChartInstance = new Chart(selfcareCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Selesai', 'Belum Selesai'],
+                        datasets: [{
+                            data: [3, 2],
+                            backgroundColor: ['#A8C5FF', '#FFF3D6'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { position: 'bottom' } },
+                        cutout: '75%'
+                    }
+                });
+            }
         }
-    }, 110);
+    });
 });

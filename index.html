@@ -1,1347 +1,1603 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="h-full bg-[#F8FAFD]">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TemanJiwa | Ruang Ketenangan & Pelacak Kesehatan Mental</title>
+    <title>TemanJiwa - Ruang Ketenangan & Pelacak Kesehatan Mental</title>
 
-    <!-- SEO & Metadata -->
-    <meta name="description"
-        content="TemanJiwa adalah sahabat setia pelacak kesehatan mental harian dan pendukung kebiasaan meditatif interaktif. Kelola stres, hidrasi, tidur, dan refleksikan jurnal harian secara terintegrasi.">
-    <meta name="keywords"
-        content="temanjiwa, kesehatan mental, pelacak mood indonesia, self care, meditasi pernapasan, jurnal refleksi, habit tracker">
-    <meta name="author" content="TemanJiwa Indonesia">
-    <link rel="canonical" href="https://temanjiwa.id/">
+    <!-- SEO Metadata -->
+    <meta name="description" content="TemanJiwa adalah aplikasi kesehatan mental modern untuk melacak mood, jurnal refleksi, meditasi pernapasan terpandu, hidrasi, dan istirahat tidur.">
+    <meta name="keywords" content="temanjiwa, kesehatan mental, mood tracker, self care, meditasi, jurnal, pernapasan, hidrasi, tidur">
+    <meta name="theme-color" content="#A8C5FF">
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://temanjiwa.id/">
-    <meta property="og:title" content="TemanJiwa | Ruang Ketenangan & Pelacak Kesehatan Mental">
-    <meta property="og:description"
-        content="Sahabat setia merawat jiwamu. Lacak mood, hidrasi, tidur, dan latih pernapasan terpandu untuk ketenangan pikiran.">
-    <meta property="og:image" content="icon.svg">
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://temanjiwa.id/">
-    <meta property="twitter:title" content="TemanJiwa | Ruang Ketenangan & Pelacak Kesehatan Mental">
-    <meta property="twitter:description"
-        content="Sahabat setia merawat jiwamu. Lacak mood, hidrasi, tidur, dan latih pernapasan terpandu untuk ketenangan pikiran.">
-    <meta property="twitter:image" content="icon.svg">
-
-    <!-- PWA Mobile Web App Headers -->
-    <meta name="theme-color" content="#8EC5FC">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="icon.svg">
-    <link rel="manifest" href="manifest.json">
-
-    <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+    <!-- Google Fonts: Plus Jakarta Sans & Poppins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- CSS Link -->
+    <!-- Swiper.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        softblue: '#A8C5FF',
+                        buttercream: '#FFF3D6',
+                        appbg: '#F8FAFD',
+                        appcard: '#FFFFFF',
+                        appborder: '#E9EEF7',
+                        textprimary: '#1E293B',
+                        textsecondary: '#64748B',
+                        appsuccess: '#86EFAC',
+                        appwarning: '#FCD34D',
+                        appdanger: '#FCA5A5',
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'Poppins', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        '3xl': '1.5rem',
+                        '4xl': '2rem',
+                        '32': '32px',
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 30px -5px rgba(168, 197, 255, 0.25), 0 4px 12px -2px rgba(0, 0, 0, 0.03)',
+                        'soft-hover': '0 20px 40px -10px rgba(168, 197, 255, 0.4), 0 8px 16px -4px rgba(0, 0, 0, 0.05)',
+                        'nav': '0 -8px 30px rgba(168, 197, 255, 0.2)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
-    <!-- Lucide Icons Library -->
+
+    <!-- Alpine.js & Plugins CDN -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Swiper.js JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Application Script -->
+    <script src="app.js"></script>
 </head>
 
-<body>
+<body x-data class="h-full bg-[#F8FAFD] text-[#1E293B] antialiased selection:bg-[#A8C5FF] selection:text-white">
 
-    <!-- Ambient Layered Animated Background (Subtle Blobs & Floating Elements) -->
-    <div class="ambient-background" aria-hidden="true">
-        <div class="ambient-blob blob-1"></div>
-        <div class="ambient-blob blob-2"></div>
-        <div class="ambient-blob blob-3"></div>
-        <div class="ambient-blob blob-4"></div>
-        <div class="glass-particles">
-            <span class="floating-particle particle-1">☁️</span>
-            <span class="floating-particle particle-2">🌸</span>
-            <span class="floating-particle particle-3">✨</span>
-            <span class="floating-particle particle-4">💧</span>
+    <!-- Global Fullscreen Centered Loading Screen Overlay -->
+    <div x-show="$store.app.isLoading"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0 scale-95"
+         x-transition:enter-end="opacity-100 scale-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100 scale-100"
+         x-transition:leave-end="opacity-0 scale-95"
+         class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white/95 backdrop-blur-md p-6 text-center"
+         style="display: none;">
+        <div class="spinner-glow-container">
+            <div class="spinner-ring"></div>
+            <div class="text-4xl loading-bounce">🌿</div>
         </div>
+        <h3 class="text-xl font-bold text-[#1E293B] tracking-tight mb-1" x-text="$store.app.loadingTitle"></h3>
+        <p class="text-xs text-[#64748B] max-w-xs leading-relaxed" x-text="$store.app.loadingMessage"></p>
     </div>
 
-    <!-- Main SaaS Layout Container -->
-    <div class="app-container">
+    <!-- Ambient Gradient Blobs Background -->
+    <div class="ambient-blob blob-1"></div>
+    <div class="ambient-blob blob-2"></div>
+    <div class="ambient-blob blob-3"></div>
 
-        <!-- Sidebar Navigation (Web App Responsive Sidebar) -->
-        <nav class="app-navigation" id="app-navigation" style="display: none;">
-            <div class="sidebar-header">
-                <div class="sidebar-logo">
-                    <div class="logo-icon-wrapper">
-                        <i data-lucide="heart" class="logo-heart-icon"></i>
+    <!-- Toast Notification -->
+    <div x-show="$store.app.showToastFlag"
+         x-transition:enter="transition ease-out duration-300 transform"
+         x-transition:enter-start="opacity-0 -translate-y-4"
+         x-transition:enter-end="opacity-100 translate-y-0"
+         x-transition:leave="transition ease-in duration-200 transform"
+         x-transition:leave-start="opacity-100 translate-y-0"
+         x-transition:leave-end="opacity-0 -translate-y-4"
+         class="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center justify-center gap-3 bg-white text-[#1E293B] border border-[#E9EEF7] px-6 py-3.5 rounded-full shadow-lg max-w-sm w-full mx-auto text-center"
+         style="display: none;">
+        <span class="w-8 h-8 rounded-full bg-[#A8C5FF]/30 flex items-center justify-center text-[#568BFF] shrink-0">
+            <i data-lucide="sparkles" class="w-4 h-4"></i>
+        </span>
+        <span class="text-sm font-medium text-[#1E293B]" x-text="$store.app.toastMessage"></span>
+    </div>
+
+    <!-- Main Container (Mobile First Layout centered on Desktop) -->
+    <div class="relative min-h-screen flex flex-col justify-between max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-5xl mx-auto bg-[#F8FAFD]/90 shadow-2xl min-w-[320px] pb-24 md:pb-28 border-x border-[#E9EEF7]">
+
+        <!-- ========================================== -->
+        <!-- HEADER (Applies to main dashboard screens) -->
+        <!-- ========================================== -->
+        <header x-show="['dashboard', 'mood', 'journal', 'selfcare', 'stats', 'profile', 'education', 'emergency', 'notifications', 'settings', 'privacy', 'about', 'breathing', 'meditation', 'sleeptracker', 'watertracker', 'reminder', 'aichat'].includes($store.app.currentScreen)"
+                class="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-[#E9EEF7] px-5 py-4 flex items-center justify-between transition-all">
+            <div class="flex items-center gap-3">
+                <button x-show="!['dashboard'].includes($store.app.currentScreen)"
+                        @click="$store.app.navigateTo($store.app.previousScreen || 'dashboard')"
+                        class="w-10 h-10 rounded-full bg-[#F8FAFD] border border-[#E9EEF7] flex items-center justify-center text-[#64748B] hover:text-[#1E293B] hover:bg-white transition-all"
+                        aria-label="Kembali">
+                    <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                </button>
+                <div class="flex items-center gap-2.5 cursor-pointer" @click="$store.app.navigateTo('dashboard')">
+                    <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#A8C5FF] to-[#FFF3D6] flex items-center justify-center shadow-sm">
+                        <span class="text-lg">🌿</span>
                     </div>
-                    <span class="logo-text">TemanJiwa</span>
-                </div>
-            </div>
-            
-            <div class="sidebar-menu">
-                <div class="nav-item active" onclick="navigateTo('screen-home')" title="Beranda" role="button"
-                    tabindex="0" aria-label="Navigasi ke Beranda">
-                    <i data-lucide="home"></i>
-                    <span>Beranda</span>
-                </div>
-                <div class="nav-item" onclick="navigateTo('screen-mood')" title="Mood" role="button"
-                    tabindex="0" aria-label="Navigasi ke Mood">
-                    <i data-lucide="smile"></i>
-                    <span>Mood</span>
-                </div>
-                <div class="nav-item" onclick="navigateTo('screen-journal')" title="Jurnal" role="button"
-                    tabindex="0" aria-label="Navigasi ke Jurnal">
-                    <i data-lucide="book-open"></i>
-                    <span>Jurnal</span>
-                </div>
-                <div class="nav-item" onclick="navigateTo('screen-stats')" title="Statistik" role="button"
-                    tabindex="0" aria-label="Navigasi ke Statistik">
-                    <i data-lucide="bar-chart-2"></i>
-                    <span>Statistik</span>
-                </div>
-                <div class="nav-item" onclick="navigateTo('screen-profile')" title="Profil" role="button"
-                    tabindex="0" aria-label="Navigasi ke Profil">
-                    <i data-lucide="user"></i>
-                    <span>Profil</span>
-                </div>
-            </div>
-
-            <div class="sidebar-footer">
-                <div class="sidebar-hero-pill" onclick="navigateTo('screen-breath')" role="button" title="Mulai Pernapasan">
-                    <span class="pill-icon">🌬️</span>
-                    <span class="pill-text">Pernapasan</span>
-                </div>
-            </div>
-        </nav>
-
-        <!-- App View Container -->
-        <div class="view-container">
-
-            <!-- SCREEN 1: SPLASH / LOADING SCREEN -->
-            <div id="screen-splash" class="screen no-nav active">
-                <div class="splash-card card-glass">
-                    <div class="splash-logo-glow">
-                        <div class="splash-lotus-icon">
-                            <svg viewBox="0 0 100 100" width="84" height="84">
-                                <circle cx="50" cy="50" r="46" fill="url(#splashGrad)" opacity="0.25"/>
-                                <path d="M50,18 C34,38 22,58 50,85 C78,58 66,38 50,18 Z" fill="#60A5FA"/>
-                                <path d="M50,32 C30,42 18,62 50,85 C82,62 70,42 50,32 Z" fill="#93C5FD" opacity="0.85"/>
-                                <path d="M50,46 C38,52 28,68 50,85 C72,68 62,52 50,46 Z" fill="#BFDBFE"/>
-                                <circle cx="50" cy="46" r="4.5" fill="#FFFFFF"/>
-                                <defs>
-                                    <linearGradient id="splashGrad" x1="0" y1="0" x2="1" y2="1">
-                                        <stop offset="0%" stop-color="#8EC5FC"/>
-                                        <stop offset="100%" stop-color="#E0C3FC"/>
-                                    </linearGradient>
-                                </defs>
-                            </svg>
-                        </div>
-                    </div>
-                    <h1 class="splash-title">TemanJiwa</h1>
-                    <p class="splash-subtitle">Sahabat Setia Kesehatan Mentalmu</p>
-                    <div class="splash-poetic-quote">
-                        "Menemani setiap helaan napas dan langkah kecilmu..."
-                    </div>
-                    <div class="splash-loader-wrapper">
-                        <div class="splash-loader-bar">
-                            <div id="splash-loader-progress" class="splash-loader-progress"></div>
-                        </div>
-                        <div class="splash-loader-meta">
-                            <span id="splash-loader-status" class="splash-status-text">Memuat ruang ketenangan...</span>
-                            <span id="splash-loader-pct" class="splash-pct-text">0%</span>
-                        </div>
-                    </div>
-                    <div class="splash-footer-note">
-                        <i data-lucide="shield-check" class="splash-shield-icon"></i>
-                        <span>Ruang Aman & Terenkripsi untuk Kesehatan Mental 🇮🇩</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SCREEN 2: ONBOARDING CAROUSEL -->
-            <div id="screen-onboarding" class="screen no-nav">
-                <div class="onboarding-card card-glass">
-                    <div class="onboarding-top-bar">
-                        <button class="skip-btn" onclick="navigateTo('screen-login')">Skip</button>
-                    </div>
-                    <div class="onboarding-intro">
-                        <div id="onboard-visual-emoji" class="onboarding-image">
-                            <!-- Girl hugging blue heart SVG vector -->
-                            <svg viewBox="0 0 200 200" width="180" height="180">
-                                <circle cx="100" cy="100" r="85" fill="#EBF4FF"/>
-                                <path d="M40,110 C20,90 30,60 50,70 C60,85 50,110 40,110 Z" fill="#7DD3A7" opacity="0.7"/>
-                                <path d="M160,110 C180,90 170,60 150,70 C140,85 150,110 160,110 Z" fill="#7DD3A7" opacity="0.7"/>
-                                <path d="M68,90 C68,45 132,45 132,90 C132,130 68,130 68,90 Z" fill="#2D3748"/>
-                                <circle cx="100" cy="85" r="26" fill="#FED7AA"/>
-                                <path d="M92,84 Q96,87 100,84" stroke="#4A5568" stroke-width="2" fill="none"/>
-                                <path d="M93,92 Q100,97 107,92" stroke="#E53E3E" stroke-width="2" stroke-linecap="round" fill="none"/>
-                                <circle cx="88" cy="90" r="3" fill="#FCA5A5" opacity="0.6"/>
-                                <circle cx="112" cy="90" r="3" fill="#FCA5A5" opacity="0.6"/>
-                                <path d="M72,80 C72,55 128,55 128,80 C128,70 120,60 100,60 C80,60 72,70 72,80 Z" fill="#1A202C"/>
-                                <path d="M100,150 C70,120 55,95 75,75 C90,60 100,75 100,75 C100,75 110,60 125,75 C145,95 130,120 100,150 Z" fill="#80A6FF"/>
-                                <path d="M65,125 Q80,135 95,125" stroke="#FED7AA" stroke-width="10" stroke-linecap="round" fill="none"/>
-                                <path d="M135,125 Q120,135 105,125" stroke="#FED7AA" stroke-width="10" stroke-linecap="round" fill="none"/>
-                            </svg>
-                        </div>
-                        <h2 id="onboard-slide-title" class="onboarding-slide-title">Welcome!</h2>
-                        <p id="onboard-slide-desc" class="onboarding-slide-desc">
-                            A small step today for a better tomorrow.
-                        </p>
-                        <div class="onboarding-dots">
-                            <div class="dot active"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                        </div>
-                    </div>
-                    <button class="btn btn-primary btn-pill btn-large" onclick="nextOnboardSlide()">
-                        <span>Get Started</span>
-                        <i data-lucide="arrow-right"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- SCREEN 3: LOGIN SCREEN -->
-            <div id="screen-login" class="screen no-nav">
-                <div class="auth-wrapper">
-                    <div class="auth-header">
-                        <span class="auth-badge">Selamat Datang</span>
-                        <h2 class="auth-title">Selamat Datang Kembali!</h2>
-                        <p class="auth-subtitle">Masuk untuk melanjutkan jurnal kesehatan mentalmu.</p>
-                    </div>
-
-                    <div class="card card-glass auth-card">
-                        <div class="form-group">
-                            <label for="login-email">Email</label>
-                            <div class="input-wrapper">
-                                <i data-lucide="mail" class="input-icon"></i>
-                                <input id="login-email" class="input-field" type="email" placeholder="nama@email.com"
-                                    value="risma@example.com">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="login-pass">Kata Sandi</label>
-                            <div class="input-wrapper">
-                                <i data-lucide="lock" class="input-icon"></i>
-                                <input id="login-pass" class="input-field" type="password" placeholder="••••••••"
-                                    value="password123">
-                            </div>
-                        </div>
-
-                        <div class="auth-forgot-row">
-                            <a href="#" onclick="showToast('Fitur reset kata sandi telah dikirim ke email!'); return false;"
-                                class="auth-forgot-link">Lupa Sandi?</a>
-                        </div>
-
-                        <button class="btn btn-primary btn-pill btn-large" onclick="verifyUserLogin()">
-                            <i data-lucide="log-in"></i>
-                            <span>Masuk</span>
-                        </button>
-                    </div>
-
-                    <div class="auth-divider">
-                        <span>atau masuk dengan</span>
-                    </div>
-
-                    <button class="btn btn-outline btn-pill btn-social" onclick="navigateTo('screen-home')">
-                        <span class="social-icon">🌐</span>
-                        <span>Masuk dengan Google</span>
-                    </button>
-
-                    <div class="auth-footer-text">
-                        Belum punya akun? <a href="#" onclick="navigateTo('screen-register')" class="auth-link">Daftar Sekarang</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SCREEN 4: REGISTER SCREEN -->
-            <div id="screen-register" class="screen no-nav">
-                <div class="auth-wrapper">
-                    <div class="auth-header">
-                        <span class="auth-badge">Mulai Baru</span>
-                        <h2 class="auth-title">Mulai Perjalananmu</h2>
-                        <p class="auth-subtitle">Bergabunglah untuk melacak stabilitas emosi kamu harian.</p>
-                    </div>
-
-                    <div class="card card-glass auth-card">
-                        <div class="form-group">
-                            <label for="reg-name">Nama Lengkap</label>
-                            <div class="input-wrapper">
-                                <i data-lucide="user" class="input-icon"></i>
-                                <input id="reg-name" class="input-field" type="text" placeholder="Masukkan nama panggilanmu">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="reg-email">Alamat Email</label>
-                            <div class="input-wrapper">
-                                <i data-lucide="mail" class="input-icon"></i>
-                                <input id="reg-email" class="input-field" type="email" placeholder="contoh@mail.com">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="reg-pass">Kata Sandi</label>
-                            <div class="input-wrapper">
-                                <i data-lucide="lock" class="input-icon"></i>
-                                <input id="reg-pass" class="input-field" type="password" placeholder="Min. 8 karakter">
-                            </div>
-                        </div>
-
-                        <button class="btn btn-primary btn-pill btn-large" onclick="verifyUserRegister()">
-                            <i data-lucide="user-plus"></i>
-                            <span>Daftar Akun</span>
-                        </button>
-                    </div>
-
-                    <div class="auth-footer-text" style="margin-top: 24px;">
-                        Sudah punya akun? <a href="#" onclick="navigateTo('screen-login')" class="auth-link">Masuk di sini</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SCREEN 5: HOME SCREEN / DASHBOARD -->
-            <div id="screen-home" class="screen">
-                
-                <!-- HERO BANNER -->
-                <section class="hero-banner card-glass">
-                    <div class="hero-content">
-                        <div class="hero-badge">
-                            <span class="hero-badge-pulse"></span>
-                            <span>Ruang Ketenangan Pikiran</span>
-                        </div>
-                        <h1 class="hero-quote">
-                            "Take a deep breath.<br>Your mental well-being matters."
+                    <div>
+                        <h1 class="text-base font-bold text-[#1E293B] tracking-tight flex items-center gap-1.5">
+                            TemanJiwa
+                            <span class="text-[10px] bg-[#86EFAC]/40 text-[#1E293B] px-2 py-0.5 rounded-full font-semibold">Mental Health</span>
                         </h1>
-                        <p class="hero-subquote">
-                            Setiap momen kecemasan bisa ditenangkan dengan satu hembusan napas yang sadar.
-                        </p>
-                        <div class="hero-cta-group">
-                            <button class="btn btn-primary btn-pill hero-cta-primary" onclick="navigateTo('screen-mood')">
-                                <i data-lucide="sparkles"></i>
-                                <span>Start Tracking</span>
-                            </button>
-                            <button class="btn btn-outline btn-pill hero-cta-secondary" onclick="filterArticlesCategory('Semua'); navigateTo('screen-articles');">
-                                <i data-lucide="compass"></i>
-                                <span>Learn More</span>
-                            </button>
-                        </div>
+                        <p class="text-xs text-[#64748B]">Ruang Ketenangan Jiwa</p>
                     </div>
-                    <div class="hero-illustration">
-                        <div class="hero-blob-aura"></div>
-                        <span class="hero-emoji-floating">🧘‍♀️</span>
-                        <div class="hero-cloud cloud-1">☁️</div>
-                        <div class="hero-cloud cloud-2">✨</div>
-                    </div>
-                </section>
-
-                <!-- Custom Welcome Header -->
-                <div class="dashboard-header">
-                    <div class="user-greeting">
-                        <div id="gui-avatar-badge" class="user-avatar" role="img" aria-label="Avatar Pengguna">
-                            <svg viewBox="0 0 100 100" width="48" height="48">
-                                <circle cx="50" cy="50" r="45" fill="#B7DCFF"/>
-                                <path d="M25,40 C25,20 75,20 75,40 Z" fill="#2D3748"/>
-                                <circle cx="50" cy="45" r="18" fill="#FED7AA"/>
-                                <path d="M25,85 C25,65 75,65 75,85 Z" fill="#80A6FF"/>
-                            </svg>
-                        </div>
-                        <div class="header-info">
-                            <p class="greeting-subtitle" id="gui-greeting-time">Selamat Pagi 🌤️</p>
-                            <h2 id="gui-welcome-name" class="greeting-title">Halo, Risma 👋</h2>
-                        </div>
-                    </div>
-                    <div class="notif-badge" onclick="showToast('Semua pengingat harian telah aktif! 🔔')" role="button" aria-label="Notifikasi Pengingat">
-                        <i data-lucide="bell" class="notif-icon"></i>
-                        <div class="badge-dot"></div>
-                    </div>
-                </div>
-
-                <!-- Dashboard Grid Layout -->
-                <div class="dashboard-grid">
-
-                    <!-- Left Section (Main content) -->
-                    <main class="dashboard-main-col">
-
-                        <!-- Mood Hari Ini Card -->
-                        <div class="card card-glass mood-today-card">
-                            <div class="card-header-row">
-                                <div class="card-header-title">
-                                    <i data-lucide="smile" class="card-title-icon"></i>
-                                    <h4>Mood Hari Ini</h4>
-                                </div>
-                                <button class="link-btn" onclick="navigateTo('screen-mood')" aria-label="Kelola Mood">Kelola &gt;</button>
-                            </div>
-
-                            <div class="current-mood-banner">
-                                <div class="mood-emoji-badge">
-                                    <span style="font-size: 36px;" id="gui-current-mood-emoji">😊</span>
-                                </div>
-                                <div class="mood-info-box">
-                                    <h5 id="gui-current-mood-label" class="current-mood-name">Baik</h5>
-                                    <span class="current-mood-desc">Suasana hati terdata hari ini</span>
-                                </div>
-                                <div class="mood-pulse-indicator"></div>
-                            </div>
-
-                            <div class="mood-grid-quick">
-                                <button class="mood-btn-quick" role="button" aria-label="Bahagia" onclick="logQuickMood('sangat-bahagia')">
-                                    <span class="quick-emoji">😄</span>
-                                    <span class="quick-label">Bahagia</span>
-                                </button>
-                                <button class="mood-btn-quick" role="button" aria-label="Senang" onclick="logQuickMood('bahagia')">
-                                    <span class="quick-emoji">😊</span>
-                                    <span class="quick-label">Senang</span>
-                                </button>
-                                <button class="mood-btn-quick" role="button" aria-label="Biasa" onclick="logQuickMood('biasa')">
-                                    <span class="quick-emoji">😐</span>
-                                    <span class="quick-label">Biasa</span>
-                                </button>
-                                <button class="mood-btn-quick" role="button" aria-label="Sedih" onclick="logQuickMood('sedih')">
-                                    <span class="quick-emoji">😔</span>
-                                    <span class="quick-label">Sedih</span>
-                                </button>
-                                <button class="mood-btn-quick" role="button" aria-label="Cemas" onclick="logQuickMood('cemas')">
-                                    <span class="quick-emoji">😣</span>
-                                    <span class="quick-label">Cemas</span>
-                                </button>
-                                <button class="mood-btn-quick" role="button" aria-label="Lelah" onclick="logQuickMood('lelah')">
-                                    <span class="quick-emoji">😴</span>
-                                    <span class="quick-label">Lelah</span>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Ringkasan Mingguan Card -->
-                        <div class="card card-glass weekly-summary-card">
-                            <div class="card-header-row">
-                                <div class="card-header-title">
-                                    <i data-lucide="trending-up" class="card-title-icon"></i>
-                                    <h4>Ringkasan Mingguan</h4>
-                                </div>
-                                <button class="link-btn" onclick="navigateTo('screen-mood')">Lihat Detail &gt;</button>
-                            </div>
-
-                            <div class="chart-container-enhanced">
-                                <div class="weekly-chart-wrapper">
-                                    <svg viewBox="0 0 320 120" width="100%" height="100%" preserveAspectRatio="none">
-                                        <defs>
-                                            <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="0%" stop-color="#8EC5FC" stop-opacity="0.55" />
-                                                <stop offset="50%" stop-color="#B7DCFF" stop-opacity="0.25" />
-                                                <stop offset="100%" stop-color="#8EC5FC" stop-opacity="0.0" />
-                                            </linearGradient>
-                                            <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-                                                <feGaussianBlur stdDeviation="3" result="blur" />
-                                                <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                                            </filter>
-                                        </defs>
-                                        <line x1="0" y1="30" x2="320" y2="30" stroke="#E5E7EB" stroke-dasharray="4 4" stroke-opacity="0.5"/>
-                                        <line x1="0" y1="70" x2="320" y2="70" stroke="#E5E7EB" stroke-dasharray="4 4" stroke-opacity="0.5"/>
-                                        
-                                        <path id="weekly-chart-fill" d="M 10,75 C 50,45 80,70 120,40 C 160,20 200,45 240,30 C 270,18 295,25 310,20 L 310,110 L 10,110 Z"
-                                            fill="url(#chartGrad)" />
-                                        <path id="weekly-chart-line" d="M 10,75 C 50,45 80,70 120,40 C 160,20 200,45 240,30 C 270,18 295,25 310,20" 
-                                            stroke="#60A5FA" stroke-width="3.5" fill="none" stroke-linecap="round" filter="url(#glow)" />
-                                        <g id="weekly-chart-points">
-                                            <circle cx="10" cy="75" r="5" class="chart-point" />
-                                            <circle cx="60" cy="52" r="5" class="chart-point" />
-                                            <circle cx="110" cy="65" r="5" class="chart-point" />
-                                            <circle cx="160" cy="35" r="5" class="chart-point" />
-                                            <circle cx="210" cy="42" r="5" class="chart-point" />
-                                            <circle cx="260" cy="25" r="5" class="chart-point" />
-                                            <circle cx="310" cy="20" r="6" class="chart-point active-point" />
-                                        </g>
-                                    </svg>
-                                </div>
-                                <div class="chart-day-labels">
-                                    <span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span><span class="active-day">Min</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Jadwal Self-care Card -->
-                        <div class="card card-glass selfcare-card">
-                            <div class="card-header-row">
-                                <div class="card-header-title">
-                                    <i data-lucide="check-circle" class="card-title-icon"></i>
-                                    <h4>Jadwal Self-care</h4>
-                                </div>
-                                <button class="link-btn" onclick="navigateTo('screen-habits')">Kelola &gt;</button>
-                            </div>
-                            
-                            <div id="gui-dashboard-habits" class="selfcare-items">
-                                <div class="selfcare-item-row" onclick="navigateTo('screen-breath')">
-                                    <div class="selfcare-info">
-                                        <span class="selfcare-icon">🧘</span>
-                                        <div>
-                                            <h5 class="selfcare-title">Meditasi</h5>
-                                            <span class="selfcare-sub">10 menit • Pukul 20:00</span>
-                                        </div>
-                                    </div>
-                                    <div class="habit-checkbox completed">✓</div>
-                                </div>
-                                <div class="selfcare-item-row" onclick="openWaterTracker()">
-                                    <div class="selfcare-info">
-                                        <span class="selfcare-icon">💧</span>
-                                        <div>
-                                            <h5 class="selfcare-title">Minum Air</h5>
-                                            <span class="selfcare-sub">8 gelas / hari</span>
-                                        </div>
-                                    </div>
-                                    <span class="level-tag water-tag" id="gui-water-badge-label">5/8 gelas</span>
-                                </div>
-                            </div>
-                        </div>
-
-                    </main>
-
-                    <!-- Right Section (Sidebar content) -->
-                    <aside class="dashboard-side-col">
-                        <!-- Gamification Widget Card -->
-                        <div class="card card-glass gamify-card">
-                            <div class="xp-row">
-                                <div class="level-badge-wrapper">
-                                    <span class="level-tag" id="gui-lvl-label">Level 1</span>
-                                    <span class="hero-title-text">Inner Hero</span>
-                                </div>
-                                <span id="gui-xp-text" class="xp-counter">35 / 100 XP</span>
-                            </div>
-                            <div class="progress-bar-container">
-                                <div id="gui-xp-bar" class="xp-progress-bar" style="width: 35%;"></div>
-                            </div>
-                        </div>
-
-                        <!-- Affirmation Box Card -->
-                        <div class="affirmation-box card-glass" onclick="cycleAffirmations()" role="button" aria-label="Ganti afirmasi positif hari ini" tabindex="0">
-                            <div class="affirmation-quote-mark">“</div>
-                            <span id="gui-affirmation-text" class="affirmation-text">"Setiap langkah kecil yang kamu ambil hari ini adalah kemajuan menuju diri yang lebih sehat."</span>
-                            <div class="affirmation-sub">— Afirmasi Hari Ini (Sentuh untuk ganti)</div>
-                        </div>
-
-                        <!-- Quick Actions Grid card wrapper -->
-                        <div class="card card-glass quick-actions-card">
-                            <h4 class="card-section-title">Aktivitas Utama</h4>
-                            <div class="action-grid">
-                                <div class="action-btn-card" onclick="navigateTo('screen-breath')" role="button" tabindex="0" aria-label="Mulai Latihan Pernapasan">
-                                    <div class="action-icon-bg breath-bg">
-                                        <span class="action-btn-icon">🌬️</span>
-                                    </div>
-                                    <span class="action-btn-label">Pernapasan</span>
-                                </div>
-                                <div class="action-btn-card" onclick="startMHCheck()" role="button" tabindex="0" aria-label="Mulai Evaluasi Kesehatan Mental">
-                                    <div class="action-icon-bg check-bg">
-                                        <span class="action-btn-icon">📋</span>
-                                    </div>
-                                    <span class="action-btn-label">Check Kesehatan</span>
-                                </div>
-                                <div class="action-btn-card" onclick="filterArticlesCategory('Semua'); navigateTo('screen-articles');" role="button" tabindex="0" aria-label="Buka Artikel Edukasi">
-                                    <div class="action-icon-bg book-bg">
-                                        <span class="action-btn-icon">📚</span>
-                                    </div>
-                                    <span class="action-btn-label">Artikel Edukasi</span>
-                                </div>
-                                <div class="action-btn-card emergency-btn-card" onclick="navigateTo('screen-emergency')" role="button" tabindex="0" aria-label="Buka Saluran Bantuan Darurat">
-                                    <div class="action-icon-bg sos-bg">
-                                        <span class="action-btn-icon">🚨</span>
-                                    </div>
-                                    <span class="action-btn-label">Emergency Help</span>
-                                </div>
-                            </div>
-                        </div>
-                    </aside>
-
                 </div>
             </div>
 
-            <!-- SCREEN 6: MOOD TRACKER FORM -->
-            <div id="screen-mood" class="screen">
-                <div class="screen-header">
-                    <button class="back-btn" onclick="navigateTo('screen-home')" aria-label="Kembali">
-                        <i data-lucide="arrow-left"></i>
-                    </button>
-                    <h2 class="screen-title" style="flex: 1; text-align: center;">Mood Tracker</h2>
-                    <div class="header-action-icon" onclick="showToast('Kalender mood dapat diakses dari menu statistik!')" role="button" aria-label="Kalender Mood">
-                        <i data-lucide="calendar"></i>
-                    </div>
-                </div>
+            <!-- Top Right Action Icons -->
+            <div class="flex items-center gap-2">
+                <button @click="$store.app.navigateTo('emergency')"
+                        class="px-3 py-1.5 rounded-full bg-rose-50 border border-rose-100 text-rose-600 text-xs font-semibold flex items-center gap-1.5 hover:bg-rose-100 transition-all"
+                        title="Bantuan Darurat SOS">
+                    <i data-lucide="heart-pulse" class="w-4 h-4 text-rose-500"></i>
+                    <span class="hidden sm:inline">SOS</span>
+                </button>
 
-                <!-- Date selector -->
-                <div class="date-picker-row">
-                    <button class="date-nav-btn" aria-label="Hari Sebelumnya"><i data-lucide="chevron-left"></i></button>
-                    <span class="date-picker-current">16 Mei 2024</span>
-                    <button class="date-nav-btn" aria-label="Hari Berikutnya"><i data-lucide="chevron-right"></i></button>
-                </div>
+                <button @click="$store.app.navigateTo('notifications')"
+                        class="relative w-10 h-10 rounded-full bg-[#F8FAFD] border border-[#E9EEF7] flex items-center justify-center text-[#64748B] hover:text-[#1E293B] hover:bg-white transition-all"
+                        aria-label="Notifikasi">
+                    <i data-lucide="bell" class="w-5 h-5"></i>
+                    <span x-show="$store.app.notifications.some(n => !n.read)" class="absolute top-2 right-2 w-2.5 h-2.5 rounded-full bg-rose-500 ring-2 ring-white"></span>
+                </button>
 
-                <!-- Main Form Card -->
-                <div class="card card-glass mood-selector-card">
-                    <h4 class="mood-prompt-title">Bagaimana perasaanmu hari ini?</h4>
-
-                    <!-- 3x3 Interactive Mood Cards matching example image -->
-                    <div class="mood-cards-grid" id="mood-form-emoji-grid">
-                        <div class="quiz-opt-btn mood-card-item mood-tint-yellow" onclick="selectFormMood('sangat-bahagia', '😄', this)" data-mood="sangat-bahagia" tabindex="0" role="button">
-                            <div class="mood-card-emoji-wrap">
-                                <span class="quiz-opt-dot mood-card-emoji">😄</span>
-                            </div>
-                            <span class="quiz-opt-label mood-card-name">Sangat Bahagia</span>
-                        </div>
-                        <div class="quiz-opt-btn mood-card-item mood-tint-blue active" onclick="selectFormMood('bahagia', '😊', this)" data-mood="bahagia" tabindex="0" role="button">
-                            <div class="mood-card-emoji-wrap">
-                                <span class="quiz-opt-dot mood-card-emoji">😊</span>
-                                <div class="selected-check-badge">✓</div>
-                            </div>
-                            <span class="quiz-opt-label mood-card-name">Bahagia</span>
-                        </div>
-                        <div class="quiz-opt-btn mood-card-item mood-tint-gray" onclick="selectFormMood('biasa', '😐', this)" data-mood="biasa" tabindex="0" role="button">
-                            <div class="mood-card-emoji-wrap">
-                                <span class="quiz-opt-dot mood-card-emoji">😐</span>
-                            </div>
-                            <span class="quiz-opt-label mood-card-name">Biasa</span>
-                        </div>
-                        <div class="quiz-opt-btn mood-card-item mood-tint-blue" onclick="selectFormMood('sedih', '😔', this)" data-mood="sedih" tabindex="0" role="button">
-                            <div class="mood-card-emoji-wrap">
-                                <span class="quiz-opt-dot mood-card-emoji">😔</span>
-                            </div>
-                            <span class="quiz-opt-label mood-card-name">Sedih</span>
-                        </div>
-                        <div class="quiz-opt-btn mood-card-item mood-tint-purple" onclick="selectFormMood('cemas', '😣', this)" data-mood="cemas" tabindex="0" role="button">
-                            <div class="mood-card-emoji-wrap">
-                                <span class="quiz-opt-dot mood-card-emoji">😣</span>
-                            </div>
-                            <span class="quiz-opt-label mood-card-name">Cemas</span>
-                        </div>
-                        <div class="quiz-opt-btn mood-card-item mood-tint-pink" onclick="selectFormMood('marah', '😡', this)" data-mood="marah" tabindex="0" role="button">
-                            <div class="mood-card-emoji-wrap">
-                                <span class="quiz-opt-dot mood-card-emoji">😡</span>
-                            </div>
-                            <span class="quiz-opt-label mood-card-name">Marah</span>
-                        </div>
-                        <div class="quiz-opt-btn mood-card-item mood-tint-indigo" onclick="selectFormMood('lelah', '😴', this)" data-mood="lelah" tabindex="0" role="button">
-                            <div class="mood-card-emoji-wrap">
-                                <span class="quiz-opt-dot mood-card-emoji">😴</span>
-                            </div>
-                            <span class="quiz-opt-label mood-card-name">Lelah</span>
-                        </div>
-                        <div class="quiz-opt-btn mood-card-item mood-tint-pink" onclick="selectFormMood('stress', '🤯', this)" data-mood="stress" tabindex="0" role="button">
-                            <div class="mood-card-emoji-wrap">
-                                <span class="quiz-opt-dot mood-card-emoji">🤯</span>
-                            </div>
-                            <span class="quiz-opt-label mood-card-name">Stres</span>
-                        </div>
-                        <div class="quiz-opt-btn mood-card-item mood-tint-yellow" onclick="selectFormMood('lainnya', '💬', this)" data-mood="lainnya" tabindex="0" role="button">
-                            <div class="mood-card-emoji-wrap">
-                                <span class="quiz-opt-dot mood-card-emoji">💬</span>
-                            </div>
-                            <span class="quiz-opt-label mood-card-name">Lainnya</span>
-                        </div>
-                    </div>
-
-                    <!-- Note Form Input -->
-                    <div class="form-group mood-note-group">
-                        <div class="note-label-row">
-                            <label for="mood-form-note-input">Catatan (Opsional)</label>
-                        </div>
-                        <div class="note-input-container">
-                            <textarea id="mood-form-note-input" class="input-field mood-textarea"
-                                placeholder="Tulis apa yang kamu rasakan..."></textarea>
-                            <div class="note-flower-illustration">
-                                🌸
-                            </div>
-                        </div>
-                    </div>
-
-                    <button class="btn btn-primary btn-pill btn-large" onclick="submitMoodForm()">
-                        <span>Simpan</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- SCREEN 7: STATISTIK SCREEN -->
-            <div id="screen-stats" class="screen">
-                <div class="screen-header">
-                    <button class="back-btn" onclick="navigateTo('screen-home')" aria-label="Kembali">
-                        <i data-lucide="arrow-left"></i>
-                    </button>
-                    <h2 class="screen-title" style="flex: 1; text-align: center;">Statistik</h2>
-                    <select class="input-field select-pill" aria-label="Periode Statistik">
-                        <option>Mingguan</option>
-                        <option>Bulanan</option>
-                    </select>
-                </div>
-
-                <!-- Top Stats Card (Averages and Bar columns chart side-by-side) -->
-                <div class="card card-glass stats-overview-card">
-                    <div class="stats-avg-box">
-                        <span class="stats-label">Rata-rata Mood</span>
-                        <div class="avg-score-row">
-                            <h3 class="stats-score" id="gui-avg-mood-score">4.2</h3>
-                            <span class="level-tag score-tag" id="gui-avg-mood-label">(Baik)</span>
-                        </div>
-                    </div>
-                    <div class="sparkline-bar-group" id="sparkline-bar-group">
-                        <div class="sparkbar-item" style="height: 50%;"></div>
-                        <div class="sparkbar-item" style="height: 75%;"></div>
-                        <div class="sparkbar-item" style="height: 60%;"></div>
-                        <div class="sparkbar-item" style="height: 85%;"></div>
-                        <div class="sparkbar-item" style="height: 40%;"></div>
-                        <div class="sparkbar-item" style="height: 90%;"></div>
-                        <div class="sparkbar-item active-spark" style="height: 70%;"></div>
-                    </div>
-                </div>
-
-                <!-- 2x2 Stats Grid -->
-                <div class="stats-grid-2x2">
-                    <div class="card card-glass stat-tile" onclick="openSleepTracker()" role="button" tabindex="0">
-                        <div class="tile-icon-wrap sleep-icon-bg">
-                            <span>🌙</span>
-                        </div>
-                        <div class="tile-info">
-                            <span class="tile-label">Jam Tidur Rata-rata</span>
-                            <span id="gui-stat-sleep" class="tile-val">7 jam 20 menit</span>
-                        </div>
-                    </div>
-                    <div class="card card-glass stat-tile" onclick="navigateTo('screen-journal')" role="button" tabindex="0">
-                        <div class="tile-icon-wrap journal-icon-bg">
-                            <span>📝</span>
-                        </div>
-                        <div class="tile-info">
-                            <span class="tile-label">Jurnal Ditulis</span>
-                            <span class="tile-val" id="gui-stat-journals-count">5 kali</span>
-                        </div>
-                    </div>
-                    <div class="card card-glass stat-tile" onclick="navigateTo('screen-habits')" role="button" tabindex="0">
-                        <div class="tile-icon-wrap habit-icon-bg">
-                            <span>✅</span>
-                        </div>
-                        <div class="tile-info">
-                            <span class="tile-label">Self-care Selesai</span>
-                            <span class="tile-val" id="gui-stat-habits-count">6 aktivitas</span>
-                        </div>
-                    </div>
-                    <div class="card card-glass stat-tile" onclick="openWaterTracker()" role="button" tabindex="0">
-                        <div class="tile-icon-wrap water-icon-bg">
-                            <span>💧</span>
-                        </div>
-                        <div class="tile-info">
-                            <span class="tile-label">Minum Air</span>
-                            <span id="gui-stat-water" class="tile-val">6/8 gelas</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Mood Trend Area Line Chart Card -->
-                <div class="card card-glass mood-trend-card">
-                    <div class="card-header-row" style="margin-bottom: 12px;">
-                        <span class="chart-subtitle">Mood Trend</span>
-                        <h3 id="gui-dominant-mood" class="dominant-mood-display">😊 Bahagia</h3>
-                    </div>
-
-                    <div class="mood-chart-container">
-                        <div class="chart-bar-col">
-                            <span id="chart-count-sangat-bahagia" class="chart-bar-label"></span>
-                            <div id="chart-fill-sangat-bahagia" class="chart-bar-fill"></div>
-                            <span class="chart-bar-emoji">😄</span>
-                        </div>
-                        <div class="chart-bar-col">
-                            <span id="chart-count-bahagia" class="chart-bar-label"></span>
-                            <div id="chart-fill-bahagia" class="chart-bar-fill"></div>
-                            <span class="chart-bar-emoji">😊</span>
-                        </div>
-                        <div class="chart-bar-col">
-                            <span id="chart-count-biasa" class="chart-bar-label"></span>
-                            <div id="chart-fill-biasa" class="chart-bar-fill"></div>
-                            <span class="chart-bar-emoji">😐</span>
-                        </div>
-                        <div class="chart-bar-col">
-                            <span id="chart-count-sedih" class="chart-bar-label"></span>
-                            <div id="chart-fill-sedih" class="chart-bar-fill"></div>
-                            <span class="chart-bar-emoji">😔</span>
-                        </div>
-                        <div class="chart-bar-col">
-                            <span id="chart-count-cemas" class="chart-bar-label"></span>
-                            <div id="chart-fill-cemas" class="chart-bar-fill"></div>
-                            <span class="chart-bar-emoji">😣</span>
-                        </div>
-                        <div class="chart-bar-col">
-                            <span id="chart-count-lelah" class="chart-bar-label"></span>
-                            <div id="chart-fill-lelah" class="chart-bar-fill"></div>
-                            <span class="chart-bar-emoji">😴</span>
-                        </div>
-                    </div>
-                </div>
-
-                <h4 class="section-title">Riwayat Aktivitas</h4>
-                <div id="mood-history-list" class="habits-list">
-                    <!-- Loaded dynamically -->
-                </div>
-            </div>
-
-            <!-- VIEW 8: JOURNAL LIST TABS -->
-            <div id="screen-journal" class="screen">
-                <div class="screen-header">
-                    <button class="back-btn" onclick="navigateTo('screen-home')" aria-label="Kembali">
-                        <i data-lucide="arrow-left"></i>
-                    </button>
-                    <h2 class="screen-title" style="flex: 1; text-align: center;">Journal</h2>
-                    <i data-lucide="search" class="header-action-icon"></i>
-                </div>
-
-                <!-- Category Pills -->
-                <div class="category-pills" style="margin-bottom: 20px;">
-                    <button class="cat-pill active" onclick="filterJournalCategory('Semua')">Semua</button>
-                    <button class="cat-pill" onclick="filterJournalCategory('Catatan')">Catatan</button>
-                    <button class="cat-pill" onclick="filterJournalCategory('Perasaan')">Perasaan</button>
-                    <button class="cat-pill" onclick="filterJournalCategory('Motivasi')">Motivasi</button>
-                </div>
-
-                <div id="journals-list" class="journals-history-container">
-                    <!-- Dynamic loaded in js -->
-                </div>
-
-                <!-- Floating Action Button (FAB) for new journal -->
-                <button class="fab-btn" onclick="navigateTo('screen-journal-compose')" aria-label="Tambah Jurnal">
-                    <i data-lucide="plus"></i>
+                <button @click="$store.app.navigateTo('profile')"
+                        class="w-10 h-10 rounded-full border-2 border-[#A8C5FF] overflow-hidden flex items-center justify-center bg-[#FFF3D6] text-lg hover:scale-105 transition-all">
+                    <span x-text="$store.app.user.avatar">🌿</span>
                 </button>
             </div>
+        </header>
 
-            <!-- SCREEN 9: JOURNAL COMPOSER WIZARD -->
-            <div id="screen-journal-compose" class="screen no-nav">
-                <div class="sub-header">
-                    <button class="back-btn" onclick="navigateTo('screen-journal')" aria-label="Kembali ke Jurnal">
-                        <i data-lucide="arrow-left"></i>
-                    </button>
-                    <h3>Buka Jurnal Baru</h3>
-                </div>
+        <!-- ========================================== -->
+        <!-- MAIN CONTENT AREA FOR ALL 22 SCREENS -->
+        <!-- ========================================== -->
+        <main class="flex-1 px-4 sm:px-6 py-6 transition-all duration-300 flex flex-col justify-center">
 
-                <div class="card card-glass composer-card">
-                    <div class="form-group">
-                        <label for="journal-title-input">Judul Refleksi</label>
-                        <input id="journal-title-input" class="input-field" type="text"
-                            placeholder="Memikirkan esok hari...">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="journal-mood-select">Bagaimana suasana tulisan ini?</label>
-                        <select id="journal-mood-select" class="input-field select-mood">
-                            <option value="happy">😊 Damai & Bahagia</option>
-                            <option value="sad">😔 Melankolis / Sedih</option>
-                            <option value="tired">😴 Lelah / Capek</option>
-                            <option value="mindfulness">🧘 Reflektif & Mindfulness</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group flex-1-group">
-                        <label for="journal-content-input">Tuliskan Pemikiranmu</label>
-                        <textarea id="journal-content-input" class="input-field journal-textarea"
-                            placeholder="Tulis sejujurnya apa yang sedang kamu rasakan saat ini..."></textarea>
-                    </div>
-
-                    <button class="btn btn-primary btn-pill btn-large" onclick="saveJournal()">
-                        <i data-lucide="save"></i>
-                        <span>Simpan Jurnal</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- VIEW 10: HABITS TABS -->
-            <div id="screen-habits" class="screen">
-                <div class="screen-header">
-                    <button class="back-btn" onclick="navigateTo('screen-home')" aria-label="Kembali">
-                        <i data-lucide="arrow-left"></i>
-                    </button>
-                    <h2 class="screen-title" style="flex: 1; text-align: center;">Rutinitas Kebaikan</h2>
-                </div>
-
-                <!-- Input to add habit -->
-                <div class="card card-glass habit-input-card">
-                    <div class="habit-add-row">
-                        <input id="habits-new-input" class="input-field" type="text"
-                            placeholder="Kebiasaan baru: Meditasi sore...">
-                        <button class="btn btn-primary btn-pill" style="width: auto; padding: 12px 20px;"
-                            onclick="addCustomHabit()">Tambah</button>
-                    </div>
-                </div>
-
-                <h4 class="section-title">Daftar Kebiasaan Kamu</h4>
-                <div id="habits-list-tab" class="habits-list">
-                    <!-- Loaded dynamically -->
-                </div>
-            </div>
-
-            <!-- VIEW 11: USER PROFILE & SETTINGS -->
-            <div id="screen-profile" class="screen">
-                <div class="profile-header-card card-glass">
-                    <div class="profile-avatar-wrapper">
-                        <svg viewBox="0 0 100 100" width="80" height="80">
-                            <circle cx="50" cy="50" r="45" fill="#B7DCFF"/>
-                            <path d="M25,40 C25,20 75,20 75,40 Z" fill="#2D3748"/>
-                            <circle cx="50" cy="45" r="18" fill="#FED7AA"/>
-                            <path d="M25,85 C25,65 75,65 75,85 Z" fill="#80A6FF"/>
-                        </svg>
-                    </div>
-                    <h2 class="profile-name" id="profile-name-display">Risma Elfaryani</h2>
-                    <p class="profile-email" id="profile-email-display">risma@example.com</p>
-                    <button class="btn btn-outline btn-pill btn-small" style="width: auto; margin: 12px auto 0 auto;" onclick="editProfile()">Edit Profil</button>
-                </div>
-
-                <div class="card card-glass profile-menu-list">
-                    <div class="profile-menu-item" onclick="showToast('Pengingat harian aktif!')">
-                        <div class="menu-item-left">
-                            <i data-lucide="bell" class="menu-icon"></i>
-                            <span>Pengingat</span>
-                        </div>
-                        <i data-lucide="chevron-right" class="menu-chevron"></i>
-                    </div>
-                    <div class="profile-menu-item" onclick="showToast('Target harian: 8 gelas air & 10m meditasi')">
-                        <div class="menu-item-left">
-                            <i data-lucide="target" class="menu-icon"></i>
-                            <span>Target Harian</span>
-                        </div>
-                        <i data-lucide="chevron-right" class="menu-chevron"></i>
-                    </div>
-                    <div class="profile-menu-item">
-                        <div class="menu-item-left">
-                            <i data-lucide="palette" class="menu-icon"></i>
-                            <span>Tema</span>
-                        </div>
-                        <div class="theme-pill-select">
-                            <div id="btn-col-lavender" class="theme-color-btn theme-lavender"
-                                onclick="changeThemeSelection('lavender')" title="Lavender Theme"></div>
-                            <div id="btn-col-blue" class="theme-color-btn theme-blue active"
-                                onclick="changeThemeSelection('blue')" title="Soft Blue Theme"></div>
-                        </div>
-                    </div>
-                    <div class="profile-menu-item">
-                        <div class="menu-item-left">
-                            <i data-lucide="moon" class="menu-icon"></i>
-                            <span>Mode Gelap</span>
-                        </div>
-                        <label class="switch">
-                            <input id="toggle-dark-mode" type="checkbox" onchange="toggleDarkModeSwitch()">
-                            <span class="slider-track"><span class="slider-round"></span></span>
-                        </label>
-                    </div>
-                    <div class="profile-menu-item" onclick="showToast('Semua data Anda terlindungi dengan enkripsi lokal.')">
-                        <div class="menu-item-left">
-                            <i data-lucide="lock" class="menu-icon"></i>
-                            <span>Privasi & Keamanan</span>
-                        </div>
-                        <i data-lucide="chevron-right" class="menu-chevron"></i>
-                    </div>
-                    <div class="profile-menu-item" onclick="navigateTo('screen-emergency')">
-                        <div class="menu-item-left">
-                            <i data-lucide="help-circle" class="menu-icon"></i>
-                            <span>Bantuan & Dukungan</span>
-                        </div>
-                        <i data-lucide="chevron-right" class="menu-chevron"></i>
-                    </div>
-                    <div class="profile-menu-item" onclick="showToast('InnerCalm v2.5 • Antigravity Certified Wellness App')">
-                        <div class="menu-item-left">
-                            <i data-lucide="info" class="menu-icon"></i>
-                            <span>Tentang Aplikasi</span>
-                        </div>
-                        <i data-lucide="chevron-right" class="menu-chevron"></i>
-                    </div>
-                </div>
-
-                <!-- Hidden input for name preservation -->
-                <input id="profile-name-input" type="hidden" value="Risma Elfaryani">
-
-                <button class="btn btn-primary btn-pill btn-large" style="margin-top: 20px;" onclick="logoutUser()">
-                    <span>Log Out</span>
-                </button>
-                <button class="btn btn-outline btn-pill btn-small" style="margin-top: 10px; color: var(--danger); border-color: var(--danger);" onclick="triggerUserDataReset()">
-                    <span>Bersihkan Semua Data</span>
-                </button>
-            </div>
-
-            <!-- OVERLAY: EXERCISE BREATHING SPACE -->
-            <div id="screen-breath" class="screen no-nav">
-                <div class="sub-header">
-                    <button class="back-btn" onclick="navigateTo('screen-home')" aria-label="Kembali">
-                        <i data-lucide="arrow-left"></i>
-                    </button>
-                    <h3>Breathing Exercise</h3>
-                </div>
-
-                <div class="card card-glass breathing-card">
-                    <div class="breathing-container">
-                        <div class="breath-circle-outer">
-                            <div class="breath-circle-inner">
-                                <!-- Lungs SVG vector illustration -->
-                                <svg viewBox="0 0 200 200" width="130" height="130">
-                                    <circle cx="100" cy="100" r="90" fill="#EBF4FF" opacity="0.6"/>
-                                    <path d="M100,45 L100,105" stroke="#60A5FA" stroke-width="6" stroke-linecap="round"/>
-                                    <path d="M100,85 Q85,100 70,115" stroke="#60A5FA" stroke-width="4" stroke-linecap="round" fill="none"/>
-                                    <path d="M100,85 Q115,100 130,115" stroke="#60A5FA" stroke-width="4" stroke-linecap="round" fill="none"/>
-                                    <path d="M90,95 C60,95 45,120 45,145 C45,160 60,170 75,170 C90,170 95,150 95,125 Z" fill="#93C5FD" opacity="0.85"/>
-                                    <path d="M110,95 C140,95 155,120 155,145 C155,160 140,170 125,170 C110,170 105,150 105,125 Z" fill="#93C5FD" opacity="0.85"/>
-                                </svg>
+            <!-- 1. SPLASH SCREEN (CENTERED) -->
+            <section x-show="$store.app.currentScreen === 'splash'"
+                     x-transition:enter="transition ease-out duration-300"
+                     x-transition:enter-start="opacity-0 scale-95"
+                     x-transition:enter-end="opacity-100 scale-100"
+                     class="min-h-[80vh] flex flex-col items-center justify-center text-center py-8 px-4 max-w-sm mx-auto my-auto space-y-8">
+                <div class="flex flex-col items-center">
+                    <div class="relative mb-6">
+                        <div class="w-32 h-32 rounded-full bg-gradient-to-br from-[#A8C5FF] via-[#E1ECFF] to-[#FFF3D6] p-1 shadow-2xl flex items-center justify-center animate-pulse">
+                            <div class="w-full h-full bg-white rounded-full flex items-center justify-center text-5xl">
+                                🕊️
                             </div>
                         </div>
-
-                        <div class="cycle-counter-text">
-                            <span id="breath-seconds">1 / 6 Siklus</span>
-                        </div>
-
-                        <p id="breath-inst" class="breath-inst">Tarik napas perlahan dan rasakan ketenangan...</p>
-
-                        <div class="breath-controls-row">
-                            <button class="breath-ctrl-btn" onclick="startBreathing()"><i data-lucide="skip-back"></i></button>
-                            <button id="breath-start-btn" class="breath-play-btn" onclick="startBreathing()">
-                                <i data-lucide="play"></i>
-                            </button>
-                            <button class="breath-ctrl-btn" onclick="startBreathing()"><i data-lucide="skip-forward"></i></button>
+                        <div class="absolute -bottom-2 -right-2 w-10 h-10 rounded-full bg-[#FFF3D6] border-2 border-white flex items-center justify-center text-xl shadow-md">
+                            🌿
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <!-- OVERLAY: MENTAL HEALTH CHECK SYSTEM -->
-            <div id="screen-mhcheck" class="screen no-nav">
-                <div class="sub-header">
-                    <button class="back-btn" onclick="navigateTo('screen-home')" aria-label="Kembali">
-                        <i data-lucide="arrow-left"></i>
-                    </button>
-                    <h3>Evaluasi Kesehatan Mental</h3>
-                </div>
-
-                <div class="card card-glass wizard-info-card">
-                    <h5 class="wizard-info-title">Evaluasi Sederhana</h5>
-                    <p class="wizard-info-desc">Berdasarkan kondisi psikologis kamu selama 7 hari ke belakang.</p>
-                </div>
-
-                <div class="quiz-progress-row">
-                    <span id="mh-q-progress">Pertanyaan 1 dari 5</span>
-                    <span id="mh-q-progress-text" class="progress-pct">20%</span>
-                </div>
-                <div class="progress-bar-container progress-bar-thin">
-                    <div id="mh-q-bar" class="xp-progress-bar" style="width: 20%;"></div>
-                </div>
-
-                <div class="card card-glass question-card">
-                    <h3 id="mh-q-text" class="question-text">
-                        Saya merasa sulit untuk tidur nyenyak atau beristirahat.
-                    </h3>
-
-                    <div class="quiz-option-row">
-                        <button class="quiz-opt-btn option-tile" data-value="0" onclick="selectMHOption(0)">
-                            <div class="quiz-opt-dot">0</div>
-                            <span class="quiz-opt-label">Tidak</span>
-                        </button>
-                        <button class="quiz-opt-btn option-tile" data-value="1" onclick="selectMHOption(1)">
-                            <div class="quiz-opt-dot">1</div>
-                            <span class="quiz-opt-label">Jarang</span>
-                        </button>
-                        <button class="quiz-opt-btn option-tile" data-value="2" onclick="selectMHOption(2)">
-                            <div class="quiz-opt-dot">2</div>
-                            <span class="quiz-opt-label">Sering</span>
-                        </button>
-                        <button class="quiz-opt-btn option-tile" data-value="3" onclick="selectMHOption(3)">
-                            <div class="quiz-opt-dot">3</div>
-                            <span class="quiz-opt-label">Selalu</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="wizard-nav-actions">
-                    <button id="mh-prev-btn" class="btn btn-outline btn-pill" onclick="prevMHQuestion()">Kembali</button>
-                    <button id="mh-next-btn" class="btn btn-primary btn-pill" style="flex: 1;" onclick="nextMHQuestion()">Lanjut</button>
-                </div>
-            </div>
-
-            <!-- OVERLAY: MENTAL HEALTH RESULTS SCREEN -->
-            <div id="screen-mhcheck-result" class="screen no-nav">
-                <div class="sub-header">
-                    <h3>Hasil Evaluasi</h3>
-                </div>
-
-                <div class="card card-glass result-card">
-                    <div id="mh-res-emoji" class="result-emoji">😐</div>
-                    <h3 id="mh-res-title" class="result-title">Kondisi Cukup Baik</h3>
-                    <div id="mh-res-score" class="result-score">Skor Evaluasi: 6 / 15</div>
-                    <p id="mh-res-desc" class="result-desc">
-                        Kamu mungkin sedang berada di bawah beban psikologis yang cukup mengganggu tidur atau keseharianmu.
+                    <h2 class="text-3xl font-extrabold text-[#1E293B] tracking-tight mb-2">TemanJiwa</h2>
+                    <p class="text-sm text-[#64748B] max-w-xs leading-relaxed">
+                        Temukan kedamaian batin, lacak mood harian, dan rawat diri dengan penuh kasih setiap hari.
                     </p>
                 </div>
 
-                <h4 class="section-title">Saran & Aktivitas Mandiri</h4>
-                <div id="mh-res-suggestions" class="suggestions-list">
-                    <!-- Loaded dynamic suggestions lists -->
-                </div>
-
-                <button class="btn btn-primary btn-pill btn-large" onclick="navigateTo('screen-home')">Selesai & Ke Beranda</button>
-            </div>
-
-            <!-- OVERLAY: EDUCATIONAL ARTICLES PREVIEW -->
-            <div id="screen-articles" class="screen no-nav">
-                <div class="sub-header">
-                    <button class="back-btn" onclick="navigateTo('screen-home')" aria-label="Kembali">
-                        <i data-lucide="arrow-left"></i>
+                <div class="w-full max-w-xs space-y-3">
+                    <button @click="$store.app.triggerLoading('Menyiapkan Onboarding...', 'Memulai perjalanan ketenangan jiwamu', 600, () => $store.app.navigateTo('onboarding'))"
+                            class="w-full py-4 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white font-semibold shadow-lg shadow-[#A8C5FF]/40 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-base">
+                        Mulai Perjalanan Ketenangan
+                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
                     </button>
-                    <h3>Artikel Edukasi</h3>
-                </div>
-
-                <div class="form-group search-group">
-                    <div class="input-wrapper">
-                        <i data-lucide="search" class="input-icon"></i>
-                        <input id="art-search-input" class="input-field search-input" type="text"
-                            placeholder="Cari tips self-care..." oninput="renderArticlesList()">
-                    </div>
-                </div>
-
-                <div class="category-pills">
-                    <button class="cat-pill active" onclick="filterArticlesCategory('Semua')">Semua</button>
-                    <button class="cat-pill" onclick="filterArticlesCategory('Mindfulness')">Mindfulness</button>
-                    <button class="cat-pill" onclick="filterArticlesCategory('Stress')">Stress</button>
-                    <button class="cat-pill" onclick="filterArticlesCategory('Self Love')">Self Love</button>
-                    <button class="cat-pill" onclick="filterArticlesCategory('Anxiety')">Anxiety</button>
-                </div>
-
-                <div id="articles-list-container" class="articles-grid">
-                    <!-- Dynamic loaded in js -->
-                </div>
-            </div>
-
-            <!-- OVERLAY: ARTICLES DETAIL READER -->
-            <div id="screen-article-reader" class="screen no-nav">
-                <div class="sub-header">
-                    <button class="back-btn" onclick="navigateTo('screen-articles')" aria-label="Kembali ke Artikel">
-                        <i data-lucide="arrow-left"></i>
+                    <button @click="$store.app.triggerLoading('Memuat Halaman Masuk...', 'Menyiapkan form autentikasi', 500, () => $store.app.navigateTo('login'))"
+                            class="w-full py-3.5 rounded-full bg-white border border-[#E9EEF7] text-[#1E293B] font-medium hover:bg-[#F8FAFD] transition-all text-sm">
+                        Sudah punya akun? Masuk
                     </button>
-                    <h3 id="art-read-category" class="article-read-category">MINDFULNESS</h3>
-                    <div class="bookmark-action-icon" onclick="showToast('Artikel disimpan ke penanda buku!')" role="button" aria-label="Simpan Artikel">
-                        <i data-lucide="bookmark"></i>
-                    </div>
                 </div>
+            </section>
 
-                <div class="card card-glass article-reader-card">
-                    <h2 id="art-read-title" class="reader-title">Cara Mengelola Overthinking untuk Gen Z</h2>
-                    <span id="art-read-meta" class="reader-meta">5 min membaca • Diperiksa oleh Psikolog</span>
-
-                    <div class="article-hero-box">
-                        <span id="art-read-emoji" class="reader-emoji">🧠</span>
-                    </div>
-
-                    <div id="art-read-body" class="reader-body">
-                        <!-- Filled dynamically -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- OVERLAY: EMERGENCY ASSISTANCE SOS -->
-            <div id="screen-emergency" class="screen no-nav">
-                <div class="sub-header">
-                    <button class="back-btn" onclick="navigateTo('screen-home')" aria-label="Kembali">
-                        <i data-lucide="arrow-left"></i>
+            <!-- 2. ONBOARDING (3 SLIDES SWIPER - CENTERED) -->
+            <section x-show="$store.app.currentScreen === 'onboarding'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="min-h-[80vh] flex flex-col justify-between items-center text-center py-6 max-w-md mx-auto my-auto w-full">
+                <div class="flex justify-between items-center w-full mb-4 px-2">
+                    <span class="text-xs font-semibold tracking-wider text-[#64748B] uppercase">Selamat Datang</span>
+                    <button @click="$store.app.navigateTo('login')" class="text-xs font-medium text-[#64748B] hover:text-[#1E293B]">
+                        Lewati
                     </button>
-                    <h3 class="emergency-header-title">Emergency Help</h3>
                 </div>
 
-                <div class="card emergency-alert-card">
-                    <div class="emergency-alert-inner">
-                        <span class="emergency-alert-icon">⚠️</span>
-                        <div>
-                            <h4 class="emergency-alert-title">Kamu Tidak Sendirian</h4>
-                            <p class="emergency-alert-desc">
-                                Jika kamu sedang mengalami kecemasan parah atau memiliki kecenderungan menyakiti diri, tolong hubungi kontak darurat di bawah ini segera.
+                <!-- Swiper Carousel Container -->
+                <div class="swiper onboarding-swiper w-full max-w-sm mx-auto my-auto py-4">
+                    <div class="swiper-wrapper">
+                        <!-- Slide 1 -->
+                        <div class="swiper-slide flex flex-col items-center text-center p-4">
+                            <div class="w-48 h-48 rounded-3xl bg-gradient-to-br from-[#F0F5FF] to-[#FFF3D6] flex items-center justify-center text-7xl mb-6 shadow-soft mx-auto">
+                                💚
+                            </div>
+                            <h3 class="text-2xl font-bold text-[#1E293B] mb-2">Kenali & Pahami Emosimu</h3>
+                            <p class="text-sm text-[#64748B] leading-relaxed">
+                                Lacak mood harian dengan emoji pastel ramah dan pahami pola emosi yang mempengaruhi harimu.
+                            </p>
+                        </div>
+                        <!-- Slide 2 -->
+                        <div class="swiper-slide flex flex-col items-center text-center p-4">
+                            <div class="w-48 h-48 rounded-3xl bg-gradient-to-br from-[#FFF3D6] to-[#E1ECFF] flex items-center justify-center text-7xl mb-6 shadow-soft mx-auto">
+                                🕊️
+                            </div>
+                            <h3 class="text-2xl font-bold text-[#1E293B] mb-2">Sesi Meditasi & Pernapasan</h3>
+                            <p class="text-sm text-[#64748B] leading-relaxed">
+                                Redakan kecemasan dan stres secara instan melalui panduan napas teratur & audio alam menenangkan.
+                            </p>
+                        </div>
+                        <!-- Slide 3 -->
+                        <div class="swiper-slide flex flex-col items-center text-center p-4">
+                            <div class="w-48 h-48 rounded-3xl bg-gradient-to-br from-[#E1ECFF] to-[#FFF5E0] flex items-center justify-center text-7xl mb-6 shadow-soft mx-auto">
+                                🌿
+                            </div>
+                            <h3 class="text-2xl font-bold text-[#1E293B] mb-2">Jurnal Refleksi & Self-Care</h3>
+                            <p class="text-sm text-[#64748B] leading-relaxed">
+                                Tuliskan pikiranmu tanpa prasangka, bangun kebiasaan sehat hidrasi & istirahat yang seimbang.
                             </p>
                         </div>
                     </div>
+                    <!-- Swiper Pagination -->
+                    <div class="swiper-pagination mt-6"></div>
                 </div>
 
-                <h4 class="section-title">Saluran Bantuan Terdekat</h4>
-
-                <div class="emergency-list">
-                    <div class="card card-glass emergency-item-card">
-                        <div>
-                            <h4 class="em-item-title">Layanan SEJIWA (Kemenkes)</h4>
-                            <p class="em-item-desc">Konseling psikologis gratis Kemenkes RI</p>
-                            <span class="em-item-phone">119 Ext. 8</span>
-                        </div>
-                        <button class="btn btn-danger btn-pill btn-small"
-                            onclick="openEmergencyDialog('Layanan SEJIWA', '119 Ext. 8')">Hubungi</button>
-                    </div>
-
-                    <div class="card card-glass emergency-item-card">
-                        <div>
-                            <h4 class="em-item-title">Yayasan Pulih</h4>
-                            <p class="em-item-desc">Trauma emosional & konseling psikososial</p>
-                            <span class="em-item-phone">0811-8436-633</span>
-                        </div>
-                        <button class="btn btn-danger btn-pill btn-small"
-                            onclick="openEmergencyDialog('Yayasan Pulih', '0811-8436-633')">WhatsApp</button>
-                    </div>
-
-                    <div class="card card-glass emergency-item-card">
-                        <div>
-                            <h4 class="em-item-title">Into The Light Indonesia</h4>
-                            <p class="em-item-desc">Rujukan bunuh diri & edukasi mental</p>
-                            <span class="em-item-phone">intothelightid.org</span>
-                        </div>
-                        <button class="btn btn-danger btn-pill btn-small"
-                            onclick="openEmergencyDialog('Into The Light', 'intothelightid.org')">Situs Web</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- OVERLAY: WATER LOG SYSTEM -->
-            <div id="screen-water-log" class="screen no-nav">
-                <div class="sub-header">
-                    <button class="back-btn" onclick="navigateTo('screen-home')" aria-label="Kembali">
-                        <i data-lucide="arrow-left"></i>
+                <div class="space-y-3 max-w-xs mx-auto w-full pt-4">
+                    <button @click="$store.app.triggerLoading('Memuat Ruang Masuk...', 'Menyiapkan dashboard akun', 600, () => $store.app.navigateTo('login'))"
+                            class="w-full py-4 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white font-semibold shadow-lg shadow-[#A8C5FF]/40 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+                        Masuk ke Ruang Ketenangan
                     </button>
-                    <h3>Catatan Hidrasi Air</h3>
+                    <button @click="$store.app.triggerLoading('Memuat Pendaftaran...', 'Menyiapkan form pendaftaran', 500, () => $store.app.navigateTo('register'))"
+                            class="w-full py-3.5 rounded-full bg-white border border-[#E9EEF7] text-[#1E293B] font-medium hover:bg-[#F8FAFD] transition-all text-sm">
+                        Buat Akun Baru
+                    </button>
+                </div>
+            </section>
+
+            <!-- 3. LOGIN SCREEN (CENTERED) -->
+            <section x-show="$store.app.currentScreen === 'login'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="min-h-[75vh] flex flex-col justify-center items-center max-w-md mx-auto my-auto py-6 w-full">
+                <div class="text-center mb-8 w-full">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#A8C5FF] to-[#FFF3D6] mx-auto flex items-center justify-center text-3xl mb-4 shadow-sm">
+                        🧘‍♀️
+                    </div>
+                    <h2 class="text-2xl font-bold text-[#1E293B]">Selamat Datang Kembali</h2>
+                    <p class="text-sm text-[#64748B] mt-1">Masuk untuk melanjutkan perjalanan kesehatan mentalmu</p>
                 </div>
 
-                <div class="card card-glass tracker-hero-card">
-                    <div class="water-graphic-container">
-                        <div class="water-bottle">
-                            <div id="gui-water-glass-fill" class="water-fill">
-                                <div class="water-wave"></div>
+                <form @submit.prevent="$store.app.loginUser()" class="bg-white p-6 sm:p-8 rounded-3xl border border-[#E9EEF7] shadow-lg space-y-5 w-full">
+                    <div>
+                        <label class="block text-xs font-semibold text-[#1E293B] mb-2 uppercase tracking-wider text-left">Email atau Nama Akun</label>
+                        <input type="text" x-model="$store.app.loginInput.email" required
+                               class="w-full px-5 py-3.5 rounded-full bg-[#F8FAFD] border border-[#E9EEF7] text-sm text-[#1E293B] focus:bg-white focus:border-[#568BFF] focus:outline-none transition-all"
+                               placeholder="Masukkan email atau nama akunmu">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="text-xs font-semibold text-[#1E293B] uppercase tracking-wider">Kata Sandi</label>
+                            <button type="button" @click="$store.app.navigateTo('forgot-password')" class="text-xs text-[#568BFF] font-medium hover:underline">
+                                Lupa kata sandi?
+                            </button>
+                        </div>
+                        <input type="password" x-model="$store.app.loginInput.password" required
+                               class="w-full px-5 py-3.5 rounded-full bg-[#F8FAFD] border border-[#E9EEF7] text-sm text-[#1E293B] focus:bg-white focus:border-[#568BFF] focus:outline-none transition-all"
+                               placeholder="••••••••">
+                    </div>
+
+                    <div class="flex items-center gap-2 pt-1 text-left">
+                        <input type="checkbox" id="remember" checked class="w-4 h-4 rounded text-[#A8C5FF] border-[#E9EEF7] focus:ring-[#A8C5FF]">
+                        <label for="remember" class="text-xs text-[#64748B]">Ingat akun saya di perangkat ini</label>
+                    </div>
+
+                    <button type="submit"
+                            class="w-full py-4 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white font-semibold shadow-lg shadow-[#A8C5FF]/40 hover:scale-[1.02] active:scale-[0.98] transition-all text-base">
+                        Masuk Sekarang
+                    </button>
+
+                    <div class="text-center pt-3 border-t border-[#E9EEF7]">
+                        <p class="text-xs text-[#64748B]">
+                            Belum punya akun?
+                            <button type="button" @click="$store.app.navigateTo('register')" class="text-[#568BFF] font-semibold hover:underline">
+                                Daftar Gratis
+                            </button>
+                        </p>
+                    </div>
+                </form>
+            </section>
+
+            <!-- 4. REGISTER SCREEN (CENTERED) -->
+            <section x-show="$store.app.currentScreen === 'register'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="min-h-[75vh] flex flex-col justify-center items-center max-w-md mx-auto my-auto py-6 w-full text-center">
+                <div class="text-center mb-8 w-full">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#A8C5FF] to-[#FFF3D6] mx-auto flex items-center justify-center text-3xl mb-4 shadow-sm">
+                        🧘‍♀️
+                    </div>
+                    <h2 class="text-2xl font-bold text-[#1E293B]">Mulai Akun TemanJiwa</h2>
+                    <p class="text-sm text-[#64748B] mt-1">Bergabung bersama komunitas wellness dan ketenangan</p>
+                </div>
+
+                <form @submit.prevent="$store.app.registerUser()" class="bg-white p-6 sm:p-8 rounded-3xl border border-[#E9EEF7] shadow-lg space-y-4 w-full">
+                    <div>
+                        <label class="block text-xs font-semibold text-[#1E293B] mb-1.5 uppercase tracking-wider text-left">Nama Lengkap Akun</label>
+                        <input type="text" x-model="$store.app.registerInput.name" placeholder="Masukkan nama dipanggil untuk akunmu" required
+                               class="w-full px-5 py-3.5 rounded-full bg-[#F8FAFD] border border-[#E9EEF7] text-sm text-[#1E293B] focus:bg-white focus:border-[#568BFF] focus:outline-none transition-all">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-[#1E293B] mb-1.5 uppercase tracking-wider text-left">Alamat Email</label>
+                        <input type="email" x-model="$store.app.registerInput.email" placeholder="nama@email.com" required
+                               class="w-full px-5 py-3.5 rounded-full bg-[#F8FAFD] border border-[#E9EEF7] text-sm text-[#1E293B] focus:bg-white focus:border-[#568BFF] focus:outline-none transition-all">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-[#1E293B] mb-1.5 uppercase tracking-wider text-left">Kata Sandi</label>
+                        <input type="password" x-model="$store.app.registerInput.password" placeholder="Minimal 8 karakter" required
+                               class="w-full px-5 py-3.5 rounded-full bg-[#F8FAFD] border border-[#E9EEF7] text-sm text-[#1E293B] focus:bg-white focus:border-[#568BFF] focus:outline-none transition-all">
+                    </div>
+
+                    <div class="pt-2">
+                        <button type="submit"
+                                class="w-full py-4 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white font-semibold shadow-lg shadow-[#A8C5FF]/40 hover:scale-[1.02] active:scale-[0.98] transition-all text-base">
+                            Buat Akun TemanJiwa
+                        </button>
+                    </div>
+
+                    <div class="text-center pt-3 border-t border-[#E9EEF7]">
+                        <p class="text-xs text-[#64748B]">
+                            Sudah memiliki akun?
+                            <button type="button" @click="$store.app.navigateTo('login')" class="text-[#568BFF] font-semibold hover:underline">
+                                Masuk
+                            </button>
+                        </p>
+                    </div>
+                </form>
+            </section>
+
+            <!-- 5. FORGOT PASSWORD SCREEN (CENTERED) -->
+            <section x-show="$store.app.currentScreen === 'forgot-password'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="min-h-[75vh] flex flex-col justify-center items-center max-w-md mx-auto my-auto py-6 w-full text-center">
+                <div class="text-center mb-8 w-full">
+                    <div class="w-14 h-14 rounded-2xl bg-amber-50 border border-amber-100 mx-auto flex items-center justify-center text-2xl mb-4 text-amber-500">
+                        🔑
+                    </div>
+                    <h2 class="text-2xl font-bold text-[#1E293B]">Reset Kata Sandi</h2>
+                    <p class="text-sm text-[#64748B] mt-1">Kami akan mengirimkan instruksi pemulihan ke email Anda</p>
+                </div>
+
+                <form @submit.prevent="$store.app.triggerLoading('Mengirimkan Link Reset...', 'Periksa kotak masuk emailmu', 700, () => { $store.app.showToast('Instruksi pemulihan telah dikirim ke email!'); $store.app.navigateTo('login'); })" class="bg-white p-6 sm:p-8 rounded-3xl border border-[#E9EEF7] shadow-lg space-y-5 w-full">
+                    <div>
+                        <label class="block text-xs font-semibold text-[#1E293B] mb-2 uppercase tracking-wider text-left">Email Terdaftar</label>
+                        <input type="email" placeholder="nama@email.com" required
+                               class="w-full px-5 py-3.5 rounded-full bg-[#F8FAFD] border border-[#E9EEF7] text-sm text-[#1E293B] focus:bg-white focus:border-[#568BFF] focus:outline-none transition-all">
+                    </div>
+
+                    <button type="submit"
+                            class="w-full py-4 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white font-semibold shadow-lg shadow-[#A8C5FF]/40 hover:scale-[1.02] active:scale-[0.98] transition-all text-base">
+                        Kirim Link Pemulihan
+                    </button>
+
+                    <button type="button" @click="$store.app.navigateTo('login')"
+                            class="w-full py-3 rounded-full bg-white text-[#64748B] text-sm font-medium hover:text-[#1E293B]">
+                        Kembali ke Halaman Masuk
+                    </button>
+                </form>
+            </section>
+
+            <!-- 6. DASHBOARD SCREEN -->
+            <section x-show="$store.app.currentScreen === 'dashboard'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-6">
+
+                <!-- Greeting Card (Identical layout to reference image) -->
+                <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#EAF4FF] p-6 sm:p-7 border border-[#BAE6FD] shadow-lg card-hover">
+                    <!-- Ambient Inner Sky Blur -->
+                    <div class="absolute -top-10 -right-10 w-44 h-44 rounded-full bg-[#38BDF8]/15 blur-2xl pointer-events-none"></div>
+
+                    <div class="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-6">
+                        <!-- Left Side: Large Quote Marks & Text -->
+                        <div class="flex-1 space-y-2.5 text-left">
+                            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/90 border border-[#BAE6FD] text-[11px] font-bold text-[#0284C7] shadow-xs">
+                                <span>✨ Sapaan & Afirmasi Hari Ini</span>
+                            </div>
+                            
+                            <h2 class="text-xl sm:text-2xl font-extrabold text-[#0F172A] tracking-tight leading-snug flex items-start gap-1">
+                                <span class="text-3xl text-[#0284C7] font-serif leading-none">“</span>
+                                <span>Ketenangan batin dimulai saat kamu bernapas tanpa beban.</span>
+                                <span class="text-3xl text-[#0284C7] font-serif leading-none">”</span>
+                            </h2>
+                            
+                            <p class="text-xs sm:text-sm text-[#475569] font-medium leading-relaxed pl-3 border-l-2 border-[#38BDF8]">
+                                Halo, <span x-text="$store.app.user.name" class="font-bold text-[#0284C7]">Teman Jiwa</span> 🧘‍♀️ • Tarik napas dalam, hembuskan perlahan yang lapang & tenang...
+                            </p>
+
+                            <div class="pt-1">
+                                <button @click="$store.app.navigateTo('mood')"
+                                        class="px-5 py-2.5 rounded-full bg-gradient-to-r from-[#0284C7] to-[#38BDF8] text-white text-xs font-bold shadow-md shadow-[#0284C7]/20 hover:scale-105 active:scale-95 transition-all inline-flex items-center gap-2">
+                                    <i data-lucide="heart" class="w-4 h-4"></i>
+                                    Catat Mood Hari Ini
+                                </button>
                             </div>
                         </div>
-                        <h3 id="water-logged-stat" class="water-stat-text">500 ml</h3>
-                        <p class="water-target-text">Target hari ini: 2000 ml</p>
-                    </div>
 
-                    <div class="water-btn-group">
-                        <button class="btn btn-secondary btn-pill btn-water" onclick="logWaterDrink(250)">+250ml</button>
-                        <button class="btn btn-secondary btn-pill btn-water" onclick="logWaterDrink(500)">+500ml</button>
-                        <button class="btn btn-secondary btn-pill btn-water" onclick="logWaterDrink(1000)">+1000ml</button>
-                    </div>
-                </div>
-            </div>
+                        <!-- Right Side: Mental Health Serenity Icon (Meditation Emoji) & Cloud & Sparkles -->
+                        <div class="relative shrink-0 flex items-center justify-center w-36 h-36 bg-white/70 backdrop-blur-md rounded-3xl border border-white shadow-soft p-4">
+                            <!-- Floating Cloud Top Left -->
+                            <div class="absolute -top-3 left-2 text-2xl animate-bounce" style="animation-duration: 3.5s;">
+                                ☁️
+                            </div>
 
-            <!-- OVERLAY: SLEEP LOG SYSTEM -->
-            <div id="screen-sleep-log" class="screen no-nav">
-                <div class="sub-header">
-                    <button class="back-btn" onclick="navigateTo('screen-home')" aria-label="Kembali">
-                        <i data-lucide="arrow-left"></i>
-                    </button>
-                    <h3>Sleep Tracker</h3>
-                </div>
+                            <!-- Center Mental Health Icon (Meditation Emoji) -->
+                            <div class="relative z-10 w-20 h-20 rounded-2xl bg-gradient-to-br from-white via-[#E0F2FE] to-[#F0F9FF] border border-[#BAE6FD] flex items-center justify-center text-4xl shadow-sm transition-transform hover:scale-110">
+                                🧘‍♀️
+                            </div>
 
-                <!-- Date selector -->
-                <div class="date-picker-row" style="margin-bottom: 20px;">
-                    <button class="date-nav-btn" aria-label="Hari Sebelumnya"><i data-lucide="chevron-left"></i></button>
-                    <span class="date-picker-current">16 Mei 2024</span>
-                    <button class="date-nav-btn" aria-label="Hari Berikutnya"><i data-lucide="chevron-right"></i></button>
-                </div>
-
-                <!-- Sleep Schedule Cards (Jam Tidur 23:30 / Jam Bangun 06:45) -->
-                <div class="stats-grid-2x2" style="margin-bottom: 20px;">
-                    <div class="card card-glass stat-tile">
-                        <div class="tile-icon-wrap sleep-icon-bg">
-                            <span>🌙</span>
-                        </div>
-                        <div class="tile-info">
-                            <span class="tile-label">Jam Tidur</span>
-                            <span class="tile-val">23:30</span>
-                        </div>
-                    </div>
-                    <div class="card card-glass stat-tile">
-                        <div class="tile-icon-wrap water-icon-bg" style="background: rgba(246, 196, 83, 0.2);">
-                            <span>☀️</span>
-                        </div>
-                        <div class="tile-info">
-                            <span class="tile-label">Jam Bangun</span>
-                            <span class="tile-val">06:45</span>
+                            <!-- Multi-color Sparkles Bottom Right -->
+                            <div class="absolute -bottom-2 -right-2 text-2xl animate-pulse">
+                                ✨
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="card card-glass tracker-hero-card" style="margin-bottom: 20px;">
-                    <div class="form-group">
-                        <label for="sleep-duration-input">Durasi Tidur</label>
-                        <input id="sleep-duration-input" class="input-field input-large" type="number" min="1" max="24" step="0.5"
-                            value="7">
-                        <span style="font-size: 13px; color: var(--text-sub); display: block; margin-top: 4px;">7 jam 15 menit</span>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Kualitas Tidur</label>
-                        <div style="font-size: 14px; font-weight: 700; color: var(--primary-dark); margin-bottom: 6px;">Baik</div>
-                        <div class="star-rating-group">
-                            <span class="sleep-star-btn" role="button" tabindex="0" onclick="selectSleepQuality(1)" aria-label="1 Bintang">★</span>
-                            <span class="sleep-star-btn" role="button" tabindex="0" onclick="selectSleepQuality(2)" aria-label="2 Bintang">★</span>
-                            <span class="sleep-star-btn" role="button" tabindex="0" onclick="selectSleepQuality(3)" aria-label="3 Bintang">★</span>
-                            <span class="sleep-star-btn" role="button" tabindex="0" onclick="selectSleepQuality(4)" aria-label="4 Bintang">★</span>
-                            <span class="sleep-star-btn" role="button" tabindex="0" onclick="selectSleepQuality(5)" aria-label="5 Bintang">★</span>
+                <!-- Today's Mood Logged Card -->
+                <div class="bg-white p-5 rounded-3xl border border-[#E9EEF7] shadow-lg flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-2xl bg-[#F0F5FF] border border-[#A8C5FF]/40 flex items-center justify-center text-3xl shadow-sm">
+                            <span x-text="$store.app.moodHistory[0]?.emoji || '😊'">😊</span>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Sleep Tip Card matching reference image -->
-                <div class="card card-glass sleep-tip-card" style="margin-bottom: 24px;">
-                    <div class="sleep-tip-inner">
                         <div>
-                            <h5 class="sleep-tip-title">Tips untuk tidur lebih nyenyak</h5>
-                            <p class="sleep-tip-desc">Hindari screen time 1 jam sebelum tidur dan coba meditasi ringan.</p>
+                            <span class="text-xs text-[#64748B] uppercase tracking-wider font-semibold">Mood Terakhir Catatan</span>
+                            <h3 class="text-base font-bold text-[#1E293B]" x-text="$store.app.moodHistory[0]?.label || 'Sangat Bahagia'">Sangat Bahagia</h3>
+                            <p class="text-xs text-[#64748B] line-clamp-1" x-text="$store.app.moodHistory[0]?.note || 'Menikmati waktu tenang...'"></p>
                         </div>
-                        <div class="sleep-tip-icon">
-                            🌙✨
+                    </div>
+                    <button @click="$store.app.navigateTo('mood')" class="text-xs font-semibold text-[#568BFF] hover:underline shrink-0">
+                        Ubah
+                    </button>
+                </div>
+
+                <!-- AI Companion Banner Card -->
+                <div @click="$store.app.navigateTo('aichat')" class="p-5 rounded-3xl bg-gradient-to-br from-[#F0F5FF] via-white to-[#FFF3D6] border border-[#A8C5FF]/50 shadow-lg cursor-pointer card-hover flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-2xl bg-white border border-[#A8C5FF]/40 shadow-sm flex items-center justify-center text-3xl shrink-0">
+                            🤖
+                        </div>
+                        <div>
+                            <span class="inline-flex items-center gap-1 text-[10px] font-extrabold uppercase tracking-wider text-[#568BFF] bg-[#E1ECFF] px-2.5 py-0.5 rounded-full mb-1">
+                                ✨ Asisten AI TemanJiwa
+                            </span>
+                            <h3 class="text-base font-bold text-[#1E293B]">Butuh Teman Curhat & Mendengar?</h3>
+                            <p class="text-xs text-[#64748B] line-clamp-1">Ruang aman bebas penghakiman 24 jam sehari</p>
+                        </div>
+                    </div>
+                    <button class="px-4 py-2 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white text-xs font-bold shadow-md shrink-0 flex items-center gap-1">
+                        Mulai Curhat
+                        <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                    </button>
+                </div>
+
+                <!-- Quick Actions Grid -->
+                <div>
+                    <h3 class="text-xs font-bold text-[#64748B] uppercase tracking-wider mb-3">Aksi Cepat Ketenangan</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <button @click="$store.app.navigateTo('breathing')" class="p-4 rounded-3xl bg-white border border-[#E9EEF7] shadow-soft card-hover flex flex-col items-center text-center">
+                            <div class="w-12 h-12 rounded-2xl bg-[#E1ECFF] text-[#568BFF] flex items-center justify-center text-xl mb-2">
+                                🫁
+                            </div>
+                            <span class="text-xs font-bold text-[#1E293B]">Latihan Napas</span>
+                            <span class="text-[10px] text-[#64748B]">4-4-4 Technique</span>
+                        </button>
+
+                        <button @click="$store.app.navigateTo('meditation')" class="p-4 rounded-3xl bg-white border border-[#E9EEF7] shadow-soft card-hover flex flex-col items-center text-center">
+                            <div class="w-12 h-12 rounded-2xl bg-[#FFF3D6] text-amber-600 flex items-center justify-center text-xl mb-2">
+                                🕊️
+                            </div>
+                            <span class="text-xs font-bold text-[#1E293B]">Meditasi</span>
+                            <span class="text-[10px] text-[#64748B]">Suara Alam</span>
+                        </button>
+
+                        <button @click="$store.app.navigateTo('journal')" class="p-4 rounded-3xl bg-white border border-[#E9EEF7] shadow-soft card-hover flex flex-col items-center text-center">
+                            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl mb-2">
+                                📝
+                            </div>
+                            <span class="text-xs font-bold text-[#1E293B]">Jurnal Harian</span>
+                            <span class="text-[10px] text-[#64748B]">Refleksi Jiwa</span>
+                        </button>
+
+                        <button @click="$store.app.navigateTo('education')" class="p-4 rounded-3xl bg-white border border-[#E9EEF7] shadow-soft card-hover flex flex-col items-center text-center">
+                            <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center text-xl mb-2">
+                                📚
+                            </div>
+                            <span class="text-xs font-bold text-[#1E293B]">Edukasi</span>
+                            <span class="text-[10px] text-[#64748B]">Artikel Sehat</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Weekly Mood Chart Preview -->
+                <div class="bg-white p-5 sm:p-6 rounded-3xl border border-[#E9EEF7] shadow-lg">
+                    <div class="flex justify-between items-center mb-4">
+                        <div>
+                            <h3 class="text-base font-bold text-[#1E293B]">Grafik Mood Mingguan</h3>
+                            <p class="text-xs text-[#64748B]">Tren emosional 7 hari terakhir</p>
+                        </div>
+                        <button @click="$store.app.navigateTo('stats')" class="text-xs font-semibold text-[#568BFF] hover:underline">
+                            Lihat Statistik Detail
+                        </button>
+                    </div>
+                    <div class="h-48 w-full">
+                        <canvas id="moodChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Health Trackers Grid (Water & Sleep) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Water Tracker Quick Card -->
+                    <div @click="$store.app.navigateTo('watertracker')" class="bg-white p-5 rounded-3xl border border-[#E9EEF7] shadow-lg cursor-pointer card-hover flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-2xl bg-[#E1ECFF] text-[#568BFF] flex items-center justify-center text-2xl">
+                                💧
+                            </div>
+                            <div>
+                                <span class="text-xs text-[#64748B] font-semibold">Pelacak Hidrasi Air</span>
+                                <h4 class="text-lg font-bold text-[#1E293B]">
+                                    <span x-text="$store.app.waterLogged">1250</span> / <span x-text="$store.app.waterTarget">2000</span> ml
+                                </h4>
+                                <div class="w-28 h-2 bg-[#E9EEF7] rounded-full mt-1 overflow-hidden">
+                                    <div class="h-full bg-gradient-to-r from-[#A8C5FF] to-[#568BFF] rounded-full transition-all"
+                                         :style="`width: ${Math.min(100, ($store.app.waterLogged / $store.app.waterTarget) * 100)}%`"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <button @click.stop="$store.app.addWater(250)" class="w-9 h-9 rounded-full bg-[#F0F5FF] border border-[#A8C5FF]/50 flex items-center justify-center text-[#568BFF] font-bold text-lg hover:bg-[#A8C5FF] hover:text-white transition-all">
+                            +
+                        </button>
+                    </div>
+
+                    <!-- Sleep Tracker Quick Card -->
+                    <div @click="$store.app.navigateTo('sleeptracker')" class="bg-white p-5 rounded-3xl border border-[#E9EEF7] shadow-lg cursor-pointer card-hover flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-2xl bg-[#FFF3D6] text-amber-600 flex items-center justify-center text-2xl">
+                                🌙
+                            </div>
+                            <div>
+                                <span class="text-xs text-[#64748B] font-semibold">Durasi Istirahat Tidur</span>
+                                <h4 class="text-lg font-bold text-[#1E293B]">
+                                    <span x-text="$store.app.sleepToday.duration">8.0</span> Jam
+                                </h4>
+                                <p class="text-xs text-[#86EFAC] font-medium">Kualitas Cukup & Nyenyak ⭐ 4/5</p>
+                            </div>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-5 h-5 text-[#64748B]"></i>
+                    </div>
+                </div>
+
+                <!-- Self Care Habits Checklist Preview -->
+                <div class="bg-white p-5 rounded-3xl border border-[#E9EEF7] shadow-lg">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="text-base font-bold text-[#1E293B]">Checklist Self-Care Hari Ini</h3>
+                        <button @click="$store.app.navigateTo('selfcare')" class="text-xs font-semibold text-[#568BFF] hover:underline">
+                            Kelola Kebiasaan
+                        </button>
+                    </div>
+                    <div class="space-y-2.5">
+                        <template x-for="habit in $store.app.habits.slice(0, 3)" :key="habit.id">
+                            <div @click="$store.app.toggleHabit(habit.id)"
+                                 class="p-3.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between"
+                                 :class="habit.completed ? 'bg-emerald-50/60 border-emerald-100' : 'bg-[#F8FAFD] border-[#E9EEF7] hover:bg-white'">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all"
+                                         :class="habit.completed ? 'border-emerald-500 bg-emerald-500 text-white' : 'border-[#CBD5E1] bg-white'">
+                                        <i data-lucide="check" class="w-3.5 h-3.5"></i>
+                                    </div>
+                                    <span class="text-sm font-medium" :class="habit.completed ? 'line-through text-[#64748B]' : 'text-[#1E293B]'" x-text="habit.name"></span>
+                                </div>
+                                <span class="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-white text-[#64748B] border border-[#E9EEF7]">
+                                    🔥 <span x-text="habit.streak"></span> Hari
+                                </span>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 7. MOOD TRACKER SCREEN -->
+            <section x-show="$store.app.currentScreen === 'mood'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-6">
+
+                <div class="text-center max-w-md mx-auto">
+                    <h2 class="text-2xl font-bold text-[#1E293B]">Bagaimana Perasaanmu?</h2>
+                    <p class="text-sm text-[#64748B] mt-1">Pilih emosi yang paling menggambarkan kondisimu saat ini</p>
+                </div>
+
+                <!-- Mood Cards Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3.5 max-w-lg mx-auto">
+                    <!-- Very Happy -->
+                    <button @click="$store.app.selectedMood = 'very-happy'"
+                            class="p-4 rounded-3xl border-2 transition-all flex flex-col items-center text-center cursor-pointer"
+                            :class="$store.app.selectedMood === 'very-happy' ? 'bg-[#F0F5FF] border-[#568BFF] shadow-lg scale-105 ring-2 ring-[#A8C5FF]' : 'bg-white border-[#E9EEF7] hover:border-[#A8C5FF]'">
+                        <span class="text-4xl mb-2">😊</span>
+                        <span class="text-xs font-bold text-[#1E293B]">Sangat Bahagia</span>
+                    </button>
+
+                    <!-- Happy -->
+                    <button @click="$store.app.selectedMood = 'happy'"
+                            class="p-4 rounded-3xl border-2 transition-all flex flex-col items-center text-center cursor-pointer"
+                            :class="$store.app.selectedMood === 'happy' ? 'bg-[#F0F5FF] border-[#568BFF] shadow-lg scale-105 ring-2 ring-[#A8C5FF]' : 'bg-white border-[#E9EEF7] hover:border-[#A8C5FF]'">
+                        <span class="text-4xl mb-2">🙂</span>
+                        <span class="text-xs font-bold text-[#1E293B]">Bahagia</span>
+                    </button>
+
+                    <!-- Neutral -->
+                    <button @click="$store.app.selectedMood = 'neutral'"
+                            class="p-4 rounded-3xl border-2 transition-all flex flex-col items-center text-center cursor-pointer"
+                            :class="$store.app.selectedMood === 'neutral' ? 'bg-[#FFF3D6]/50 border-amber-400 shadow-lg scale-105 ring-2 ring-amber-200' : 'bg-white border-[#E9EEF7] hover:border-[#A8C5FF]'">
+                        <span class="text-4xl mb-2">😐</span>
+                        <span class="text-xs font-bold text-[#1E293B]">Biasa Saja</span>
+                    </button>
+
+                    <!-- Sad -->
+                    <button @click="$store.app.selectedMood = 'sad'"
+                            class="p-4 rounded-3xl border-2 transition-all flex flex-col items-center text-center cursor-pointer"
+                            :class="$store.app.selectedMood === 'sad' ? 'bg-sky-50 border-sky-400 shadow-lg scale-105 ring-2 ring-sky-200' : 'bg-white border-[#E9EEF7] hover:border-[#A8C5FF]'">
+                        <span class="text-4xl mb-2">😔</span>
+                        <span class="text-xs font-bold text-[#1E293B]">Sedih</span>
+                    </button>
+
+                    <!-- Stressed -->
+                    <button @click="$store.app.selectedMood = 'stressed'"
+                            class="p-4 rounded-3xl border-2 transition-all flex flex-col items-center text-center cursor-pointer"
+                            :class="$store.app.selectedMood === 'stressed' ? 'bg-rose-50 border-rose-400 shadow-lg scale-105 ring-2 ring-rose-200' : 'bg-white border-[#E9EEF7] hover:border-[#A8C5FF]'">
+                        <span class="text-4xl mb-2">😢</span>
+                        <span class="text-xs font-bold text-[#1E293B]">Stres / Cemas</span>
+                    </button>
+
+                    <!-- Angry -->
+                    <button @click="$store.app.selectedMood = 'angry'"
+                            class="p-4 rounded-3xl border-2 transition-all flex flex-col items-center text-center cursor-pointer"
+                            :class="$store.app.selectedMood === 'angry' ? 'bg-amber-50 border-amber-500 shadow-lg scale-105 ring-2 ring-amber-200' : 'bg-white border-[#E9EEF7] hover:border-[#A8C5FF]'">
+                        <span class="text-4xl mb-2">😡</span>
+                        <span class="text-xs font-bold text-[#1E293B]">Marah</span>
+                    </button>
+                </div>
+
+                <!-- Mood Intensity & Note Form -->
+                <div class="bg-white p-6 rounded-3xl border border-[#E9EEF7] shadow-lg max-w-lg mx-auto space-y-5">
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="text-xs font-bold text-[#1E293B] uppercase tracking-wider">Intensitas Emosi (1-10)</label>
+                            <span class="text-sm font-extrabold text-[#568BFF]" x-text="$store.app.moodIntensity">8</span>
+                        </div>
+                        <input type="range" min="1" max="10" x-model="$store.app.moodIntensity"
+                               class="w-full accent-[#568BFF] bg-[#E9EEF7] h-2.5 rounded-lg cursor-pointer">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-[#1E293B] mb-2 uppercase tracking-wider">Catatan Tambahan (Opsional)</label>
+                        <textarea x-model="$store.app.moodNote" rows="3"
+                                  placeholder="Ceritakan singkat apa yang memicu perasaan ini..."
+                                  class="w-full px-4 py-3 rounded-2xl bg-[#F8FAFD] border border-[#E9EEF7] text-sm text-[#1E293B] focus:bg-white focus:border-[#568BFF] focus:outline-none transition-all resize-none"></textarea>
+                    </div>
+
+                    <button @click="$store.app.logMood()"
+                            class="w-full py-4 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white font-semibold shadow-lg shadow-[#A8C5FF]/40 hover:scale-[1.02] active:scale-[0.98] transition-all text-base">
+                        Simpan Catatan Mood
+                    </button>
+                </div>
+
+                <!-- Mood History Timeline -->
+                <div class="max-w-lg mx-auto bg-white p-6 rounded-3xl border border-[#E9EEF7] shadow-lg">
+                    <h3 class="text-base font-bold text-[#1E293B] mb-4">Riwayat Catatan Mood</h3>
+                    <div class="space-y-3">
+                        <template x-for="item in $store.app.moodHistory" :key="item.id">
+                            <div class="p-4 rounded-2xl bg-[#F8FAFD] border border-[#E9EEF7] flex items-start gap-3.5">
+                                <span class="text-3xl shrink-0" x-text="item.emoji"></span>
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-center">
+                                        <h4 class="text-sm font-bold text-[#1E293B]" x-text="item.label"></h4>
+                                        <span class="text-[11px] text-[#64748B]" x-text="item.date"></span>
+                                    </div>
+                                    <p class="text-xs text-[#64748B] mt-1" x-text="item.note"></p>
+                                    <div class="inline-flex items-center gap-1 mt-2 px-2.5 py-0.5 rounded-full bg-[#E1ECFF] text-[10px] font-semibold text-[#568BFF]">
+                                        Intensitas <span x-text="item.intensity"></span>/10
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 8. JOURNAL SCREEN -->
+            <section x-show="$store.app.currentScreen === 'journal'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-6">
+
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-[#1E293B]">Jurnal Refleksi Diri</h2>
+                        <p class="text-sm text-[#64748B]">Ruang bebas penghakiman untuk menuliskan setiap rasa</p>
+                    </div>
+                    <button @click="$store.app.showModal = 'addJournal'"
+                            class="px-5 py-3 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white text-sm font-semibold shadow-md shadow-[#A8C5FF]/30 hover:scale-105 transition-all flex items-center justify-center gap-2">
+                        <i data-lucide="plus" class="w-4 h-4"></i>
+                        Tulis Jurnal Baru
+                    </button>
+                </div>
+
+                <!-- Daily Prompt Suggestion Card -->
+                <div class="p-5 rounded-3xl bg-gradient-to-r from-[#FFF3D6] to-[#FFE5AA] border border-amber-200/60 shadow-sm flex items-start gap-3.5">
+                    <span class="text-2xl">💡</span>
+                    <div>
+                        <h4 class="text-xs font-bold text-amber-900 uppercase tracking-wider">Inspirasi Jurnal Hari Ini</h4>
+                        <p class="text-sm font-medium text-amber-950 mt-0.5">
+                            "Apa satu kebaikan kecil dari orang lain yang membuatmu tersenyum hari ini?"
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Journal Entries List -->
+                <div class="space-y-4">
+                    <template x-for="j in $store.app.journals" :key="j.id">
+                        <div class="p-6 rounded-3xl bg-white border border-[#E9EEF7] shadow-lg card-hover">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <span class="px-3 py-1 rounded-full bg-[#F0F5FF] text-[11px] font-semibold text-[#568BFF]" x-text="j.tag"></span>
+                                    <h3 class="text-lg font-bold text-[#1E293B] mt-2" x-text="j.title"></h3>
+                                </div>
+                                <button @click="$store.app.deleteJournal(j.id)" class="text-[#64748B] hover:text-rose-500 transition-colors p-1" title="Hapus">
+                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                            <p class="text-sm text-[#64748B] leading-relaxed mb-4" x-text="j.content"></p>
+                            <div class="flex justify-between items-center text-xs text-[#64748B] pt-3 border-t border-[#E9EEF7]">
+                                <span class="flex items-center gap-1 font-medium text-[#1E293B]">
+                                    <span x-text="j.mood"></span> Mood Terkait
+                                </span>
+                                <span x-text="j.date"></span>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </section>
+
+            <!-- 9. SELF CARE SCREEN -->
+            <section x-show="$store.app.currentScreen === 'selfcare'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-6">
+
+                <div class="text-center max-w-md mx-auto">
+                    <h2 class="text-2xl font-bold text-[#1E293B]">Rutinitas Self-Care</h2>
+                    <p class="text-sm text-[#64748B] mt-1">Lakukan kebiasaan kecil berkesinambungan untuk kesehatan jiwamu</p>
+                </div>
+
+                <div class="space-y-3 max-w-lg mx-auto">
+                    <template x-for="habit in $store.app.habits" :key="habit.id">
+                        <div @click="$store.app.toggleHabit(habit.id)"
+                             class="p-4 rounded-3xl bg-white border border-[#E9EEF7] shadow-lg card-hover cursor-pointer flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <div class="w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all shrink-0"
+                                     :class="habit.completed ? 'border-emerald-500 bg-emerald-500 text-white' : 'border-[#CBD5E1] bg-white'">
+                                    <i data-lucide="check" class="w-4 h-4"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-bold" :class="habit.completed ? 'line-through text-[#64748B]' : 'text-[#1E293B]'" x-text="habit.name"></h4>
+                                    <span class="text-xs text-[#64748B]" x-text="habit.category"></span>
+                                </div>
+                            </div>
+                            <span class="px-3 py-1 rounded-full bg-[#FFF3D6] text-xs font-bold text-amber-900">
+                                🔥 <span x-text="habit.streak"></span> Hari
+                            </span>
+                        </div>
+                    </template>
+                </div>
+            </section>
+
+            <!-- 10. BREATHING EXERCISE SCREEN -->
+            <section x-show="$store.app.currentScreen === 'breathing'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="min-h-[70vh] flex flex-col items-center justify-around py-6 text-center">
+
+                <div>
+                    <h2 class="text-2xl font-bold text-[#1E293B]">Pernapasan Relaksasi 4-4-4</h2>
+                    <p class="text-sm text-[#64748B] mt-1">Ikuti irama lingkaran untuk menenangkan pikiran yang cemas</p>
+                </div>
+
+                <!-- Animated Breathing Visual Circle -->
+                <div class="breathing-circle-container my-8">
+                    <div class="breathing-outer-ring"
+                         :class="{
+                             'inhale': $store.app.breathing.phase === 'Tarik Napas',
+                             'hold': $store.app.breathing.phase === 'Tahan',
+                             'exhale': $store.app.breathing.phase === 'Hembuskan'
+                         }"></div>
+                    <div class="breathing-inner-circle">
+                        <span class="text-lg font-bold text-[#1E293B]" x-text="$store.app.breathing.phase">Siap</span>
+                        <span class="text-3xl font-extrabold text-[#568BFF] mt-1" x-text="$store.app.breathing.secondsLeft">4</span>
+                        <span class="text-[10px] text-[#64748B] uppercase tracking-wider mt-1" x-text="`Siklus ${$store.app.breathing.currentCycle}/${$store.app.breathing.targetCycles}`"></span>
+                    </div>
+                </div>
+
+                <div class="w-full max-w-xs space-y-3">
+                    <button x-show="!$store.app.breathing.active"
+                            @click="$store.app.startBreathing()"
+                            class="w-full py-4 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white font-semibold shadow-lg shadow-[#A8C5FF]/40 hover:scale-[1.02] active:scale-[0.98] transition-all text-base">
+                        Mulai Latihan Napas
+                    </button>
+                    <button x-show="$store.app.breathing.active"
+                            @click="$store.app.stopBreathing()"
+                            class="w-full py-4 rounded-full bg-rose-100 border border-rose-200 text-rose-600 font-semibold hover:bg-rose-200 transition-all text-base">
+                        Hentikan Latihan
+                    </button>
+                </div>
+            </section>
+
+            <!-- 11. MEDITATION SCREEN -->
+            <section x-show="$store.app.currentScreen === 'meditation'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-6 text-center max-w-md mx-auto">
+
+                <div>
+                    <h2 class="text-2xl font-bold text-[#1E293B]">Meditasi Suara Alam</h2>
+                    <p class="text-sm text-[#64748B] mt-1">Dengarkan alunan frekuensi ramah untuk mereda stres</p>
+                </div>
+
+                <!-- Meditation Audio Card -->
+                <div class="p-8 rounded-3xl bg-gradient-to-br from-white via-[#F0F5FF] to-[#FFF3D6] border border-[#E9EEF7] shadow-lg flex flex-col items-center">
+                    <div class="w-28 h-28 rounded-full bg-white shadow-soft flex items-center justify-center text-5xl mb-4">
+                        🌧️
+                    </div>
+                    <h3 class="text-xl font-bold text-[#1E293B]" x-text="$store.app.meditation.soundName">Suara Hujan Lembut</h3>
+                    <p class="text-xs text-[#64748B] mt-1">Fokus & Ketenangan Jiwa</p>
+
+                    <!-- Timer Display -->
+                    <div class="my-6 text-4xl font-extrabold text-[#568BFF] tracking-wider" x-text="$store.app.formatTime($store.app.meditation.timeLeft)">
+                        05:00
+                    </div>
+
+                    <!-- Duration Presets -->
+                    <div class="flex gap-2 mb-6">
+                        <button @click="$store.app.resetMeditation(300)" class="px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all" :class="$store.app.meditation.totalTime === 300 ? 'bg-[#568BFF] text-white border-[#568BFF]' : 'bg-white text-[#64748B] border-[#E9EEF7]'">5 Menit</button>
+                        <button @click="$store.app.resetMeditation(600)" class="px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all" :class="$store.app.meditation.totalTime === 600 ? 'bg-[#568BFF] text-white border-[#568BFF]' : 'bg-white text-[#64748B] border-[#E9EEF7]'">10 Menit</button>
+                        <button @click="$store.app.resetMeditation(900)" class="px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all" :class="$store.app.meditation.totalTime === 900 ? 'bg-[#568BFF] text-white border-[#568BFF]' : 'bg-white text-[#64748B] border-[#E9EEF7]'">15 Menit</button>
+                    </div>
+
+                    <!-- Play / Pause Button -->
+                    <button @click="$store.app.toggleMeditation()"
+                            class="w-full py-4 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white font-semibold shadow-lg shadow-[#A8C5FF]/40 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-base">
+                        <i :data-lucide="$store.app.meditation.isPlaying ? 'pause' : 'play'" class="w-5 h-5"></i>
+                        <span x-text="$store.app.meditation.isPlaying ? 'Jeda Audio' : 'Mulai Meditasi'"></span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- 12. SLEEP TRACKER SCREEN -->
+            <section x-show="$store.app.currentScreen === 'sleeptracker'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-6 max-w-md mx-auto">
+
+                <div class="text-center">
+                    <h2 class="text-2xl font-bold text-[#1E293B]">Pelacak Kualitas Tidur</h2>
+                    <p class="text-sm text-[#64748B] mt-1">Istirahat optimal menciptakan hari yang bahagia</p>
+                </div>
+
+                <form @submit.prevent="$store.app.logSleep()" class="bg-white p-6 rounded-3xl border border-[#E9EEF7] shadow-lg space-y-4">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-[#1E293B] mb-1 uppercase tracking-wider">Jam Tidur</label>
+                            <input type="text" x-model="$store.app.sleepInput.bedtime" class="timepicker w-full px-4 py-3 rounded-full bg-[#F8FAFD] border border-[#E9EEF7] text-sm text-[#1E293B] focus:bg-white focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-[#1E293B] mb-1 uppercase tracking-wider">Jam Bangun</label>
+                            <input type="text" x-model="$store.app.sleepInput.waketime" class="timepicker w-full px-4 py-3 rounded-full bg-[#F8FAFD] border border-[#E9EEF7] text-sm text-[#1E293B] focus:bg-white focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-[#1E293B] mb-2 uppercase tracking-wider">Kualitas Tidur Bangun</label>
+                        <div class="flex justify-between items-center bg-[#F8FAFD] p-3 rounded-2xl border border-[#E9EEF7]">
+                            <template x-for="star in [1,2,3,4,5]" :key="star">
+                                <button type="button" @click="$store.app.sleepInput.quality = star" class="text-2xl transition-transform hover:scale-125">
+                                    <span :class="star <= $store.app.sleepInput.quality ? 'text-amber-400' : 'text-gray-300'">★</span>
+                                </button>
+                            </template>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full py-3.5 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white font-semibold shadow-md hover:scale-[1.02] transition-all">
+                        Simpan Catatan Tidur
+                    </button>
+                </form>
+            </section>
+
+            <!-- 13. WATER TRACKER SCREEN -->
+            <section x-show="$store.app.currentScreen === 'watertracker'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-6 text-center max-w-md mx-auto">
+
+                <div>
+                    <h2 class="text-2xl font-bold text-[#1E293B]">Pelacak Hidrasi Air</h2>
+                    <p class="text-sm text-[#64748B] mt-1">Pastikan tubuh dan otak terhidrasi dengan baik</p>
+                </div>
+
+                <!-- Water Fill Animation Container -->
+                <div class="p-8 rounded-3xl bg-white border border-[#E9EEF7] shadow-lg flex flex-col items-center">
+                    <div class="water-container mb-4">
+                        <div class="water-fill" :style="`height: ${Math.min(100, ($store.app.waterLogged / $store.app.waterTarget) * 100)}%`">
+                            <div class="water-wave"></div>
+                        </div>
+                    </div>
+
+                    <h3 class="text-3xl font-extrabold text-[#1E293B] mb-1">
+                        <span x-text="$store.app.waterLogged">1250</span> <span class="text-base font-normal text-[#64748B]">/ <span x-text="$store.app.waterTarget">2000</span> ml</span>
+                    </h3>
+                    <p class="text-xs text-[#568BFF] font-semibold mb-6" x-text="`Pencapaian: ${Math.round(($store.app.waterLogged / $store.app.waterTarget) * 100)}% Target`"></p>
+
+                    <!-- Add Buttons -->
+                    <div class="grid grid-cols-2 gap-3 w-full">
+                        <button @click="$store.app.addWater(250)" class="py-3 rounded-full bg-[#F0F5FF] border border-[#A8C5FF]/50 text-[#568BFF] font-bold text-sm hover:bg-[#A8C5FF] hover:text-white transition-all">
+                            +250 ml Gelas
+                        </button>
+                        <button @click="$store.app.addWater(500)" class="py-3 rounded-full bg-[#F0F5FF] border border-[#A8C5FF]/50 text-[#568BFF] font-bold text-sm hover:bg-[#A8C5FF] hover:text-white transition-all">
+                            +500 ml Botol
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 14. STATISTICS SCREEN -->
+            <section x-show="$store.app.currentScreen === 'stats'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-6">
+
+                <div>
+                    <h2 class="text-2xl font-bold text-[#1E293B]">Analisis & Statistik</h2>
+                    <p class="text-sm text-[#64748B]">Ringkasan progres kesehatan mental & kebiasaan sehatmu</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Sleep Duration Chart -->
+                    <div class="bg-white p-5 rounded-3xl border border-[#E9EEF7] shadow-lg">
+                        <h3 class="text-sm font-bold text-[#1E293B] mb-3">Statistik Tidur (Jam)</h3>
+                        <div class="h-44">
+                            <canvas id="sleepChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Water Intake Chart -->
+                    <div class="bg-white p-5 rounded-3xl border border-[#E9EEF7] shadow-lg">
+                        <h3 class="text-sm font-bold text-[#1E293B] mb-3">Asupan Air Minum (ml)</h3>
+                        <div class="h-44">
+                            <canvas id="waterChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Selfcare Completion Chart -->
+                    <div class="bg-white p-5 rounded-3xl border border-[#E9EEF7] shadow-lg md:col-span-2">
+                        <h3 class="text-sm font-bold text-[#1E293B] mb-3">Rasio Kebiasaan Selesai</h3>
+                        <div class="h-48">
+                            <canvas id="selfcareChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 15. REMINDER SCREEN -->
+            <section x-show="$store.app.currentScreen === 'reminder'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-6 max-w-md mx-auto">
+
+                <div>
+                    <h2 class="text-2xl font-bold text-[#1E293B]">Pengingat Harian</h2>
+                    <p class="text-sm text-[#64748B]">Atur jadwal notifikasi ramah untuk mendukung konsistensimu</p>
+                </div>
+
+                <div class="space-y-3">
+                    <template x-for="r in $store.app.reminders" :key="r.id">
+                        <div class="p-4 rounded-3xl bg-white border border-[#E9EEF7] shadow-lg flex items-center justify-between">
+                            <div>
+                                <h4 class="text-sm font-bold text-[#1E293B]" x-text="r.title"></h4>
+                                <span class="text-xs text-[#64748B]" x-text="`${r.type} • ${r.time}`"></span>
+                            </div>
+                            <button @click="$store.app.toggleReminder(r.id)"
+                                    class="w-12 h-6 rounded-full transition-colors relative"
+                                    :class="r.enabled ? 'bg-[#568BFF]' : 'bg-gray-200'">
+                                <div class="w-5 h-5 rounded-full bg-white absolute top-0.5 transition-transform"
+                                     :class="r.enabled ? 'right-0.5' : 'left-0.5'"></div>
+                            </button>
+                        </div>
+                    </template>
+                </div>
+            </section>
+
+            <!-- 16. EDUCATION SCREEN -->
+            <section x-show="$store.app.currentScreen === 'education'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-6">
+
+                <div>
+                    <h2 class="text-2xl font-bold text-[#1E293B]">Pusat Edukasi & Artikel</h2>
+                    <p class="text-sm text-[#64748B]">Pengetahuan praktis untuk memelihara jiwa yang sehat</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <template x-for="art in $store.app.articles" :key="art.id">
+                        <div @click="$store.app.readArticle(art)"
+                             class="bg-white rounded-3xl border border-[#E9EEF7] shadow-lg overflow-hidden card-hover cursor-pointer transition-all">
+                            <img :src="art.image" class="w-full h-36 object-cover" alt="Article image">
+                            <div class="p-4">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-[10px] font-bold uppercase tracking-wider text-[#568BFF]" x-text="art.category"></span>
+                                    <span class="text-[10px] text-[#64748B] font-medium flex items-center gap-1">
+                                        <i data-lucide="clock" class="w-3 h-3"></i>
+                                        <span x-text="art.readTime"></span>
+                                    </span>
+                                </div>
+                                <h3 class="text-base font-bold text-[#1E293B] mt-1" x-text="art.title"></h3>
+                                <p class="text-xs text-[#64748B] mt-2 line-clamp-2" x-text="art.excerpt"></p>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </section>
+
+            <!-- 16b. ARTICLE DETAIL SCREEN -->
+            <section x-show="$store.app.currentScreen === 'article-detail'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-6 max-w-2xl mx-auto"
+                     style="display: none;">
+                
+                <template x-if="$store.app.selectedArticle">
+                    <div class="bg-white rounded-3xl border border-[#E9EEF7] shadow-xl overflow-hidden">
+                        <!-- Cover Image -->
+                        <div class="relative h-60 sm:h-72 w-full">
+                            <img :src="$store.app.selectedArticle.image" class="w-full h-full object-cover" alt="Article Cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                            
+                            <!-- Floating Back Button on Image -->
+                            <button @click="$store.app.navigateTo('education')" 
+                                    class="absolute top-4 left-4 w-10 h-10 rounded-full bg-white/95 backdrop-blur-xs flex items-center justify-center text-[#1E293B] shadow-lg hover:scale-105 transition-all">
+                                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                            </button>
+
+                            <!-- Category & Read Time -->
+                            <div class="absolute bottom-4 left-5 right-5 flex justify-between items-center text-white">
+                                <span class="px-3.5 py-1 rounded-full bg-[#568BFF] text-xs font-bold uppercase tracking-wider" x-text="$store.app.selectedArticle.category"></span>
+                                <span class="text-xs font-medium flex items-center gap-1">
+                                    <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+                                    <span x-text="$store.app.selectedArticle.readTime"></span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Content Details -->
+                        <div class="p-6 sm:p-8 space-y-4">
+                            <h2 class="text-2xl font-extrabold text-[#1E293B] tracking-tight leading-tight" x-text="$store.app.selectedArticle.title"></h2>
+                            
+                            <div class="border-b border-[#E9EEF7] pb-4 flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-[#FFF3D6] flex items-center justify-center text-sm shadow-xs">🧘‍♀️</div>
+                                <div>
+                                    <p class="text-xs font-bold text-[#1E293B]">TemanJiwa Health Specialist</p>
+                                    <p class="text-[10px] text-[#64748B]">Ditinjau oleh Tim Konselor Medis</p>
+                                </div>
+                            </div>
+
+                            <!-- Body Text paragraphs -->
+                            <div class="text-sm sm:text-base text-[#475569] leading-relaxed space-y-4 pt-2 font-medium">
+                                <template x-for="p in $store.app.selectedArticle.content.split('\n\n')">
+                                    <p class="whitespace-pre-line text-justify" x-text="p"></p>
+                                </template>
+                            </div>
+                        </div>
+
+                        <!-- Bottom Footer Actions -->
+                        <div class="bg-[#F8FAFD] border-t border-[#E9EEF7] px-6 py-4 flex items-center justify-between">
+                            <button @click="$store.app.navigateTo('education')" 
+                                    class="px-5 py-2.5 rounded-full bg-white border border-[#E9EEF7] text-xs font-bold text-[#64748B] hover:text-[#1E293B] hover:bg-[#F8FAFD] transition-all">
+                                Kembali ke Artikel
+                            </button>
+                            <button @click="$store.app.navigateTo('dashboard')" 
+                                    class="px-5 py-2.5 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white text-xs font-bold shadow-md hover:scale-105 transition-all">
+                                Kembali ke Beranda 🌿
+                            </button>
+                        </div>
+                    </div>
+                </template>
+            </section>
+
+            <!-- 17. EMERGENCY HELP SCREEN (SOS) -->
+            <section x-show="$store.app.currentScreen === 'emergency'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-6 max-w-md mx-auto">
+
+                <div class="p-6 rounded-3xl bg-rose-50 border border-rose-200 text-center">
+                    <div class="w-16 h-16 rounded-full bg-rose-500 text-white flex items-center justify-center mx-auto mb-3 text-2xl shadow-lg">
+                        🆘
+                    </div>
+                    <h2 class="text-xl font-bold text-rose-950">Layanan Bantuan Darurat</h2>
+                    <p class="text-xs text-rose-800 mt-1">Kamu tidak sendirian. Bantuan profesional selalu siap mendengarkan.</p>
+                    
+                    <a href="tel:119" class="mt-4 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-rose-600 text-white font-bold text-sm shadow-md hover:bg-rose-700 transition-all">
+                        <i data-lucide="phone-call" class="w-4 h-4"></i>
+                        Hubungi Hotline 119 Ext 8
+                    </a>
+                </div>
+
+                <!-- 5-4-3-2-1 Grounding Technique -->
+                <div class="bg-white p-6 rounded-3xl border border-[#E9EEF7] shadow-lg space-y-4">
+                    <h3 class="text-base font-bold text-[#1E293B]">Teknik Penenang Grounding 5-4-3-2-1</h3>
+                    <div class="space-y-2 text-xs text-[#64748B]">
+                        <p class="p-2.5 rounded-2xl bg-[#F8FAFD] border border-[#E9EEF7]"><strong class="text-[#1E293B]">👁️ 5 Hal:</strong> Pandang 5 benda di sekitarmu.</p>
+                        <p class="p-2.5 rounded-2xl bg-[#F8FAFD] border border-[#E9EEF7]"><strong class="text-[#1E293B]">✋ 4 Hal:</strong> Raba 4 permukaan tekstur di dekatmu.</p>
+                        <p class="p-2.5 rounded-2xl bg-[#F8FAFD] border border-[#E9EEF7]"><strong class="text-[#1E293B]">👂 3 Hal:</strong> Dengarkan 3 suara samar di ruangan.</p>
+                        <p class="p-2.5 rounded-2xl bg-[#F8FAFD] border border-[#E9EEF7]"><strong class="text-[#1E293B]">👃 2 Hal:</strong> Hirup 2 aroma di sekitarmu.</p>
+                        <p class="p-2.5 rounded-2xl bg-[#F8FAFD] border border-[#E9EEF7]"><strong class="text-[#1E293B]">👅 1 Hal:</strong> Rasakan 1 sensasi di lidah atau air minum.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 18. NOTIFICATIONS SCREEN -->
+            <section x-show="$store.app.currentScreen === 'notifications'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-4 max-w-md mx-auto">
+
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-bold text-[#1E293B]">Notifikasi</h2>
+                    <button @click="$store.app.markAllRead()" class="text-xs font-semibold text-[#568BFF] hover:underline">
+                        Tandai Dibaca
+                    </button>
+                </div>
+
+                <div class="space-y-2.5">
+                    <template x-for="n in $store.app.notifications" :key="n.id">
+                        <div class="p-4 rounded-3xl border transition-all flex items-start gap-3"
+                             :class="n.read ? 'bg-white border-[#E9EEF7]' : 'bg-[#F0F5FF] border-[#A8C5FF] shadow-sm'">
+                            <span class="text-xl shrink-0">🔔</span>
+                            <div>
+                                <h4 class="text-xs font-bold text-[#1E293B]" x-text="n.title"></h4>
+                                <p class="text-xs text-[#64748B] mt-0.5" x-text="n.message"></p>
+                                <span class="text-[10px] text-[#94A3B8] mt-1 block" x-text="n.time"></span>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </section>
+
+            <!-- 19. PROFILE SCREEN -->
+            <section x-show="$store.app.currentScreen === 'profile'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-6 max-w-md mx-auto"
+                     style="display: none;">
+
+                <!-- Social-Media Style Profile Card -->
+                <div class="bg-white rounded-3xl border border-[#E9EEF7] shadow-lg overflow-hidden relative">
+                    <!-- Dynamic Cover Header -->
+                    <div class="h-28 w-full transition-all duration-300 relative"
+                         :style="`background-color: ${$store.app.user.coverColor || '#A8C5FF'}`">
+                        <!-- Tiny Overlay Gradient -->
+                        <div class="absolute inset-0 bg-gradient-to-b from-black/10 to-black/20"></div>
+
+                        <!-- Floating Edit button in cover -->
+                        <button @click="$store.app.startEditProfile()" 
+                                class="absolute top-3 right-3 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-xs text-xs font-bold text-[#1E293B] shadow-sm hover:scale-105 active:scale-95 transition-all flex items-center gap-1.5">
+                            <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+                            Edit Profil
+                        </button>
+                    </div>
+
+                    <!-- Profile Information overlapping cover -->
+                    <div class="px-6 pb-6 pt-1 flex flex-col items-center text-center relative z-10">
+                        <!-- Overlapping Avatar -->
+                        <div class="w-20 h-20 rounded-full border-4 border-white bg-[#FFF3D6] text-4xl flex items-center justify-center -mt-10 shadow-md transform hover:rotate-12 transition-all">
+                            <span x-text="$store.app.user.avatar || '🌸'">🌸</span>
+                        </div>
+
+                        <!-- Name and Email -->
+                        <h2 class="text-xl font-extrabold text-[#1E293B] mt-2 tracking-tight flex items-center gap-1.5 justify-center">
+                            <span x-text="$store.app.user.name"></span>
+                            <span class="text-emerald-500 text-xs shrink-0 flex items-center" title="Akun Terverifikasi">
+                                <i data-lucide="badge-check" class="w-4 h-4 fill-emerald-500 text-white"></i>
+                            </span>
+                        </h2>
+                        <p class="text-xs text-[#64748B] font-medium" x-text="$store.app.user.email"></p>
+
+                        <!-- User Biography / Social Status -->
+                        <div class="mt-3.5 px-4 py-2.5 rounded-2xl bg-[#F8FAFD] border border-[#E9EEF7] w-full text-xs text-[#475569] leading-relaxed italic text-center max-w-sm">
+                            <span class="text-[#94A3B8] font-bold text-sm leading-none mr-0.5">“</span>
+                            <span x-text="$store.app.user.bio || 'Menemukan kedamaian di setiap hela napas.'"></span>
+                            <span class="text-[#94A3B8] font-bold text-sm leading-none ml-0.5">”</span>
+                        </div>
+
+                        <!-- Level and XP badge -->
+                        <div class="mt-4 px-4 py-1.5 rounded-full bg-[#F0F5FF] border border-[#A8C5FF]/40 text-xs font-bold text-[#568BFF] flex items-center gap-1.5 shadow-xs">
+                            <span>🏆 Level <span x-text="$store.app.user.level">3</span> Warrior</span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-[#A8C5FF]"></span>
+                            <span><span x-text="$store.app.user.xp">240</span> XP</span>
                         </div>
                     </div>
                 </div>
 
-                <button class="btn btn-primary btn-pill btn-large" onclick="saveSleepLog()">
-                    <i data-lucide="moon"></i>
-                    <span>Simpan Catatan Tidur</span>
+                <!-- Settings Links -->
+                <div class="bg-white rounded-3xl border border-[#E9EEF7] shadow-lg divide-y divide-[#E9EEF7] overflow-hidden">
+                    <button @click="$store.app.navigateTo('reminder')" class="w-full p-4 text-left flex items-center justify-between hover:bg-[#F8FAFD] transition-all">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-xl bg-[#E1ECFF] text-[#568BFF] flex items-center justify-center text-sm"><i data-lucide="bell" class="w-4 h-4"></i></span>
+                            <span class="text-sm font-bold text-[#1E293B]">Pengingat Harian</span>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-[#CBD5E1]"></i>
+                    </button>
+                    <button @click="$store.app.navigateTo('settings')" class="w-full p-4 text-left flex items-center justify-between hover:bg-[#F8FAFD] transition-all">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-sm"><i data-lucide="settings" class="w-4 h-4"></i></span>
+                            <span class="text-sm font-bold text-[#1E293B]">Pengaturan Aplikasi</span>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-[#CBD5E1]"></i>
+                    </button>
+                    <button @click="$store.app.navigateTo('privacy')" class="w-full p-4 text-left flex items-center justify-between hover:bg-[#F8FAFD] transition-all">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm"><i data-lucide="shield-check" class="w-4 h-4"></i></span>
+                            <span class="text-sm font-bold text-[#1E293B]">Kebijakan Privasi</span>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-[#CBD5E1]"></i>
+                    </button>
+                    <button @click="$store.app.navigateTo('about')" class="w-full p-4 text-left flex items-center justify-between hover:bg-[#F8FAFD] transition-all">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-sm"><i data-lucide="info" class="w-4 h-4"></i></span>
+                            <span class="text-sm font-bold text-[#1E293B]">Tentang TemanJiwa</span>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-[#CBD5E1]"></i>
+                    </button>
+                    <button @click="$store.app.logoutUser()" class="w-full p-4 text-left flex items-center justify-between hover:bg-rose-50 text-rose-600 transition-all">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-sm"><i data-lucide="log-out" class="w-4 h-4"></i></span>
+                            <span class="text-sm font-bold">Keluar Akun</span>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-rose-300"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- 19b. EDIT PROFILE SCREEN -->
+            <section x-show="$store.app.currentScreen === 'edit-profile'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-6 max-w-md mx-auto"
+                     style="display: none;">
+
+                <div class="flex items-center gap-3">
+                    <button @click="$store.app.navigateTo('profile')" 
+                            class="w-10 h-10 rounded-full bg-white border border-[#E9EEF7] flex items-center justify-center text-[#64748B] hover:text-[#1E293B] hover:bg-[#F8FAFD] transition-all">
+                        <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                    </button>
+                    <div>
+                        <h2 class="text-xl font-bold text-[#1E293B]">Edit Profil Anda</h2>
+                        <p class="text-xs text-[#64748B]">Kustomisasi akun sosial wellness milikmu</p>
+                    </div>
+                </div>
+
+                <form @submit.prevent="$store.app.saveProfile()" class="bg-white p-6 sm:p-7 rounded-3xl border border-[#E9EEF7] shadow-lg space-y-5">
+                    <!-- Cover Color Picker -->
+                    <div>
+                        <label class="block text-xs font-bold text-[#1E293B] mb-2 uppercase tracking-wider text-left">Pilih Warna Sampul (Cover Theme)</label>
+                        <div class="flex gap-2.5 flex-wrap">
+                            <template x-for="color in ['#A8C5FF', '#FFF3D6', '#86EFAC', '#FCA5A5', '#E9D5FF', '#CBD5E1', '#F59E0B', '#10B981']">
+                                <button type="button" @click="$store.app.profileEdit.coverColor = color"
+                                        class="w-8 h-8 rounded-full border-2 transition-all"
+                                        :class="$store.app.profileEdit.coverColor === color ? 'border-[#1E293B] scale-110 shadow-md' : 'border-transparent hover:scale-105'"
+                                        :style="`background-color: ${color}`"></button>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- Avatar emoji select row -->
+                    <div>
+                        <label class="block text-xs font-bold text-[#1E293B] mb-2 uppercase tracking-wider text-left">Pilih Avatar Ketenangan</label>
+                        <div class="flex justify-between items-center bg-[#F8FAFD] p-3.5 rounded-2xl border border-[#E9EEF7] overflow-x-auto no-scrollbar gap-2">
+                            <template x-for="emoji in ['🌿', '🧘‍♀️', '🕊️', '🌸', '🌱', '✨', '🌊', '☀️', '🐱', '🦋']">
+                                <button type="button" @click="$store.app.profileEdit.avatar = emoji"
+                                        class="text-3xl p-1.5 rounded-xl transition-all"
+                                        :class="$store.app.profileEdit.avatar === emoji ? 'bg-white shadow-md border border-[#E9EEF7] scale-110' : 'hover:scale-105'"
+                                        x-text="emoji"></button>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- Full Name -->
+                    <div>
+                        <label class="block text-xs font-bold text-[#1E293B] mb-2 uppercase tracking-wider text-left">Nama Lengkap</label>
+                        <input type="text" x-model="$store.app.profileEdit.name" required
+                               class="w-full px-5 py-3.5 rounded-full bg-[#F8FAFD] border border-[#E9EEF7] text-sm text-[#1E293B] focus:bg-white focus:border-[#568BFF] focus:outline-none transition-all"
+                               placeholder="Nama lengkapmu">
+                    </div>
+
+                    <!-- Email Address -->
+                    <div>
+                        <label class="block text-xs font-bold text-[#1E293B] mb-2 uppercase tracking-wider text-left">Alamat Email</label>
+                        <input type="email" x-model="$store.app.profileEdit.email" required
+                               class="w-full px-5 py-3.5 rounded-full bg-[#F8FAFD] border border-[#E9EEF7] text-sm text-[#1E293B] focus:bg-white focus:border-[#568BFF] focus:outline-none transition-all"
+                               placeholder="nama@email.com">
+                    </div>
+
+                    <!-- Biography / Wellness Bio -->
+                    <div>
+                        <label class="block text-xs font-bold text-[#1E293B] mb-2 uppercase tracking-wider text-left">Bio Ketenangan (Wellness Bio)</label>
+                        <textarea x-model="$store.app.profileEdit.bio" rows="3" maxlength="150"
+                                  class="w-full px-5 py-3 rounded-2xl bg-[#F8FAFD] border border-[#E9EEF7] text-sm text-[#1E293B] focus:bg-white focus:border-[#568BFF] focus:outline-none transition-all resize-none"
+                                  placeholder="Bagikan motto hidup damaimu... (Maksimal 150 karakter)"></textarea>
+                    </div>
+
+                    <!-- Action buttons -->
+                    <div class="flex gap-3 pt-2">
+                        <button type="button" @click="$store.app.navigateTo('profile')"
+                                class="w-1/2 py-3.5 rounded-full bg-white border border-[#E9EEF7] text-[#64748B] text-sm font-semibold hover:bg-[#F8FAFD] transition-all">
+                            Batal
+                        </button>
+                        <button type="submit"
+                                class="w-1/2 py-3.5 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white text-sm font-semibold shadow-md hover:scale-[1.02] transition-all">
+                            Simpan Profil
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- 20. SETTINGS SCREEN -->
+            <section x-show="$store.app.currentScreen === 'settings'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-4 max-w-md mx-auto">
+                <h2 class="text-xl font-bold text-[#1E293B]">Pengaturan</h2>
+                <div class="bg-white p-5 rounded-3xl border border-[#E9EEF7] shadow-lg space-y-4 text-sm">
+                    <div class="flex justify-between items-center">
+                        <span>Suara Efek Meditasi</span>
+                        <input type="checkbox" checked class="w-5 h-5 rounded text-[#568BFF]">
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span>Notifikasi Harian</span>
+                        <input type="checkbox" checked class="w-5 h-5 rounded text-[#568BFF]">
+                    </div>
+                </div>
+            </section>
+
+            <!-- 21. PRIVACY SCREEN -->
+            <section x-show="$store.app.currentScreen === 'privacy'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-4 max-w-md mx-auto">
+                <h2 class="text-xl font-bold text-[#1E293B]">Kebijakan Privasi</h2>
+                <div class="bg-white p-5 rounded-3xl border border-[#E9EEF7] shadow-lg text-xs text-[#64748B] space-y-3 leading-relaxed">
+                    <p>TemanJiwa berkomitmen penuh melindungi privasi data emosional dan catatan jurnal Anda. Semua data disimpan secara lokal pada perangkat Anda.</p>
+                </div>
+            </section>
+
+            <!-- 22. ABOUT SCREEN -->
+            <section x-show="$store.app.currentScreen === 'about'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-4 max-w-md mx-auto text-center">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#A8C5FF] to-[#FFF3D6] mx-auto flex items-center justify-center text-3xl shadow-sm">
+                    🌿
+                </div>
+                <h2 class="text-xl font-bold text-[#1E293B]">TemanJiwa v2.0</h2>
+                <p class="text-xs text-[#64748B]">Dibuat dengan kasih untuk kesehatan mental yang lebih baik.</p>
+            </section>
+
+            <!-- 23. AI COMPANION CHAT SCREEN -->
+            <section x-show="$store.app.currentScreen === 'aichat'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-4 max-w-lg mx-auto w-full">
+
+                <!-- Header / Title & Quick Action Bar -->
+                <div class="bg-gradient-to-r from-[#F0F5FF] via-white to-[#FFF3D6] p-5 rounded-3xl border border-[#E9EEF7] shadow-sm space-y-3">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-2xl bg-white border border-[#A8C5FF]/40 shadow-sm flex items-center justify-center text-2xl">
+                                🤖
+                            </div>
+                            <div>
+                                <h2 class="text-base font-bold text-[#1E293B] flex items-center gap-1.5">
+                                    Asisten AI TemanJiwa
+                                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse inline-block" title="Online & Mendengar"></span>
+                                </h2>
+                                <p class="text-xs text-[#64748B]">Teman Curhat Empatis & Ketenangan Batin 24/7</p>
+                            </div>
+                        </div>
+                        <button @click="$store.app.clearAiChat()" class="p-2 rounded-2xl bg-white border border-[#E9EEF7] text-[#64748B] hover:text-rose-500 hover:border-rose-200 transition-all flex items-center gap-1 text-xs font-medium" title="Reset Obrolan">
+                            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                            <span class="hidden sm:inline">Reset</span>
+                        </button>
+                    </div>
+
+                    <!-- Quick Mindful Action Shortcuts Bar -->
+                    <div class="pt-2 border-t border-[#E9EEF7]/80 flex items-center justify-between gap-2 text-xs">
+                        <span class="text-[11px] font-semibold text-[#64748B] shrink-0">Bantuan Langsung:</span>
+                        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+                            <button @click="$store.app.startBreathingFromAi()" class="px-2.5 py-1 rounded-full bg-white border border-[#BAE6FD] text-[#0284C7] font-semibold text-[11px] hover:bg-[#E0F2FE] transition-all whitespace-nowrap">
+                                🫁 Relaksasi Napas
+                            </button>
+                            <button @click="$store.app.startMeditationFromAi()" class="px-2.5 py-1 rounded-full bg-white border border-amber-200 text-amber-700 font-semibold text-[11px] hover:bg-[#FFF3D6] transition-all whitespace-nowrap">
+                                🌧️ Suara Hujan
+                            </button>
+                            <button @click="$store.app.openJournalFromAi()" class="px-2.5 py-1 rounded-full bg-white border border-emerald-200 text-emerald-700 font-semibold text-[11px] hover:bg-emerald-50 transition-all whitespace-nowrap">
+                                📝 Catat Jurnal
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Prompts Pill List -->
+                <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+                    <button @click="$store.app.sendAiMessage('Saya merasa cemas & overthinking hari ini 💚')" class="px-3.5 py-1.5 rounded-full bg-white border border-[#E9EEF7] text-xs font-semibold text-[#568BFF] whitespace-nowrap shadow-xs hover:bg-[#F0F5FF] transition-all shrink-0">
+                        💚 Cemas & Overthinking
+                    </button>
+                    <button @click="$store.app.sendAiMessage('Berikan saya afirmasi positif & ketenangan malam ini 🕯️')" class="px-3.5 py-1.5 rounded-full bg-white border border-[#E9EEF7] text-xs font-semibold text-amber-600 whitespace-nowrap shadow-xs hover:bg-[#FFF3D6]/50 transition-all shrink-0">
+                        🕯️ Afirmasi Kedamaian
+                    </button>
+                    <button @click="$store.app.sendAiMessage('Saya merasa lelah sekali dengan pekerjaan & tugas ☕')" class="px-3.5 py-1.5 rounded-full bg-white border border-[#E9EEF7] text-xs font-semibold text-rose-600 whitespace-nowrap shadow-xs hover:bg-rose-50 transition-all shrink-0">
+                        ☕ Stres Kerja & Lelah
+                    </button>
+                    <button @click="$store.app.sendAiMessage('Saya sedang merasa sedih & butuh teman bicara 😔')" class="px-3.5 py-1.5 rounded-full bg-white border border-[#E9EEF7] text-xs font-semibold text-sky-600 whitespace-nowrap shadow-xs hover:bg-sky-50 transition-all shrink-0">
+                        😔 Sedih & Butuh Teman
+                    </button>
+                    <button @click="$store.app.sendAiMessage('Pikiran saya berpacu dan susah tidur malam ini 🌙')" class="px-3.5 py-1.5 rounded-full bg-white border border-[#E9EEF7] text-xs font-semibold text-indigo-600 whitespace-nowrap shadow-xs hover:bg-indigo-50 transition-all shrink-0">
+                        🌙 Susah Tidur Malam
+                    </button>
+                    <button @click="$store.app.sendAiMessage('Saya merasa insecure dan takut gagal 🌸')" class="px-3.5 py-1.5 rounded-full bg-white border border-[#E9EEF7] text-xs font-semibold text-purple-600 whitespace-nowrap shadow-xs hover:bg-purple-50 transition-all shrink-0">
+                        🌸 Insecure & Ragu
+                    </button>
+                    <button @click="$store.app.sendAiMessage('Bagaimana langkah relaksasi pernapasan tercepat? 🫁')" class="px-3.5 py-1.5 rounded-full bg-white border border-[#E9EEF7] text-xs font-semibold text-emerald-600 whitespace-nowrap shadow-xs hover:bg-emerald-50 transition-all shrink-0">
+                        🫁 Panduan Napas 4-4-4
+                    </button>
+                </div>
+
+                <!-- Messages Container -->
+                <div id="chatContainer" class="bg-white p-4 sm:p-5 rounded-3xl border border-[#E9EEF7] shadow-lg h-[430px] overflow-y-auto space-y-4 flex flex-col">
+                    <template x-for="msg in $store.app.aiChat.messages" :key="msg.id">
+                        <div class="flex flex-col" :class="msg.sender === 'user' ? 'items-end' : 'items-start'">
+                            <div x-show="msg.sender === 'ai'" class="text-[10px] font-bold text-[#568BFF] mb-1 flex items-center gap-1">
+                                🕊️ TemanJiwa AI Companion
+                            </div>
+                            <div class="max-w-[88%] sm:max-w-[82%] p-4 text-xs sm:text-sm leading-relaxed"
+                                 :class="msg.sender === 'user' ? 'chat-bubble-user' : 'chat-bubble-ai'">
+                                <p class="whitespace-pre-line leading-relaxed" x-text="msg.text"></p>
+                            </div>
+                            <span class="text-[10px] text-[#94A3B8] mt-1 px-1" x-text="msg.time"></span>
+                        </div>
+                    </template>
+
+                    <!-- Typing Indicator -->
+                    <div x-show="$store.app.aiChat.isTyping" class="flex flex-col items-start gap-1">
+                        <span class="text-[10px] font-bold text-[#568BFF]">TemanJiwa sedang menyusun jawaban hangat...</span>
+                        <div class="flex items-center gap-1.5 p-3 rounded-2xl bg-white border border-[#E9EEF7] w-fit shadow-xs">
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Message Input Box -->
+                <form @submit.prevent="$store.app.sendAiMessage()" class="relative flex items-center">
+                    <input type="text" x-model="$store.app.aiChat.userMessage" placeholder="Luapkan atau ceritakan apa saja yang sedang kamu rasakan..." required
+                           class="w-full pl-5 pr-14 py-4 rounded-full bg-white border border-[#E9EEF7] text-sm text-[#1E293B] shadow-lg focus:outline-none focus:border-[#568BFF] transition-all">
+                    <button type="submit" class="absolute right-2 w-10 h-10 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white flex items-center justify-center shadow-md hover:scale-105 active:scale-95 transition-all">
+                        <i data-lucide="send" class="w-4 h-4"></i>
+                    </button>
+                </form>
+            </section>
+
+        </main>
+
+        <!-- ========================================== -->
+        <!-- MODAL ADD JOURNAL -->
+        <!-- ========================================== -->
+        <div x-show="$store.app.showModal === 'addJournal'"
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
+            <div class="bg-white rounded-3xl p-6 w-full max-w-lg shadow-2xl border border-[#E9EEF7] space-y-4" @click.outside="$store.app.showModal = null">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-lg font-bold text-[#1E293B]">Tulis Jurnal Refleksi</h3>
+                    <button @click="$store.app.showModal = null" class="text-[#64748B] hover:text-[#1E293B]">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-[#1E293B] mb-1">Judul Jurnal</label>
+                    <input type="text" x-model="$store.app.newJournal.title" placeholder="Contoh: Belajar Menerima Proses" class="w-full px-4 py-3 rounded-full bg-[#F8FAFD] border border-[#E9EEF7] text-sm focus:outline-none focus:border-[#568BFF]">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-[#1E293B] mb-1">Kategori Tag</label>
+                    <select x-model="$store.app.newJournal.tag" class="w-full px-4 py-3 rounded-full bg-[#F8FAFD] border border-[#E9EEF7] text-sm focus:outline-none">
+                        <option value="Refleksi">Refleksi Diri</option>
+                        <option value="Rasa Syukur">Rasa Syukur</option>
+                        <option value="Mindfulness">Mindfulness</option>
+                        <option value="Evaluasi">Evaluasi Emosi</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-[#1E293B] mb-1">Isi Jurnal Refleksi</label>
+                    <textarea x-model="$store.app.newJournal.content" rows="4" placeholder="Tuliskan secara bebas pikiran dan perasaanmu hari ini..." class="w-full px-4 py-3 rounded-2xl bg-[#F8FAFD] border border-[#E9EEF7] text-sm focus:outline-none focus:border-[#568BFF] resize-none"></textarea>
+                </div>
+                <button @click="$store.app.addJournal()" class="w-full py-3.5 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white font-semibold shadow-md hover:scale-[1.01] transition-all">
+                    Simpan Jurnal Refleksi
                 </button>
             </div>
-
-            <!-- Minimal Footer -->
-            <footer class="app-footer">
-                <div class="footer-content">
-                    <div class="footer-brand">
-                        <span>🌿 TemanJiwa</span>
-                        <p>Sahabat Setia Merawat Kesehatan Mental Indonesia 🇮🇩</p>
-                    </div>
-                    <div class="footer-copy">
-                        &copy; 2026 TemanJiwa Indonesia. All rights reserved.
-                    </div>
-                </div>
-            </footer>
-
         </div>
 
-        <!-- Notification Toast Drawer -->
-        <div id="toast-container" class="toast-container" aria-live="polite"></div>
+        <!-- ========================================== -->
+        <!-- iOS STYLE BOTTOM NAVIGATION BAR -->
+        <!-- ========================================== -->
+        <nav x-show="['dashboard', 'mood', 'journal', 'selfcare', 'stats', 'profile'].includes($store.app.currentScreen)"
+             class="fixed bottom-0 left-1/2 -translate-x-1/2 z-40 w-full max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-5xl bg-white/95 backdrop-blur-md border-t border-[#E9EEF7] px-3 py-2 flex items-center justify-around shadow-nav rounded-t-3xl transition-all">
+            
+            <!-- Dashboard -->
+            <button @click="$store.app.navigateTo('dashboard')"
+                    class="flex flex-col items-center gap-1 px-3 py-1.5 rounded-2xl transition-all"
+                    :class="$store.app.activeNav === 'dashboard' ? 'text-[#568BFF] font-bold' : 'text-[#64748B] font-medium hover:text-[#1E293B]'">
+                <i data-lucide="home" class="w-5 h-5"></i>
+                <span class="text-[10px]">Beranda</span>
+            </button>
 
-        <!-- Emergency Dialog overlay popup confirmation -->
-        <div id="emergency-dialog" class="modal-overlay">
-            <div class="modal-dialog card-glass">
-                <h4 id="em-dialog-title" class="modal-title">Menghubungi Layanan ☎️</h4>
-                <p class="modal-body">
-                    Apakah kamu setuju dibukakan panggilan darurat ke <strong id="em-dialog-name">SEJIWA</strong> di nomor <span id="em-dialog-num">119 Ext. 8</span>?
-                </p>
-                <div class="modal-actions">
-                    <button class="btn btn-outline btn-pill" onclick="closeEmergencyDialog()">Batal</button>
-                    <button class="btn btn-danger btn-pill" style="flex:1;" onclick="makeEmergencyCall()">Hubungi Sekarang</button>
-                </div>
-            </div>
-        </div>
+            <!-- Mood -->
+            <button @click="$store.app.navigateTo('mood')"
+                    class="flex flex-col items-center gap-1 px-3 py-1.5 rounded-2xl transition-all"
+                    :class="$store.app.activeNav === 'mood' ? 'text-[#568BFF] font-bold' : 'text-[#64748B] font-medium hover:text-[#1E293B]'">
+                <i data-lucide="smile" class="w-5 h-5"></i>
+                <span class="text-[10px]">Mood</span>
+            </button>
+
+            <!-- Journal -->
+            <button @click="$store.app.navigateTo('journal')"
+                    class="flex flex-col items-center gap-1 px-3 py-1.5 rounded-2xl transition-all"
+                    :class="$store.app.activeNav === 'journal' ? 'text-[#568BFF] font-bold' : 'text-[#64748B] font-medium hover:text-[#1E293B]'">
+                <i data-lucide="book-open" class="w-5 h-5"></i>
+                <span class="text-[10px]">Jurnal</span>
+            </button>
+
+            <!-- Selfcare -->
+            <button @click="$store.app.navigateTo('selfcare')"
+                    class="flex flex-col items-center gap-1 px-3 py-1.5 rounded-2xl transition-all"
+                    :class="$store.app.activeNav === 'selfcare' ? 'text-[#568BFF] font-bold' : 'text-[#64748B] font-medium hover:text-[#1E293B]'">
+                <i data-lucide="heart" class="w-5 h-5"></i>
+                <span class="text-[10px]">Self Care</span>
+            </button>
+
+            <!-- Stats -->
+            <button @click="$store.app.navigateTo('stats')"
+                    class="flex flex-col items-center gap-1 px-3 py-1.5 rounded-2xl transition-all"
+                    :class="$store.app.activeNav === 'stats' ? 'text-[#568BFF] font-bold' : 'text-[#64748B] font-medium hover:text-[#1E293B]'">
+                <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+                <span class="text-[10px]">Statistik</span>
+            </button>
+        </nav>
 
     </div>
 
-    <!-- JS Link -->
-    <script src="app.js"></script>
-    <script>
-        // Init Lucide Icons
-        lucide.createIcons();
-
-        // Register PWA Service Worker for App Installation
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./service-worker.js')
-                    .then(reg => console.log('Service Worker registered successfully:', reg.scope))
-                    .catch(err => console.log('Service Worker registration failed:', err));
-            });
-        }
-    </script>
 </body>
-
 </html>
