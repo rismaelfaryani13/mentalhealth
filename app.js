@@ -154,7 +154,7 @@ document.addEventListener('alpine:init', () => {
                 title: 'Mindfulness Untuk Pekerja Kreatif',
                 category: 'Produktivitas',
                 readTime: '3 menit',
-                image: 'https://images.unsplash.com/photo-1499209974431-9dac3ada00d7?auto=format&fit=crop&w=600&q=80',
+                image: 'https://id.pinterest.com/pin/12877548930157903/',
                 excerpt: 'Menjaga fokus dan kesehatan emosional di tengah dinamika pekerjaan yang padat.',
                 content: 'Di dunia modern yang serba cepat, pekerja kreatif sering kali dituntut untuk terus menghasilkan ide-ide segar di bawah tekanan deadline. Hal ini kerap kali memicu kelelahan mental (burnout) jika tidak diimbangi dengan jeda kesadaran yang baik.\n\nMindfulness bukanlah proses mengosongkan pikiran, melainkan membawa perhatian penuh pada apa yang sedang kita kerjakan saat ini tanpa menghakimi diri sendiri. Ketika Anda menulis, mendesain, atau merancang ide, fokuslah sepenuhnya pada satu tugas tersebut (single-tasking) alih-alih melakukan multitasking yang memecah konsentrasi.\n\nSediakan waktu 5 menit setiap beberapa jam untuk melakukan jeda sadar. Cukup rasakan napas Anda, lakukan peregangan otot bahu yang kaku, atau tatap pemandangan di luar jendela. Jeda singkat ini membantu menyegarkan kembali neurotransmiter di otak Anda, meningkatkan daya fokus, serta memicu munculnya inspirasi baru yang segar.'
             },
@@ -163,7 +163,7 @@ document.addEventListener('alpine:init', () => {
                 title: 'Pentingnya Hidrasi Bagi Kesehatan Mental',
                 category: 'Kesehatan Fisik',
                 readTime: '3 menit',
-                image: 'https://images.unsplash.com/photo-1548839133-9aa067466a9a?auto=format&fit=crop&w=600&q=80',
+                image: 'https://id.pinterest.com/pin/53550683063265138/',
                 excerpt: 'Bagaimana dehidrasi dapat memicu peningkatan kecemasan dan kelelahan mental.',
                 content: 'Air menyusun sekitar 75% dari total volume otak kita. Oleh karena itu, penurunan tingkat hidrasi tubuh sekecil apa pun dapat berdampak langsung pada penurunan fungsi kognitif, kelelahan, serta memicu ketidakseimbangan mood.\n\nPenelitian menunjukkan bahwa kondisi dehidrasi ringan dapat meningkatkan sekresi hormon stres kortisol, yang memicu gejala fisik mirip kecemasan, seperti jantung berdebar-debar, sakit kepala ringan, dan kesulitan berkonsentrasi. Tubuh yang kurang cairan sering kali salah mengartikan dehidrasi sebagai ancaman stres.\n\nCobalah untuk mencatat asupan air harian Anda secara teratur. Biasakan minum segelas air putih hangat segera setelah bangun tidur untuk menggantikan cairan yang hilang di malam hari. Jadikan target minum minimal 2 liter per hari sebagai bagian integral dari rutinitas perawatan diri (self-care) Anda.'
             },
