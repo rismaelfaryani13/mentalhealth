@@ -154,7 +154,7 @@ document.addEventListener('alpine:init', () => {
                 title: 'Mindfulness Untuk Pekerja Kreatif',
                 category: 'Produktivitas',
                 readTime: '3 menit',
-                image: 'https://id.pinterest.com/pin/12877548930157903/',
+                image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnmbCpLWI_EklKjRF9uJ_OJY0o2BgrgTue0L7kOHl21A&s=10',
                 excerpt: 'Menjaga fokus dan kesehatan emosional di tengah dinamika pekerjaan yang padat.',
                 content: 'Di dunia modern yang serba cepat, pekerja kreatif sering kali dituntut untuk terus menghasilkan ide-ide segar di bawah tekanan deadline. Hal ini kerap kali memicu kelelahan mental (burnout) jika tidak diimbangi dengan jeda kesadaran yang baik.\n\nMindfulness bukanlah proses mengosongkan pikiran, melainkan membawa perhatian penuh pada apa yang sedang kita kerjakan saat ini tanpa menghakimi diri sendiri. Ketika Anda menulis, mendesain, atau merancang ide, fokuslah sepenuhnya pada satu tugas tersebut (single-tasking) alih-alih melakukan multitasking yang memecah konsentrasi.\n\nSediakan waktu 5 menit setiap beberapa jam untuk melakukan jeda sadar. Cukup rasakan napas Anda, lakukan peregangan otot bahu yang kaku, atau tatap pemandangan di luar jendela. Jeda singkat ini membantu menyegarkan kembali neurotransmiter di otak Anda, meningkatkan daya fokus, serta memicu munculnya inspirasi baru yang segar.'
             },
@@ -163,7 +163,7 @@ document.addEventListener('alpine:init', () => {
                 title: 'Pentingnya Hidrasi Bagi Kesehatan Mental',
                 category: 'Kesehatan Fisik',
                 readTime: '3 menit',
-                image: 'https://id.pinterest.com/pin/53550683063265138/',
+                image: 'https://www.google.com/imgres?q=Hidrasi%20Bagi%20Kesehatan%20Mental&imgurl=https%3A%2F%2Fbertsolution.com%2Fwp-content%2Fuploads%2F2021%2F10%2F3-Fakta-Tentang-Pentingnya-Hidrasi-Tubuh-sebagai-Investasi-Kesehatan.jpg&imgrefurl=https%3A%2F%2Fbertsolution.com%2Farticle%2F3-fakta-tentang-pentingnya-hidrasi-tubuh-sebagai-investasi-kesehatan%2F&docid=QnJfz-T8bpiW2M&tbnid=sdReL6Y0wqaKaM&vet=12ahUKEwjLrsSbyOyVAxX6jOEIHQhhFz4QnPAOegUIkgIQAA..i&w=1440&h=788&hcb=2&ved=2ahUKEwjLrsSbyOyVAxX6jOEIHQhhFz4QnPAOegUIkgIQAA',
                 excerpt: 'Bagaimana dehidrasi dapat memicu peningkatan kecemasan dan kelelahan mental.',
                 content: 'Air menyusun sekitar 75% dari total volume otak kita. Oleh karena itu, penurunan tingkat hidrasi tubuh sekecil apa pun dapat berdampak langsung pada penurunan fungsi kognitif, kelelahan, serta memicu ketidakseimbangan mood.\n\nPenelitian menunjukkan bahwa kondisi dehidrasi ringan dapat meningkatkan sekresi hormon stres kortisol, yang memicu gejala fisik mirip kecemasan, seperti jantung berdebar-debar, sakit kepala ringan, dan kesulitan berkonsentrasi. Tubuh yang kurang cairan sering kali salah mengartikan dehidrasi sebagai ancaman stres.\n\nCobalah untuk mencatat asupan air harian Anda secara teratur. Biasakan minum segelas air putih hangat segera setelah bangun tidur untuk menggantikan cairan yang hilang di malam hari. Jadikan target minum minimal 2 liter per hari sebagai bagian integral dari rutinitas perawatan diri (self-care) Anda.'
             },
