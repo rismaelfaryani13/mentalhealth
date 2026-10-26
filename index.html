@@ -10,11 +10,8 @@
     <meta name="description" content="TemanJiwa adalah aplikasi kesehatan mental modern untuk melacak mood, jurnal refleksi, meditasi pernapasan terpandu, hidrasi, dan istirahat tidur.">
     <meta name="keywords" content="temanjiwa, kesehatan mental, mood tracker, self care, meditasi, jurnal, pernapasan, hidrasi, tidur">
     <meta name="theme-color" content="#A8C5FF">
-<<<<<<< HEAD
     <link rel="icon" type="image/svg+xml" href="icon.svg">
     <link rel="manifest" href="manifest.json">
-=======
->>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
 
     <!-- Google Fonts: Plus Jakarta Sans & Poppins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -78,12 +75,9 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
-<<<<<<< HEAD
     <!-- Questionnaire Research Data -->
     <script src="questionnaire-data.js"></script>
 
-=======
->>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
     <!-- Application Script -->
     <script defer src="app.js"></script>
 
@@ -101,11 +95,7 @@
          x-transition:leave="transition ease-in duration-200"
          x-transition:leave-start="opacity-100 scale-100"
          x-transition:leave-end="opacity-0 scale-95"
-<<<<<<< HEAD
          class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white/95 backdrop-blur-md p-6 text-center"
-=======
-         class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white/95 backdrop-blur-md p-6 text-center"
->>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
          style="display: none;">
         <div class="spinner-glow-container">
             <div class="spinner-ring"></div>
@@ -142,28 +132,16 @@
         <!-- ========================================== -->
         <!-- HEADER (Applies to main dashboard screens) -->
         <!-- ========================================== -->
-<<<<<<< HEAD
         <header x-show="['dashboard', 'mood', 'journal', 'selfcare', 'stats', 'profile', 'education', 'emergency', 'notifications', 'settings', 'privacy', 'about', 'breathing', 'meditation', 'sleeptracker', 'watertracker', 'reminder', 'aichat', 'questionnaire'].includes($store.app.currentScreen)"
                 class="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-[#E9EEF7] px-5 py-4 flex items-center justify-between transition-all">
             <div class="flex items-center gap-3">
                 <button x-show="!['dashboard'].includes($store.app.currentScreen)"
                         @click="$store.app.navigateTo($store.app.previousScreen && $store.app.previousScreen !== $store.app.currentScreen ? $store.app.previousScreen : 'dashboard')"
-=======
-        <header x-show="['dashboard', 'mood', 'journal', 'selfcare', 'stats', 'profile', 'education', 'emergency', 'notifications', 'settings', 'privacy', 'about', 'breathing', 'meditation', 'sleeptracker', 'watertracker', 'reminder', 'aichat'].includes($store.app.currentScreen)"
-                class="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-[#E9EEF7] px-5 py-4 flex items-center justify-between transition-all">
-            <div class="flex items-center gap-3">
-                <button x-show="!['dashboard'].includes($store.app.currentScreen)"
-                        @click="$store.app.navigateTo($store.app.previousScreen || 'dashboard')"
->>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
                         class="w-10 h-10 rounded-full bg-[#F8FAFD] border border-[#E9EEF7] flex items-center justify-center text-[#64748B] hover:text-[#1E293B] hover:bg-white transition-all"
                         aria-label="Kembali">
                     <i data-lucide="chevron-left" class="w-5 h-5"></i>
                 </button>
-<<<<<<< HEAD
                 <div class="flex items-center gap-2.5 cursor-pointer" @click="$store.app.handleHeaderBrandClick()">
-=======
-                <div class="flex items-center gap-2.5 cursor-pointer" @click="$store.app.navigateTo('dashboard')">
->>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
                     <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#A8C5FF] to-[#FFF3D6] flex items-center justify-center shadow-sm">
                         <span class="text-lg">🌿</span>
                     </div>
@@ -179,7 +157,6 @@
 
             <!-- Top Right Action Icons -->
             <div class="flex items-center gap-2">
-<<<<<<< HEAD
                 <!-- Direct Admin Download Shortcut in Header (Pemilik & Admin re) -->
                 <button x-show="$store.app.isDeveloper"
                         @click="$store.app.downloadRekapJson()"
@@ -189,8 +166,6 @@
                     <span class="hidden sm:inline">Unduh Rekap</span>
                 </button>
 
-=======
->>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
                 <button @click="$store.app.navigateTo('emergency')"
                         class="px-3 py-1.5 rounded-full bg-rose-50 border border-rose-100 text-rose-600 text-xs font-semibold flex items-center gap-1.5 hover:bg-rose-100 transition-all"
                         title="Bantuan Darurat SOS">
@@ -503,7 +478,6 @@
                     </div>
                 </div>
 
-<<<<<<< HEAD
                 <!-- Admin & Owner Exclusive Direct Download Banner on Dashboard -->
                 <div x-show="$store.app.isDeveloper" class="p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 text-white shadow-xl space-y-4 border border-emerald-400/40">
                     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -572,8 +546,6 @@
                     </div>
                 </div>
 
-=======
->>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
                 <!-- Today's Mood Logged Card -->
                 <div class="bg-white p-5 rounded-3xl border border-[#E9EEF7] shadow-lg flex items-center justify-between">
                     <div class="flex items-center gap-4">
@@ -651,7 +623,6 @@
 
                 <!-- Weekly Mood Chart Preview -->
                 <div class="bg-white p-5 sm:p-6 rounded-3xl border border-[#E9EEF7] shadow-lg">
-<<<<<<< HEAD
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
                         <div>
                             <div class="flex items-center gap-2">
@@ -667,15 +638,6 @@
                         </div>
                         <button @click="$store.app.navigateTo('stats')" class="text-xs font-semibold text-[#568BFF] hover:underline self-start sm:self-auto">
                             Lihat Statistik Detail →
-=======
-                    <div class="flex justify-between items-center mb-4">
-                        <div>
-                            <h3 class="text-base font-bold text-[#1E293B]">Grafik Mood Mingguan</h3>
-                            <p class="text-xs text-[#64748B]">Tren emosional 7 hari terakhir</p>
-                        </div>
-                        <button @click="$store.app.navigateTo('stats')" class="text-xs font-semibold text-[#568BFF] hover:underline">
-                            Lihat Statistik Detail
->>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
                         </button>
                     </div>
                     <div class="h-48 w-full">
@@ -767,99 +729,57 @@
                 <!-- Mood Cards Grid -->
                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-3.5 max-w-lg mx-auto">
                     <!-- Very Happy -->
-<<<<<<< HEAD
                     <button type="button" @click="$store.app.selectMood('very-happy')"
-=======
-                    <button @click="$store.app.selectedMood = 'very-happy'"
->>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
                             class="p-4 rounded-3xl border-2 transition-all flex flex-col items-center text-center cursor-pointer"
                             :class="$store.app.selectedMood === 'very-happy' ? 'bg-[#F0F5FF] border-[#568BFF] shadow-lg scale-105 ring-2 ring-[#A8C5FF]' : 'bg-white border-[#E9EEF7] hover:border-[#A8C5FF]'">
                         <span class="text-4xl mb-2">😊</span>
                         <span class="text-xs font-bold text-[#1E293B]">Sangat Bahagia</span>
-<<<<<<< HEAD
                         <span class="text-[10px] text-[#568BFF] font-semibold mt-0.5">Intensitas: 10</span>
                     </button>
 
                     <!-- Happy -->
                     <button type="button" @click="$store.app.selectMood('happy')"
-=======
-                    </button>
-
-                    <!-- Happy -->
-                    <button @click="$store.app.selectedMood = 'happy'"
->>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
                             class="p-4 rounded-3xl border-2 transition-all flex flex-col items-center text-center cursor-pointer"
                             :class="$store.app.selectedMood === 'happy' ? 'bg-[#F0F5FF] border-[#568BFF] shadow-lg scale-105 ring-2 ring-[#A8C5FF]' : 'bg-white border-[#E9EEF7] hover:border-[#A8C5FF]'">
                         <span class="text-4xl mb-2">🙂</span>
                         <span class="text-xs font-bold text-[#1E293B]">Bahagia</span>
-<<<<<<< HEAD
                         <span class="text-[10px] text-[#568BFF] font-semibold mt-0.5">Intensitas: 8</span>
                     </button>
 
                     <!-- Neutral -->
                     <button type="button" @click="$store.app.selectMood('neutral')"
-=======
-                    </button>
-
-                    <!-- Neutral -->
-                    <button @click="$store.app.selectedMood = 'neutral'"
->>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
                             class="p-4 rounded-3xl border-2 transition-all flex flex-col items-center text-center cursor-pointer"
                             :class="$store.app.selectedMood === 'neutral' ? 'bg-[#FFF3D6]/50 border-amber-400 shadow-lg scale-105 ring-2 ring-amber-200' : 'bg-white border-[#E9EEF7] hover:border-[#A8C5FF]'">
                         <span class="text-4xl mb-2">😐</span>
                         <span class="text-xs font-bold text-[#1E293B]">Biasa Saja</span>
-<<<<<<< HEAD
                         <span class="text-[10px] text-amber-600 font-semibold mt-0.5">Intensitas: 5</span>
                     </button>
 
                     <!-- Sad -->
                     <button type="button" @click="$store.app.selectMood('sad')"
-=======
-                    </button>
-
-                    <!-- Sad -->
-                    <button @click="$store.app.selectedMood = 'sad'"
->>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
                             class="p-4 rounded-3xl border-2 transition-all flex flex-col items-center text-center cursor-pointer"
                             :class="$store.app.selectedMood === 'sad' ? 'bg-sky-50 border-sky-400 shadow-lg scale-105 ring-2 ring-sky-200' : 'bg-white border-[#E9EEF7] hover:border-[#A8C5FF]'">
                         <span class="text-4xl mb-2">😔</span>
                         <span class="text-xs font-bold text-[#1E293B]">Sedih</span>
-<<<<<<< HEAD
                         <span class="text-[10px] text-sky-600 font-semibold mt-0.5">Intensitas: 3</span>
                     </button>
 
                     <!-- Stressed -->
                     <button type="button" @click="$store.app.selectMood('stressed')"
-=======
-                    </button>
-
-                    <!-- Stressed -->
-                    <button @click="$store.app.selectedMood = 'stressed'"
->>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
                             class="p-4 rounded-3xl border-2 transition-all flex flex-col items-center text-center cursor-pointer"
                             :class="$store.app.selectedMood === 'stressed' ? 'bg-rose-50 border-rose-400 shadow-lg scale-105 ring-2 ring-rose-200' : 'bg-white border-[#E9EEF7] hover:border-[#A8C5FF]'">
                         <span class="text-4xl mb-2">😢</span>
                         <span class="text-xs font-bold text-[#1E293B]">Stres / Cemas</span>
-<<<<<<< HEAD
                         <span class="text-[10px] text-rose-600 font-semibold mt-0.5">Intensitas: 2</span>
                     </button>
 
                     <!-- Angry -->
                     <button type="button" @click="$store.app.selectMood('angry')"
-=======
-                    </button>
-
-                    <!-- Angry -->
-                    <button @click="$store.app.selectedMood = 'angry'"
->>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
                             class="p-4 rounded-3xl border-2 transition-all flex flex-col items-center text-center cursor-pointer"
                             :class="$store.app.selectedMood === 'angry' ? 'bg-amber-50 border-amber-500 shadow-lg scale-105 ring-2 ring-amber-200' : 'bg-white border-[#E9EEF7] hover:border-[#A8C5FF]'">
                         <span class="text-4xl mb-2">😡</span>
                         <span class="text-xs font-bold text-[#1E293B]">Marah</span>
-<<<<<<< HEAD
                         <span class="text-[10px] text-amber-700 font-semibold mt-0.5">Intensitas: 1</span>
-=======
->>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
                     </button>
                 </div>
 
@@ -867,16 +787,11 @@
                 <div class="bg-white p-6 rounded-3xl border border-[#E9EEF7] shadow-lg max-w-lg mx-auto space-y-5">
                     <div>
                         <div class="flex justify-between items-center mb-2">
-<<<<<<< HEAD
                             <div class="flex items-center gap-2">
                                 <label class="text-xs font-bold text-[#1E293B] uppercase tracking-wider">Intensitas Emosi (1-10)</label>
                                 <span class="px-2 py-0.5 rounded-full bg-[#E1ECFF] text-[#568BFF] text-[10px] font-bold">Otomatis Terisi ✨</span>
                             </div>
                             <span class="text-sm font-extrabold text-[#568BFF] px-2.5 py-0.5 rounded-lg bg-[#F0F5FF]" x-text="$store.app.moodIntensity">10</span>
-=======
-                            <label class="text-xs font-bold text-[#1E293B] uppercase tracking-wider">Intensitas Emosi (1-10)</label>
-                            <span class="text-sm font-extrabold text-[#568BFF]" x-text="$store.app.moodIntensity">8</span>
->>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
                         </div>
                         <input type="range" min="1" max="10" x-model="$store.app.moodIntensity"
                                class="w-full accent-[#568BFF] bg-[#E9EEF7] h-2.5 rounded-lg cursor-pointer">
@@ -1087,7 +1002,6 @@
                     <!-- Play / Pause Button -->
                     <button @click="$store.app.toggleMeditation()"
                             class="w-full py-4 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white font-semibold shadow-lg shadow-[#A8C5FF]/40 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-base">
-<<<<<<< HEAD
                         <span x-show="!$store.app.meditation.isPlaying" class="flex items-center gap-2">
                             <i data-lucide="play" class="w-5 h-5"></i>
                             <span>Mulai Meditasi</span>
@@ -1096,10 +1010,6 @@
                             <i data-lucide="pause" class="w-5 h-5"></i>
                             <span>Jeda Audio</span>
                         </span>
-=======
-                        <i :data-lucide="$store.app.meditation.isPlaying ? 'pause' : 'play'" class="w-5 h-5"></i>
-                        <span x-text="$store.app.meditation.isPlaying ? 'Jeda Audio' : 'Mulai Meditasi'"></span>
->>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
                     </button>
                 </div>
             </section>
@@ -1156,11 +1066,7 @@
                 <!-- Water Fill Animation Container -->
                 <div class="p-8 rounded-3xl bg-white border border-[#E9EEF7] shadow-lg flex flex-col items-center">
                     <div class="water-container mb-4">
-<<<<<<< HEAD
                         <div class="water-fill" :style="`height: ${$store.app.waterTarget ? Math.min(100, ($store.app.waterLogged / $store.app.waterTarget) * 100) : 0}%`">
-=======
-                        <div class="water-fill" :style="`height: ${Math.min(100, ($store.app.waterLogged / $store.app.waterTarget) * 100)}%`">
->>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
                             <div class="water-wave"></div>
                         </div>
                     </div>
@@ -1168,11 +1074,7 @@
                     <h3 class="text-3xl font-extrabold text-[#1E293B] mb-1">
                         <span x-text="$store.app.waterLogged">1250</span> <span class="text-base font-normal text-[#64748B]">/ <span x-text="$store.app.waterTarget">2000</span> ml</span>
                     </h3>
-<<<<<<< HEAD
                     <p class="text-xs text-[#568BFF] font-semibold mb-6" x-text="'Pencapaian: ' + ($store.app.waterTarget ? Math.round(($store.app.waterLogged / $store.app.waterTarget) * 100) : 0) + '% Target'"></p>
-=======
-                    <p class="text-xs text-[#568BFF] font-semibold mb-6" x-text="`Pencapaian: ${Math.round(($store.app.waterLogged / $store.app.waterTarget) * 100)}% Target`"></p>
->>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
 
                     <!-- Add Buttons -->
                     <div class="grid grid-cols-2 gap-3 w-full">
@@ -1460,7 +1362,6 @@
 
                 <!-- Settings Links -->
                 <div class="bg-white rounded-3xl border border-[#E9EEF7] shadow-lg divide-y divide-[#E9EEF7] overflow-hidden">
-<<<<<<< HEAD
                     <!-- Developer Only: Rekap Kuesioner Access -->
                     <template x-if="$store.app.isDeveloper">
                         <button @click="$store.app.openDeveloperPanel()" class="w-full p-4 text-left flex items-center justify-between bg-emerald-50 hover:bg-emerald-100/70 text-emerald-800 transition-all">
@@ -1479,8 +1380,6 @@
                             <i data-lucide="chevron-right" class="w-4 h-4 text-emerald-600"></i>
                         </button>
                     </template>
-=======
->>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
                     <button @click="$store.app.navigateTo('reminder')" class="w-full p-4 text-left flex items-center justify-between hover:bg-[#F8FAFD] transition-all">
                         <div class="flex items-center gap-3">
                             <span class="w-8 h-8 rounded-xl bg-[#E1ECFF] text-[#568BFF] flex items-center justify-center text-sm"><i data-lucide="bell" class="w-4 h-4"></i></span>
@@ -1743,7 +1642,6 @@
                 </form>
             </section>
 
-<<<<<<< HEAD
             <!-- 23. MANDATORY RESEARCH QUESTIONNAIRE SCREEN (67 QUESTIONS) -->
             <section x-show="$store.app.currentScreen === 'questionnaire'"
                      x-transition:enter="transition ease-out duration-300"
@@ -2183,8 +2081,6 @@
 
             </section>
 
-=======
->>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
         </main>
 
         <!-- ========================================== -->
@@ -2229,7 +2125,6 @@
         </div>
 
         <!-- ========================================== -->
-<<<<<<< HEAD
         <!-- MODAL QUESTIONNAIRE NAVIGATION LEAVE WARNING -->
         <!-- ========================================== -->
         <div x-show="$store.app.showQuestionnaireLeaveWarning"
@@ -2306,16 +2201,6 @@
             <!-- Dashboard -->
             <button @click="$store.app.navigateTo('dashboard')"
                     class="flex flex-col items-center gap-1 px-2.5 py-1.5 rounded-2xl transition-all"
-=======
-        <!-- iOS STYLE BOTTOM NAVIGATION BAR -->
-        <!-- ========================================== -->
-        <nav x-show="['dashboard', 'mood', 'journal', 'selfcare', 'stats', 'profile'].includes($store.app.currentScreen)"
-             class="fixed bottom-0 left-1/2 -translate-x-1/2 z-40 w-full max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-5xl bg-white/95 backdrop-blur-md border-t border-[#E9EEF7] px-3 py-2 flex items-center justify-around shadow-nav rounded-t-3xl transition-all">
-            
-            <!-- Dashboard -->
-            <button @click="$store.app.navigateTo('dashboard')"
-                    class="flex flex-col items-center gap-1 px-3 py-1.5 rounded-2xl transition-all"
->>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
                     :class="$store.app.activeNav === 'dashboard' ? 'text-[#568BFF] font-bold' : 'text-[#64748B] font-medium hover:text-[#1E293B]'">
                 <i data-lucide="home" class="w-5 h-5"></i>
                 <span class="text-[10px]">Beranda</span>
@@ -2323,11 +2208,7 @@
 
             <!-- Mood -->
             <button @click="$store.app.navigateTo('mood')"
-<<<<<<< HEAD
                     class="flex flex-col items-center gap-1 px-2.5 py-1.5 rounded-2xl transition-all"
-=======
-                    class="flex flex-col items-center gap-1 px-3 py-1.5 rounded-2xl transition-all"
->>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
                     :class="$store.app.activeNav === 'mood' ? 'text-[#568BFF] font-bold' : 'text-[#64748B] font-medium hover:text-[#1E293B]'">
                 <i data-lucide="smile" class="w-5 h-5"></i>
                 <span class="text-[10px]">Mood</span>
@@ -2335,11 +2216,7 @@
 
             <!-- Journal -->
             <button @click="$store.app.navigateTo('journal')"
-<<<<<<< HEAD
                     class="flex flex-col items-center gap-1 px-2.5 py-1.5 rounded-2xl transition-all"
-=======
-                    class="flex flex-col items-center gap-1 px-3 py-1.5 rounded-2xl transition-all"
->>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
                     :class="$store.app.activeNav === 'journal' ? 'text-[#568BFF] font-bold' : 'text-[#64748B] font-medium hover:text-[#1E293B]'">
                 <i data-lucide="book-open" class="w-5 h-5"></i>
                 <span class="text-[10px]">Jurnal</span>
@@ -2347,17 +2224,12 @@
 
             <!-- Selfcare -->
             <button @click="$store.app.navigateTo('selfcare')"
-<<<<<<< HEAD
                     class="flex flex-col items-center gap-1 px-2.5 py-1.5 rounded-2xl transition-all"
-=======
-                    class="flex flex-col items-center gap-1 px-3 py-1.5 rounded-2xl transition-all"
->>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
                     :class="$store.app.activeNav === 'selfcare' ? 'text-[#568BFF] font-bold' : 'text-[#64748B] font-medium hover:text-[#1E293B]'">
                 <i data-lucide="heart" class="w-5 h-5"></i>
                 <span class="text-[10px]">Self Care</span>
             </button>
 
-<<<<<<< HEAD
             <!-- Kuesioner (Penelitian) -->
             <button @click="$store.app.openQuestionnaire()"
                     class="flex flex-col items-center gap-1 px-2.5 py-1.5 rounded-2xl transition-all relative"
@@ -2373,18 +2245,12 @@
             <!-- Stats -->
             <button @click="$store.app.navigateTo('stats')"
                     class="flex flex-col items-center gap-1 px-2.5 py-1.5 rounded-2xl transition-all"
-=======
-            <!-- Stats -->
-            <button @click="$store.app.navigateTo('stats')"
-                    class="flex flex-col items-center gap-1 px-3 py-1.5 rounded-2xl transition-all"
->>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
                     :class="$store.app.activeNav === 'stats' ? 'text-[#568BFF] font-bold' : 'text-[#64748B] font-medium hover:text-[#1E293B]'">
                 <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
                 <span class="text-[10px]">Statistik</span>
             </button>
         </nav>
 
-<<<<<<< HEAD
         <!-- ========================================== -->
         <!-- SECRET DEVELOPER AUTH MODAL (DISCRETE) -->
         <!-- ========================================== -->
@@ -2561,9 +2427,5 @@
             });
         }
     </script>
-=======
-    </div>
-
->>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
 </body>
 </html>
