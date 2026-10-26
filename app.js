@@ -1039,7 +1039,7 @@ Pesan Curhat Pengguna: ${promptText}`;
         },
 
         // Mood Methods
-        selectMood(moodKey) {
+        selectMood(moodKey, showToastNotification = true) {
             this.selectedMood = moodKey;
             const intensityMap = {
                 'very-happy': 10,
@@ -1049,6 +1049,16 @@ Pesan Curhat Pengguna: ${promptText}`;
                 'stressed': 2,
                 'angry': 1
             };
+            const moodMap = {
+                'very-happy': { label: 'Sangat Bahagia', emoji: '😊' },
+                'happy': { label: 'Bahagia', emoji: '🙂' },
+                'neutral': { label: 'Biasa Saja', emoji: '😐' },
+                'sad': { label: 'Sedih', emoji: '😔' },
+                'stressed': { label: 'Stres / Cemas', emoji: '😢' },
+                'angry': { label: 'Marah', emoji: '😡' }
+            };
+
+            const selected = moodMap[moodKey] || moodMap['happy'];
             this.moodIntensity = intensityMap[moodKey] || 5;
 
             const autoNotes = {
@@ -1059,9 +1069,103 @@ Pesan Curhat Pengguna: ${promptText}`;
                 'stressed': 'Merasa cemas atau terbebani dengan beberapa hal. 💭',
                 'angry': 'Ada hal yang membuat kesal dan butuh ruang untuk menarik napas dalam. 🔥'
             };
-            if (!this.moodNote || Object.values(autoNotes).includes(this.moodNote)) {
-                this.moodNote = autoNotes[moodKey] || '';
+            this.moodNote = autoNotes[moodKey] || 'Refleksi emosi harian.';
+
+            // AUTOMATICALLY LOG & FILL BERANDA, MOOD, AND STATISTIK IMMEDIATELY
+            const dayNames = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+            const todayDay = dayNames[new Date().getDay()];
+            const timeString = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            if (!this.moodHistory) this.moodHistory = [];
+
+            // Check if there is already an entry for today (or recent entry)
+            if (this.moodHistory.length > 0 && (this.moodHistory[0].dayName === todayDay || (this.moodHistory[0].date && this.moodHistory[0].date.startsWith('Hari ini')))) {
+                this.moodHistory[0].mood = moodKey;
+                this.moodHistory[0].label = selected.label;
+                this.moodHistory[0].emoji = selected.emoji;
+                this.moodHistory[0].intensity = parseInt(this.moodIntensity);
+                this.moodHistory[0].note = this.moodNote;
+                this.moodHistory[0].date = 'Hari ini, ' + timeString;
+                this.moodHistory[0].dayName = todayDay;
+            } else {
+                const newEntry = {
+                    id: Date.now(),
+                    mood: moodKey,
+                    label: selected.label,
+                    emoji: selected.emoji,
+                    intensity: parseInt(this.moodIntensity),
+                    note: this.moodNote,
+                    date: 'Hari ini, ' + timeString,
+                    dayName: todayDay
+                };
+                this.moodHistory.unshift(newEntry);
             }
+
+            this.user.xp = (this.user.xp || 0) + 5;
+            this.saveToStorage();
+
+            // Refresh charts immediately across Beranda & Statistik
+            setTimeout(() => {
+                this.renderCharts();
+            }, 50);
+
+            if (showToastNotification) {
+                this.showToast(`✨ Mood tersimpan: ${selected.emoji} ${selected.label} (${this.moodIntensity}/10)! Beranda & Statistik otomatis terisi.`);
+            }
+        },
+
+        updateCurrentMoodIntensity() {
+            const intensity = parseInt(this.moodIntensity) || 5;
+            const dayNames = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+            const todayDay = dayNames[new Date().getDay()];
+
+            if (this.moodHistory && this.moodHistory.length > 0 && (this.moodHistory[0].dayName === todayDay || (this.moodHistory[0].date && this.moodHistory[0].date.startsWith('Hari ini')))) {
+                this.moodHistory[0].intensity = intensity;
+                this.saveToStorage();
+                setTimeout(() => {
+                    this.renderCharts();
+                }, 50);
+            }
+        },
+
+        getMoodCounts() {
+            const counts = {
+                'very-happy': 0,
+                'happy': 0,
+                'neutral': 0,
+                'sad': 0,
+                'stressed': 0,
+                'angry': 0
+            };
+            if (this.moodHistory && this.moodHistory.length > 0) {
+                this.moodHistory.forEach(item => {
+                    if (counts[item.mood] !== undefined) {
+                        counts[item.mood]++;
+                    }
+                });
+            }
+            return counts;
+        },
+
+        getDominantMood() {
+            const counts = this.getMoodCounts();
+            let maxKey = 'happy';
+            let maxCount = -1;
+            for (const [k, v] of Object.entries(counts)) {
+                if (v > maxCount) {
+                    maxCount = v;
+                    maxKey = k;
+                }
+            }
+            const moodMap = {
+                'very-happy': { label: 'Sangat Bahagia', emoji: '😊' },
+                'happy': { label: 'Bahagia', emoji: '🙂' },
+                'neutral': { label: 'Biasa Saja', emoji: '😐' },
+                'sad': { label: 'Sedih', emoji: '😔' },
+                'stressed': { label: 'Stres / Cemas', emoji: '😢' },
+                'angry': { label: 'Marah', emoji: '😡' }
+            };
+            return moodMap[maxKey] || moodMap['happy'];
         },
 
         getWeeklyMoodChartData() {
@@ -1132,10 +1236,16 @@ Pesan Curhat Pengguna: ${promptText}`;
             };
 
             this.triggerLoading('Menyimpan Catatan Mood...', 'Menganalisis pola emosi harianmu', 500, () => {
-                this.moodHistory.unshift(newEntry);
+                // If today already has entry, replace it; else unshift
+                if (this.moodHistory && this.moodHistory.length > 0 && (this.moodHistory[0].dayName === todayDay || (this.moodHistory[0].date && this.moodHistory[0].date.startsWith('Hari ini')))) {
+                    this.moodHistory[0] = newEntry;
+                } else {
+                    if (!this.moodHistory) this.moodHistory = [];
+                    this.moodHistory.unshift(newEntry);
+                }
                 this.user.xp += 15;
                 this.saveToStorage();
-                this.showToast('Mood berhasil dicatat! (+15 XP) 🎉');
+                this.showToast('Catatan mood berhasil disimpan! (+15 XP) 🎉');
                 this.navigateTo('dashboard');
                 setTimeout(() => {
                     this.initLucideIcons();
@@ -1440,6 +1550,76 @@ Pesan Curhat Pengguna: ${promptText}`;
                             tension: 0.4,
                             pointBackgroundColor: '#FFFFFF',
                             pointBorderColor: '#568BFF',
+                            pointBorderWidth: 3,
+                            pointRadius: 6,
+                            pointHoverRadius: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const val = context.raw;
+                                        let emo = '😐';
+                                        if (val >= 9) emo = '😊 Sangat Bahagia';
+                                        else if (val >= 7) emo = '🙂 Bahagia';
+                                        else if (val >= 5) emo = '😐 Biasa Saja';
+                                        else if (val >= 3) emo = '😔 Sedih';
+                                        else if (val >= 2) emo = '😢 Stres/Cemas';
+                                        else emo = '😡 Marah';
+                                        return ` Skor Mood: ${val}/10 (${emo})`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                min: 1,
+                                max: 10,
+                                ticks: {
+                                    stepSize: 1,
+                                    callback: function(val) {
+                                        if (val === 10) return '10 😊';
+                                        if (val === 8) return '8 🙂';
+                                        if (val === 5) return '5 😐';
+                                        if (val === 3) return '3 😔';
+                                        if (val === 1) return '1 😡';
+                                        return val;
+                                    }
+                                },
+                                grid: { color: '#E9EEF7' }
+                            },
+                            x: { grid: { display: false } }
+                        }
+                    }
+                });
+            }
+
+            // Stats Mood Chart (Detailed view in Stats Screen)
+            const statsMoodCtx = document.getElementById('statsMoodChart');
+            if (statsMoodCtx) {
+                if (window.statsMoodChartInstance) window.statsMoodChartInstance.destroy();
+
+                const weekly = this.getWeeklyMoodChartData();
+
+                window.statsMoodChartInstance = new Chart(statsMoodCtx, {
+                    type: 'line',
+                    data: {
+                        labels: weekly.labels,
+                        datasets: [{
+                            label: 'Skala Mood (1-10)',
+                            data: weekly.data,
+                            borderColor: '#38BDF8',
+                            backgroundColor: 'rgba(56, 189, 248, 0.2)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointBackgroundColor: '#FFFFFF',
+                            pointBorderColor: '#0284C7',
                             pointBorderWidth: 3,
                             pointRadius: 6,
                             pointHoverRadius: 8
