@@ -1,0 +1,22 @@
+{
+    "name": "TemanJiwa - Pelacak Kesehatan Mental & Self-Care",
+    "short_name": "TemanJiwa",
+    "description": "Sahabat Setia untuk Kesehatan Mental & Ketenangan Pikiranmu. Lacak mood, tidur, hidrasi, dan latihan pernapasan harian.",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "orientation": "portrait-primary",
+    "background_color": "#F6FAFF",
+    "theme_color": "#8EC5FC",
+    "categories": [
+        "lifestyle",
+        "health"
+    ],
+    "icons": [
+        {
+            "src": "icon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        }
+    ]
+}

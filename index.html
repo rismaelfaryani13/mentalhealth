@@ -1,0 +1,2431 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full bg-[#F8FAFD]">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TemanJiwa - Ruang Ketenangan & Pelacak Kesehatan Mental</title>
+
+    <!-- SEO Metadata -->
+    <meta name="description" content="TemanJiwa adalah aplikasi kesehatan mental modern untuk melacak mood, jurnal refleksi, meditasi pernapasan terpandu, hidrasi, dan istirahat tidur.">
+    <meta name="keywords" content="temanjiwa, kesehatan mental, mood tracker, self care, meditasi, jurnal, pernapasan, hidrasi, tidur">
+    <meta name="theme-color" content="#A8C5FF">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Google Fonts: Plus Jakarta Sans & Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Swiper.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        softblue: '#A8C5FF',
+                        buttercream: '#FFF3D6',
+                        appbg: '#F8FAFD',
+                        appcard: '#FFFFFF',
+                        appborder: '#E9EEF7',
+                        textprimary: '#1E293B',
+                        textsecondary: '#64748B',
+                        appsuccess: '#86EFAC',
+                        appwarning: '#FCD34D',
+                        appdanger: '#FCA5A5',
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'Poppins', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        '3xl': '1.5rem',
+                        '4xl': '2rem',
+                        '32': '32px',
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 30px -5px rgba(168, 197, 255, 0.25), 0 4px 12px -2px rgba(0, 0, 0, 0.03)',
+                        'soft-hover': '0 20px 40px -10px rgba(168, 197, 255, 0.4), 0 8px 16px -4px rgba(0, 0, 0, 0.05)',
+                        'nav': '0 -8px 30px rgba(168, 197, 255, 0.2)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Swiper.js JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Questionnaire Research Data -->
+    <script src="questionnaire-data.js"></script>
+
+    <!-- Application Script -->
+    <script defer src="app.js"></script>
+
+    <!-- Alpine.js & Plugins CDN -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+
+<body x-data class="h-full bg-[#F8FAFD] text-[#1E293B] antialiased selection:bg-[#A8C5FF] selection:text-white">
+
+    <!-- Global Fullscreen Centered Loading Screen Overlay -->
+    <div x-show="$store.app.isLoading"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0 scale-95"
+         x-transition:enter-end="opacity-100 scale-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100 scale-100"
+         x-transition:leave-end="opacity-0 scale-95"
+         class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white/95 backdrop-blur-md p-6 text-center"
+         style="display: none;">
+        <div class="spinner-glow-container">
+            <div class="spinner-ring"></div>
+            <div class="text-4xl loading-bounce">🌿</div>
+        </div>
+        <h3 class="text-xl font-bold text-[#1E293B] tracking-tight mb-1" x-text="$store.app.loadingTitle"></h3>
+        <p class="text-xs text-[#64748B] max-w-xs leading-relaxed" x-text="$store.app.loadingMessage"></p>
+    </div>
+
+    <!-- Ambient Gradient Blobs Background -->
+    <div class="ambient-blob blob-1"></div>
+    <div class="ambient-blob blob-2"></div>
+    <div class="ambient-blob blob-3"></div>
+
+    <!-- Toast Notification -->
+    <div x-show="$store.app.showToastFlag"
+         x-transition:enter="transition ease-out duration-300 transform"
+         x-transition:enter-start="opacity-0 -translate-y-4"
+         x-transition:enter-end="opacity-100 translate-y-0"
+         x-transition:leave="transition ease-in duration-200 transform"
+         x-transition:leave-start="opacity-100 translate-y-0"
+         x-transition:leave-end="opacity-0 -translate-y-4"
+         class="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center justify-center gap-3 bg-white text-[#1E293B] border border-[#E9EEF7] px-6 py-3.5 rounded-full shadow-lg max-w-sm w-full mx-auto text-center"
+         style="display: none;">
+        <span class="w-8 h-8 rounded-full bg-[#A8C5FF]/30 flex items-center justify-center text-[#568BFF] shrink-0">
+            <i data-lucide="sparkles" class="w-4 h-4"></i>
+        </span>
+        <span class="text-sm font-medium text-[#1E293B]" x-text="$store.app.toastMessage"></span>
+    </div>
+
+    <!-- Main Container (Mobile First Layout centered on Desktop) -->
+    <div class="relative min-h-screen flex flex-col justify-between max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-5xl mx-auto bg-[#F8FAFD]/90 shadow-2xl min-w-[320px] pb-24 md:pb-28 border-x border-[#E9EEF7]">
+
+        <!-- ========================================== -->
+        <!-- HEADER (Applies to main dashboard screens) -->
+        <!-- ========================================== -->
+        <header x-show="['dashboard', 'mood', 'journal', 'selfcare', 'stats', 'profile', 'education', 'emergency', 'notifications', 'settings', 'privacy', 'about', 'breathing', 'meditation', 'sleeptracker', 'watertracker', 'reminder', 'aichat', 'questionnaire'].includes($store.app.currentScreen)"
+                class="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-[#E9EEF7] px-5 py-4 flex items-center justify-between transition-all">
+            <div class="flex items-center gap-3">
+                <button x-show="!['dashboard'].includes($store.app.currentScreen)"
+                        @click="$store.app.navigateTo($store.app.previousScreen && $store.app.previousScreen !== $store.app.currentScreen ? $store.app.previousScreen : 'dashboard')"
+                        class="w-10 h-10 rounded-full bg-[#F8FAFD] border border-[#E9EEF7] flex items-center justify-center text-[#64748B] hover:text-[#1E293B] hover:bg-white transition-all"
+                        aria-label="Kembali">
+                    <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                </button>
+                <div class="flex items-center gap-2.5 cursor-pointer" @click="$store.app.handleHeaderBrandClick()">
+                    <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#A8C5FF] to-[#FFF3D6] flex items-center justify-center shadow-sm">
+                        <span class="text-lg">🌿</span>
+                    </div>
+                    <div>
+                        <h1 class="text-base font-bold text-[#1E293B] tracking-tight flex items-center gap-1.5">
+                            TemanJiwa
+                            <span class="text-[10px] bg-[#86EFAC]/40 text-[#1E293B] px-2 py-0.5 rounded-full font-semibold">Mental Health</span>
+                        </h1>
+                        <p class="text-xs text-[#64748B]">Ruang Ketenangan Jiwa</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Right Action Icons -->
+            <div class="flex items-center gap-2">
+                <!-- Direct Admin Download Shortcut in Header (Pemilik & Admin re) -->
+                <button x-show="$store.app.isDeveloper"
+                        @click="$store.app.downloadRekapJson()"
+                        class="px-3 py-1.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                        title="Unduh rekap_kuesioner.json Secara Utuh (Akun Pemilik)">
+                    <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                    <span class="hidden sm:inline">Unduh Rekap</span>
+                </button>
+
+                <button @click="$store.app.navigateTo('emergency')"
+                        class="px-3 py-1.5 rounded-full bg-rose-50 border border-rose-100 text-rose-600 text-xs font-semibold flex items-center gap-1.5 hover:bg-rose-100 transition-all"
+                        title="Bantuan Darurat SOS">
+                    <i data-lucide="heart-pulse" class="w-4 h-4 text-rose-500"></i>
+                    <span class="hidden sm:inline">SOS</span>
+                </button>
+
+                <button @click="$store.app.navigateTo('notifications')"
+                        class="relative w-10 h-10 rounded-full bg-[#F8FAFD] border border-[#E9EEF7] flex items-center justify-center text-[#64748B] hover:text-[#1E293B] hover:bg-white transition-all"
+                        aria-label="Notifikasi">
+                    <i data-lucide="bell" class="w-5 h-5"></i>
+                    <span x-show="$store.app.notifications.some(n => !n.read)" class="absolute top-2 right-2 w-2.5 h-2.5 rounded-full bg-rose-500 ring-2 ring-white"></span>
+                </button>
+
+                <button @click="$store.app.navigateTo('profile')"
+                        class="w-10 h-10 rounded-full border-2 border-[#A8C5FF] overflow-hidden flex items-center justify-center bg-[#FFF3D6] text-lg hover:scale-105 transition-all">
+                    <span x-text="$store.app.user.avatar">🌿</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- ========================================== -->
+        <!-- MAIN CONTENT AREA FOR ALL 22 SCREENS -->
+        <!-- ========================================== -->
+        <main class="flex-1 px-4 sm:px-6 py-6 transition-all duration-300 flex flex-col justify-center">
+
+            <!-- 1. SPLASH SCREEN (CENTERED) -->
+            <section x-show="$store.app.currentScreen === 'splash'"
+                     x-transition:enter="transition ease-out duration-300"
+                     x-transition:enter-start="opacity-0 scale-95"
+                     x-transition:enter-end="opacity-100 scale-100"
+                     class="min-h-[80vh] flex flex-col items-center justify-center text-center py-8 px-4 max-w-sm mx-auto my-auto space-y-8">
+                <div class="flex flex-col items-center">
+                    <div class="relative mb-6">
+                        <div class="w-32 h-32 rounded-full bg-gradient-to-br from-[#A8C5FF] via-[#E1ECFF] to-[#FFF3D6] p-1 shadow-2xl flex items-center justify-center animate-pulse">
+                            <div class="w-full h-full bg-white rounded-full flex items-center justify-center text-5xl">
+                                🕊️
+                            </div>
+                        </div>
+                        <div class="absolute -bottom-2 -right-2 w-10 h-10 rounded-full bg-[#FFF3D6] border-2 border-white flex items-center justify-center text-xl shadow-md">
+                            🌿
+                        </div>
+                    </div>
+                    <h2 class="text-3xl font-extrabold text-[#1E293B] tracking-tight mb-2">TemanJiwa</h2>
+                    <p class="text-sm text-[#64748B] max-w-xs leading-relaxed">
+                        Temukan kedamaian batin, lacak mood harian, dan rawat diri dengan penuh kasih setiap hari.
+                    </p>
+                </div>
+
+                <div class="w-full max-w-xs space-y-3">
+                    <button @click="$store.app.triggerLoading('Menyiapkan Onboarding...', 'Memulai perjalanan ketenangan jiwamu', 600, () => $store.app.navigateTo('onboarding'))"
+                            class="w-full py-4 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white font-semibold shadow-lg shadow-[#A8C5FF]/40 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-base">
+                        Mulai Perjalanan Ketenangan
+                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    </button>
+                    <button @click="$store.app.triggerLoading('Memuat Halaman Masuk...', 'Menyiapkan form autentikasi', 500, () => $store.app.navigateTo('login'))"
+                            class="w-full py-3.5 rounded-full bg-white border border-[#E9EEF7] text-[#1E293B] font-medium hover:bg-[#F8FAFD] transition-all text-sm">
+                        Sudah punya akun? Masuk
+                    </button>
+                </div>
+            </section>
+
+            <!-- 2. ONBOARDING (3 SLIDES SWIPER - CENTERED) -->
+            <section x-show="$store.app.currentScreen === 'onboarding'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="min-h-[80vh] flex flex-col justify-between items-center text-center py-6 max-w-md mx-auto my-auto w-full">
+                <div class="flex justify-between items-center w-full mb-4 px-2">
+                    <span class="text-xs font-semibold tracking-wider text-[#64748B] uppercase">Selamat Datang</span>
+                    <button @click="$store.app.navigateTo('login')" class="text-xs font-medium text-[#64748B] hover:text-[#1E293B]">
+                        Lewati
+                    </button>
+                </div>
+
+                <!-- Swiper Carousel Container -->
+                <div class="swiper onboarding-swiper w-full max-w-sm mx-auto my-auto py-4">
+                    <div class="swiper-wrapper">
+                        <!-- Slide 1 -->
+                        <div class="swiper-slide flex flex-col items-center text-center p-4">
+                            <div class="w-48 h-48 rounded-3xl bg-gradient-to-br from-[#F0F5FF] to-[#FFF3D6] flex items-center justify-center text-7xl mb-6 shadow-soft mx-auto">
+                                💚
+                            </div>
+                            <h3 class="text-2xl font-bold text-[#1E293B] mb-2">Kenali & Pahami Emosimu</h3>
+                            <p class="text-sm text-[#64748B] leading-relaxed">
+                                Lacak mood harian dengan emoji pastel ramah dan pahami pola emosi yang mempengaruhi harimu.
+                            </p>
+                        </div>
+                        <!-- Slide 2 -->
+                        <div class="swiper-slide flex flex-col items-center text-center p-4">
+                            <div class="w-48 h-48 rounded-3xl bg-gradient-to-br from-[#FFF3D6] to-[#E1ECFF] flex items-center justify-center text-7xl mb-6 shadow-soft mx-auto">
+                                🕊️
+                            </div>
+                            <h3 class="text-2xl font-bold text-[#1E293B] mb-2">Sesi Meditasi & Pernapasan</h3>
+                            <p class="text-sm text-[#64748B] leading-relaxed">
+                                Redakan kecemasan dan stres secara instan melalui panduan napas teratur & audio alam menenangkan.
+                            </p>
+                        </div>
+                        <!-- Slide 3 -->
+                        <div class="swiper-slide flex flex-col items-center text-center p-4">
+                            <div class="w-48 h-48 rounded-3xl bg-gradient-to-br from-[#E1ECFF] to-[#FFF5E0] flex items-center justify-center text-7xl mb-6 shadow-soft mx-auto">
+                                🌿
+                            </div>
+                            <h3 class="text-2xl font-bold text-[#1E293B] mb-2">Jurnal Refleksi & Self-Care</h3>
+                            <p class="text-sm text-[#64748B] leading-relaxed">
+                                Tuliskan pikiranmu tanpa prasangka, bangun kebiasaan sehat hidrasi & istirahat yang seimbang.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Swiper Pagination -->
+                    <div class="swiper-pagination mt-6"></div>
+                </div>
+
+                <div class="space-y-3 max-w-xs mx-auto w-full pt-4">
+                    <button @click="$store.app.triggerLoading('Memuat Ruang Masuk...', 'Menyiapkan dashboard akun', 600, () => $store.app.navigateTo('login'))"
+                            class="w-full py-4 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white font-semibold shadow-lg shadow-[#A8C5FF]/40 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+                        Masuk ke Ruang Ketenangan
+                    </button>
+                    <button @click="$store.app.triggerLoading('Memuat Pendaftaran...', 'Menyiapkan form pendaftaran', 500, () => $store.app.navigateTo('register'))"
+                            class="w-full py-3.5 rounded-full bg-white border border-[#E9EEF7] text-[#1E293B] font-medium hover:bg-[#F8FAFD] transition-all text-sm">
+                        Buat Akun Baru
+                    </button>
+                </div>
+            </section>
+
+            <!-- 3. LOGIN SCREEN (CENTERED) -->
+            <section x-show="$store.app.currentScreen === 'login'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="min-h-[75vh] flex flex-col justify-center items-center max-w-md mx-auto my-auto py-6 w-full">
+                <div class="text-center mb-8 w-full">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#A8C5FF] to-[#FFF3D6] mx-auto flex items-center justify-center text-3xl mb-4 shadow-sm">
+                        🧘‍♀️
+                    </div>
+                    <h2 class="text-2xl font-bold text-[#1E293B]">Selamat Datang Kembali</h2>
+                    <p class="text-sm text-[#64748B] mt-1">Masuk untuk melanjutkan perjalanan kesehatan mentalmu</p>
+                </div>
+
+                <form @submit.prevent="$store.app.loginUser()" class="bg-white p-6 sm:p-8 rounded-3xl border border-[#E9EEF7] shadow-lg space-y-5 w-full">
+                    <div>
+                        <label class="block text-xs font-semibold text-[#1E293B] mb-2 uppercase tracking-wider text-left">Email atau Nama Akun</label>
+                        <input type="text" x-model="$store.app.loginInput.email" required
+                               class="w-full px-5 py-3.5 rounded-full bg-[#F8FAFD] border border-[#E9EEF7] text-sm text-[#1E293B] focus:bg-white focus:border-[#568BFF] focus:outline-none transition-all"
+                               placeholder="Masukkan email atau nama akunmu">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="text-xs font-semibold text-[#1E293B] uppercase tracking-wider">Kata Sandi</label>
+                            <button type="button" @click="$store.app.navigateTo('forgot-password')" class="text-xs text-[#568BFF] font-medium hover:underline">
+                                Lupa kata sandi?
+                            </button>
+                        </div>
+                        <input type="password" x-model="$store.app.loginInput.password" required
+                               class="w-full px-5 py-3.5 rounded-full bg-[#F8FAFD] border border-[#E9EEF7] text-sm text-[#1E293B] focus:bg-white focus:border-[#568BFF] focus:outline-none transition-all"
+                               placeholder="••••••••">
+                    </div>
+
+                    <div class="flex items-center gap-2 pt-1 text-left">
+                        <input type="checkbox" id="remember" checked class="w-4 h-4 rounded text-[#A8C5FF] border-[#E9EEF7] focus:ring-[#A8C5FF]">
+                        <label for="remember" class="text-xs text-[#64748B]">Ingat akun saya di perangkat ini</label>
+                    </div>
+
+                    <button type="submit"
+                            class="w-full py-4 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white font-semibold shadow-lg shadow-[#A8C5FF]/40 hover:scale-[1.02] active:scale-[0.98] transition-all text-base">
+                        Masuk Sekarang
+                    </button>
+
+                    <div class="text-center pt-3 border-t border-[#E9EEF7]">
+                        <p class="text-xs text-[#64748B]">
+                            Belum punya akun?
+                            <button type="button" @click="$store.app.navigateTo('register')" class="text-[#568BFF] font-semibold hover:underline">
+                                Daftar Gratis
+                            </button>
+                        </p>
+                    </div>
+                </form>
+            </section>
+
+            <!-- 4. REGISTER SCREEN (CENTERED) -->
+            <section x-show="$store.app.currentScreen === 'register'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="min-h-[75vh] flex flex-col justify-center items-center max-w-md mx-auto my-auto py-6 w-full text-center">
+                <div class="text-center mb-8 w-full">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#A8C5FF] to-[#FFF3D6] mx-auto flex items-center justify-center text-3xl mb-4 shadow-sm">
+                        🧘‍♀️
+                    </div>
+                    <h2 class="text-2xl font-bold text-[#1E293B]">Mulai Akun TemanJiwa</h2>
+                    <p class="text-sm text-[#64748B] mt-1">Bergabung bersama komunitas wellness dan ketenangan</p>
+                </div>
+
+                <form @submit.prevent="$store.app.registerUser()" class="bg-white p-6 sm:p-8 rounded-3xl border border-[#E9EEF7] shadow-lg space-y-4 w-full">
+                    <div>
+                        <label class="block text-xs font-semibold text-[#1E293B] mb-1.5 uppercase tracking-wider text-left">Nama Lengkap Akun</label>
+                        <input type="text" x-model="$store.app.registerInput.name" placeholder="Masukkan nama dipanggil untuk akunmu" required
+                               class="w-full px-5 py-3.5 rounded-full bg-[#F8FAFD] border border-[#E9EEF7] text-sm text-[#1E293B] focus:bg-white focus:border-[#568BFF] focus:outline-none transition-all">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-[#1E293B] mb-1.5 uppercase tracking-wider text-left">Alamat Email</label>
+                        <input type="email" x-model="$store.app.registerInput.email" placeholder="nama@email.com" required
+                               class="w-full px-5 py-3.5 rounded-full bg-[#F8FAFD] border border-[#E9EEF7] text-sm text-[#1E293B] focus:bg-white focus:border-[#568BFF] focus:outline-none transition-all">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-[#1E293B] mb-1.5 uppercase tracking-wider text-left">Kata Sandi</label>
+                        <input type="password" x-model="$store.app.registerInput.password" placeholder="Minimal 8 karakter" required
+                               class="w-full px-5 py-3.5 rounded-full bg-[#F8FAFD] border border-[#E9EEF7] text-sm text-[#1E293B] focus:bg-white focus:border-[#568BFF] focus:outline-none transition-all">
+                    </div>
+
+                    <div class="pt-2">
+                        <button type="submit"
+                                class="w-full py-4 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white font-semibold shadow-lg shadow-[#A8C5FF]/40 hover:scale-[1.02] active:scale-[0.98] transition-all text-base">
+                            Buat Akun TemanJiwa
+                        </button>
+                    </div>
+
+                    <div class="text-center pt-3 border-t border-[#E9EEF7]">
+                        <p class="text-xs text-[#64748B]">
+                            Sudah memiliki akun?
+                            <button type="button" @click="$store.app.navigateTo('login')" class="text-[#568BFF] font-semibold hover:underline">
+                                Masuk
+                            </button>
+                        </p>
+                    </div>
+                </form>
+            </section>
+
+            <!-- 5. FORGOT PASSWORD SCREEN (CENTERED) -->
+            <section x-show="$store.app.currentScreen === 'forgot-password'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="min-h-[75vh] flex flex-col justify-center items-center max-w-md mx-auto my-auto py-6 w-full text-center">
+                <div class="text-center mb-8 w-full">
+                    <div class="w-14 h-14 rounded-2xl bg-amber-50 border border-amber-100 mx-auto flex items-center justify-center text-2xl mb-4 text-amber-500">
+                        🔑
+                    </div>
+                    <h2 class="text-2xl font-bold text-[#1E293B]">Reset Kata Sandi</h2>
+                    <p class="text-sm text-[#64748B] mt-1">Kami akan mengirimkan instruksi pemulihan ke email Anda</p>
+                </div>
+
+                <form @submit.prevent="$store.app.triggerLoading('Mengirimkan Link Reset...', 'Periksa kotak masuk emailmu', 700, () => { $store.app.showToast('Instruksi pemulihan telah dikirim ke email!'); $store.app.navigateTo('login'); })" class="bg-white p-6 sm:p-8 rounded-3xl border border-[#E9EEF7] shadow-lg space-y-5 w-full">
+                    <div>
+                        <label class="block text-xs font-semibold text-[#1E293B] mb-2 uppercase tracking-wider text-left">Email Terdaftar</label>
+                        <input type="email" placeholder="nama@email.com" required
+                               class="w-full px-5 py-3.5 rounded-full bg-[#F8FAFD] border border-[#E9EEF7] text-sm text-[#1E293B] focus:bg-white focus:border-[#568BFF] focus:outline-none transition-all">
+                    </div>
+
+                    <button type="submit"
+                            class="w-full py-4 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white font-semibold shadow-lg shadow-[#A8C5FF]/40 hover:scale-[1.02] active:scale-[0.98] transition-all text-base">
+                        Kirim Link Pemulihan
+                    </button>
+
+                    <button type="button" @click="$store.app.navigateTo('login')"
+                            class="w-full py-3 rounded-full bg-white text-[#64748B] text-sm font-medium hover:text-[#1E293B]">
+                        Kembali ke Halaman Masuk
+                    </button>
+                </form>
+            </section>
+
+            <!-- 6. DASHBOARD SCREEN -->
+            <section x-show="$store.app.currentScreen === 'dashboard'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-6">
+
+                <!-- Greeting Card (Identical layout to reference image) -->
+                <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#EAF4FF] p-6 sm:p-7 border border-[#BAE6FD] shadow-lg card-hover">
+                    <!-- Ambient Inner Sky Blur -->
+                    <div class="absolute -top-10 -right-10 w-44 h-44 rounded-full bg-[#38BDF8]/15 blur-2xl pointer-events-none"></div>
+
+                    <div class="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-6">
+                        <!-- Left Side: Large Quote Marks & Text -->
+                        <div class="flex-1 space-y-2.5 text-left">
+                            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/90 border border-[#BAE6FD] text-[11px] font-bold text-[#0284C7] shadow-xs">
+                                <span>✨ Sapaan & Afirmasi Hari Ini</span>
+                            </div>
+                            
+                            <h2 class="text-xl sm:text-2xl font-extrabold text-[#0F172A] tracking-tight leading-snug flex items-start gap-1">
+                                <span class="text-3xl text-[#0284C7] font-serif leading-none">“</span>
+                                <span>Ketenangan batin dimulai saat kamu bernapas tanpa beban.</span>
+                                <span class="text-3xl text-[#0284C7] font-serif leading-none">”</span>
+                            </h2>
+                            
+                            <p class="text-xs sm:text-sm text-[#475569] font-medium leading-relaxed pl-3 border-l-2 border-[#38BDF8]">
+                                Halo, <span x-text="$store.app.user.name" class="font-bold text-[#0284C7]">Teman Jiwa</span> 🧘‍♀️ • Tarik napas dalam, hembuskan perlahan yang lapang & tenang...
+                            </p>
+
+                            <div class="pt-1">
+                                <button @click="$store.app.navigateTo('mood')"
+                                        class="px-5 py-2.5 rounded-full bg-gradient-to-r from-[#0284C7] to-[#38BDF8] text-white text-xs font-bold shadow-md shadow-[#0284C7]/20 hover:scale-105 active:scale-95 transition-all inline-flex items-center gap-2">
+                                    <i data-lucide="heart" class="w-4 h-4"></i>
+                                    Catat Mood Hari Ini
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Right Side: Mental Health Serenity Icon (Meditation Emoji) & Cloud & Sparkles -->
+                        <div class="relative shrink-0 flex items-center justify-center w-36 h-36 bg-white/70 backdrop-blur-md rounded-3xl border border-white shadow-soft p-4">
+                            <!-- Floating Cloud Top Left -->
+                            <div class="absolute -top-3 left-2 text-2xl animate-bounce" style="animation-duration: 3.5s;">
+                                ☁️
+                            </div>
+
+                            <!-- Center Mental Health Icon (Meditation Emoji) -->
+                            <div class="relative z-10 w-20 h-20 rounded-2xl bg-gradient-to-br from-white via-[#E0F2FE] to-[#F0F9FF] border border-[#BAE6FD] flex items-center justify-center text-4xl shadow-sm transition-transform hover:scale-110">
+                                🧘‍♀️
+                            </div>
+
+                            <!-- Multi-color Sparkles Bottom Right -->
+                            <div class="absolute -bottom-2 -right-2 text-2xl animate-pulse">
+                                ✨
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Admin & Owner Exclusive Direct Download Banner on Dashboard -->
+                <div x-show="$store.app.isDeveloper" class="p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 text-white shadow-xl space-y-4 border border-emerald-400/40">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div class="flex items-start gap-4">
+                            <div class="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-3xl shrink-0 shadow-inner">
+                                👑
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2 flex-wrap mb-1">
+                                    <span class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-100 bg-emerald-950/40 px-2.5 py-0.5 rounded-full border border-emerald-300/30">
+                                        Akun Pemilik & Pengembang
+                                    </span>
+                                    <span class="px-2 py-0.5 rounded-full bg-white/20 text-[10px] font-bold">Username: re</span>
+                                </div>
+                                <h3 class="text-base sm:text-lg font-extrabold text-white">Unduh Rekap Kuesioner Secara Utuh</h3>
+                                <p class="text-xs text-emerald-100 mt-0.5">
+                                    Berkas: <code class="px-1.5 py-0.5 rounded bg-black/25 text-white font-mono text-[11px] font-bold">rekap_kuesioner.json</code> • 
+                                    <span class="font-bold underline" x-text="$store.app.getMasterRekapCount() + ' Responden Lengkap (67 Pertanyaan)'"></span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2.5 w-full sm:w-auto shrink-0 justify-end">
+                            <button type="button" @click="$store.app.downloadRekapJson()"
+                                    class="flex-1 sm:flex-initial px-5 py-3 rounded-2xl bg-white text-emerald-900 hover:bg-emerald-50 font-black text-xs shadow-lg hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer">
+                                <i data-lucide="download" class="w-4 h-4 text-emerald-700"></i>
+                                <span>Unduh Langsung rekap_kuesioner.json</span>
+                            </button>
+                            <button type="button" @click="$store.app.openDeveloperPanel()"
+                                    class="px-4 py-3 rounded-2xl bg-emerald-900/60 hover:bg-emerald-900 text-white font-bold text-xs border border-white/25 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                                    title="Lihat Rincian Seluruh Responden">
+                                <i data-lucide="eye" class="w-4 h-4"></i>
+                                <span>Lihat Data</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Research Questionnaire Banner Card (Skripsi STMIK IKMI Cirebon) -->
+                <div class="relative overflow-hidden rounded-3xl bg-white border border-[#E9EEF7] p-5 sm:p-6 shadow-soft transition-all hover:shadow-soft-hover">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div class="flex items-start gap-3.5">
+                            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#A8C5FF] to-[#FFF3D6] flex items-center justify-center text-2xl shadow-xs shrink-0">
+                                📋
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2 mb-1 flex-wrap">
+                                    <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-[#A8C5FF]/30 text-[#1E293B]">Penelitian Skripsi STMIK IKMI</span>
+                                    <span x-show="$store.app.questionnaireStatus === 'completed'" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">✓ Selesai Diserahkan</span>
+                                    <span x-show="$store.app.questionnaireStatus === 'in_progress'" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 animate-pulse">Sedang Berlangsung</span>
+                                </div>
+                                <h3 class="text-sm sm:text-base font-bold text-[#1E293B]">Kuesioner Analisis UI/UX Generasi Z</h3>
+                                <p class="text-xs text-[#64748B] mt-1 max-w-lg leading-relaxed">
+                                    Penelitian skripsi oleh <strong>Risma Elfaryani</strong>.
+                                    <span x-show="$store.app.questionnaireStatus === 'not_started'">Bebas diisi kapan saja melalui tombol di samping atau menu navbar Kuesioner.</span>
+                                    <span x-show="$store.app.questionnaireStatus === 'in_progress'">Progres tersimpan. Lengkapi 67 pertanyaan untuk menyelesaikan.</span>
+                                    <span x-show="$store.app.questionnaireStatus === 'completed'">Terima kasih! Anda telah melengkapi seluruh 67 pertanyaan instrumen penelitian.</span>
+                                </p>
+                            </div>
+                        </div>
+                        <button @click="$store.app.openQuestionnaire()"
+                                class="px-5 py-2.5 rounded-full text-xs font-bold transition-all shadow-sm shrink-0 flex items-center gap-2 w-full sm:w-auto justify-center"
+                                :class="$store.app.questionnaireStatus === 'completed' ? 'bg-[#F8FAFD] border border-[#E9EEF7] text-[#64748B] hover:text-[#1E293B]' : 'bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white hover:scale-105 active:scale-95 shadow-[#A8C5FF]/30'">
+                            <i data-lucide="clipboard-check" class="w-4 h-4"></i>
+                            <span x-text="$store.app.questionnaireStatus === 'completed' ? 'Buka Status Kuesioner' : ($store.app.questionnaireStatus === 'in_progress' ? 'Lanjutkan Kuesioner' : 'Buka Kuesioner')"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Today's Mood Logged Card -->
+                <div class="bg-white p-5 rounded-3xl border border-[#E9EEF7] shadow-lg flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-2xl bg-[#F0F5FF] border border-[#A8C5FF]/40 flex items-center justify-center text-3xl shadow-sm">
+                            <span x-text="$store.app.moodHistory[0]?.emoji || '😊'">😊</span>
+                        </div>
+                        <div>
+                            <span class="text-xs text-[#64748B] uppercase tracking-wider font-semibold">Mood Terakhir Catatan</span>
+                            <h3 class="text-base font-bold text-[#1E293B]" x-text="$store.app.moodHistory[0]?.label || 'Sangat Bahagia'">Sangat Bahagia</h3>
+                            <p class="text-xs text-[#64748B] line-clamp-1" x-text="$store.app.moodHistory[0]?.note || 'Menikmati waktu tenang...'"></p>
+                        </div>
+                    </div>
+                    <button @click="$store.app.navigateTo('mood')" class="text-xs font-semibold text-[#568BFF] hover:underline shrink-0">
+                        Ubah
+                    </button>
+                </div>
+
+                <!-- AI Companion Banner Card -->
+                <div @click="$store.app.navigateTo('aichat')" class="p-5 rounded-3xl bg-gradient-to-br from-[#F0F5FF] via-white to-[#FFF3D6] border border-[#A8C5FF]/50 shadow-lg cursor-pointer card-hover flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-2xl bg-white border border-[#A8C5FF]/40 shadow-sm flex items-center justify-center text-3xl shrink-0">
+                            🤖
+                        </div>
+                        <div>
+                            <span class="inline-flex items-center gap-1 text-[10px] font-extrabold uppercase tracking-wider text-[#568BFF] bg-[#E1ECFF] px-2.5 py-0.5 rounded-full mb-1">
+                                ✨ Asisten AI TemanJiwa
+                            </span>
+                            <h3 class="text-base font-bold text-[#1E293B]">Butuh Teman Curhat & Mendengar?</h3>
+                            <p class="text-xs text-[#64748B] line-clamp-1">Ruang aman bebas penghakiman 24 jam sehari</p>
+                        </div>
+                    </div>
+                    <button class="px-4 py-2 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white text-xs font-bold shadow-md shrink-0 flex items-center gap-1">
+                        Mulai Curhat
+                        <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                    </button>
+                </div>
+
+                <!-- Quick Actions Grid -->
+                <div>
+                    <h3 class="text-xs font-bold text-[#64748B] uppercase tracking-wider mb-3">Aksi Cepat Ketenangan</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <button @click="$store.app.navigateTo('breathing')" class="p-4 rounded-3xl bg-white border border-[#E9EEF7] shadow-soft card-hover flex flex-col items-center text-center">
+                            <div class="w-12 h-12 rounded-2xl bg-[#E1ECFF] text-[#568BFF] flex items-center justify-center text-xl mb-2">
+                                🫁
+                            </div>
+                            <span class="text-xs font-bold text-[#1E293B]">Latihan Napas</span>
+                            <span class="text-[10px] text-[#64748B]">4-4-4 Technique</span>
+                        </button>
+
+                        <button @click="$store.app.navigateTo('meditation')" class="p-4 rounded-3xl bg-white border border-[#E9EEF7] shadow-soft card-hover flex flex-col items-center text-center">
+                            <div class="w-12 h-12 rounded-2xl bg-[#FFF3D6] text-amber-600 flex items-center justify-center text-xl mb-2">
+                                🕊️
+                            </div>
+                            <span class="text-xs font-bold text-[#1E293B]">Meditasi</span>
+                            <span class="text-[10px] text-[#64748B]">Suara Alam</span>
+                        </button>
+
+                        <button @click="$store.app.navigateTo('journal')" class="p-4 rounded-3xl bg-white border border-[#E9EEF7] shadow-soft card-hover flex flex-col items-center text-center">
+                            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl mb-2">
+                                📝
+                            </div>
+                            <span class="text-xs font-bold text-[#1E293B]">Jurnal Harian</span>
+                            <span class="text-[10px] text-[#64748B]">Refleksi Jiwa</span>
+                        </button>
+
+                        <button @click="$store.app.navigateTo('education')" class="p-4 rounded-3xl bg-white border border-[#E9EEF7] shadow-soft card-hover flex flex-col items-center text-center">
+                            <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center text-xl mb-2">
+                                📚
+                            </div>
+                            <span class="text-xs font-bold text-[#1E293B]">Edukasi</span>
+                            <span class="text-[10px] text-[#64748B]">Artikel Sehat</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Weekly Mood Chart Preview -->
+                <div class="bg-white p-5 sm:p-6 rounded-3xl border border-[#E9EEF7] shadow-lg">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h3 class="text-base font-bold text-[#1E293B]">Grafik Mood Mingguan</h3>
+                                <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">Otomatis Terkini</span>
+                            </div>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="px-2.5 py-0.5 rounded-full bg-[#F0F5FF] text-[#568BFF] font-bold text-xs border border-[#A8C5FF]/40">
+                                    Rata-rata: <span x-text="$store.app.getAverageWeeklyMood()"></span>/10
+                                </span>
+                                <span class="text-xs text-[#64748B]" x-text="$store.app.getMoodSummaryStatus()"></span>
+                            </div>
+                        </div>
+                        <button @click="$store.app.navigateTo('stats')" class="text-xs font-semibold text-[#568BFF] hover:underline self-start sm:self-auto">
+                            Lihat Statistik Detail →
+                        </button>
+                    </div>
+                    <div class="h-48 w-full">
+                        <canvas id="moodChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Health Trackers Grid (Water & Sleep) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Water Tracker Quick Card -->
+                    <div @click="$store.app.navigateTo('watertracker')" class="bg-white p-5 rounded-3xl border border-[#E9EEF7] shadow-lg cursor-pointer card-hover flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-2xl bg-[#E1ECFF] text-[#568BFF] flex items-center justify-center text-2xl">
+                                💧
+                            </div>
+                            <div>
+                                <span class="text-xs text-[#64748B] font-semibold">Pelacak Hidrasi Air</span>
+                                <h4 class="text-lg font-bold text-[#1E293B]">
+                                    <span x-text="$store.app.waterLogged">1250</span> / <span x-text="$store.app.waterTarget">2000</span> ml
+                                </h4>
+                                <div class="w-28 h-2 bg-[#E9EEF7] rounded-full mt-1 overflow-hidden">
+                                    <div class="h-full bg-gradient-to-r from-[#A8C5FF] to-[#568BFF] rounded-full transition-all"
+                                         :style="`width: ${Math.min(100, ($store.app.waterLogged / $store.app.waterTarget) * 100)}%`"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <button @click.stop="$store.app.addWater(250)" class="w-9 h-9 rounded-full bg-[#F0F5FF] border border-[#A8C5FF]/50 flex items-center justify-center text-[#568BFF] font-bold text-lg hover:bg-[#A8C5FF] hover:text-white transition-all">
+                            +
+                        </button>
+                    </div>
+
+                    <!-- Sleep Tracker Quick Card -->
+                    <div @click="$store.app.navigateTo('sleeptracker')" class="bg-white p-5 rounded-3xl border border-[#E9EEF7] shadow-lg cursor-pointer card-hover flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-2xl bg-[#FFF3D6] text-amber-600 flex items-center justify-center text-2xl">
+                                🌙
+                            </div>
+                            <div>
+                                <span class="text-xs text-[#64748B] font-semibold">Durasi Istirahat Tidur</span>
+                                <h4 class="text-lg font-bold text-[#1E293B]">
+                                    <span x-text="$store.app.sleepToday.duration">8.0</span> Jam
+                                </h4>
+                                <p class="text-xs text-[#86EFAC] font-medium">Kualitas Cukup & Nyenyak ⭐ 4/5</p>
+                            </div>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-5 h-5 text-[#64748B]"></i>
+                    </div>
+                </div>
+
+                <!-- Self Care Habits Checklist Preview -->
+                <div class="bg-white p-5 rounded-3xl border border-[#E9EEF7] shadow-lg">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="text-base font-bold text-[#1E293B]">Checklist Self-Care Hari Ini</h3>
+                        <button @click="$store.app.navigateTo('selfcare')" class="text-xs font-semibold text-[#568BFF] hover:underline">
+                            Kelola Kebiasaan
+                        </button>
+                    </div>
+                    <div class="space-y-2.5">
+                        <template x-for="habit in $store.app.habits.slice(0, 3)" :key="habit.id">
+                            <div @click="$store.app.toggleHabit(habit.id)"
+                                 class="p-3.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between"
+                                 :class="habit.completed ? 'bg-emerald-50/60 border-emerald-100' : 'bg-[#F8FAFD] border-[#E9EEF7] hover:bg-white'">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all"
+                                         :class="habit.completed ? 'border-emerald-500 bg-emerald-500 text-white' : 'border-[#CBD5E1] bg-white'">
+                                        <i data-lucide="check" class="w-3.5 h-3.5"></i>
+                                    </div>
+                                    <span class="text-sm font-medium" :class="habit.completed ? 'line-through text-[#64748B]' : 'text-[#1E293B]'" x-text="habit.name"></span>
+                                </div>
+                                <span class="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-white text-[#64748B] border border-[#E9EEF7]">
+                                    🔥 <span x-text="habit.streak"></span> Hari
+                                </span>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 7. MOOD TRACKER SCREEN -->
+            <section x-show="$store.app.currentScreen === 'mood'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-6">
+
+                <div class="text-center max-w-md mx-auto">
+                    <h2 class="text-2xl font-bold text-[#1E293B]">Bagaimana Perasaanmu?</h2>
+                    <p class="text-sm text-[#64748B] mt-1">Pilih emosi yang paling menggambarkan kondisimu saat ini</p>
+                </div>
+
+                <!-- Mood Cards Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3.5 max-w-lg mx-auto">
+                    <!-- Very Happy -->
+                    <button type="button" @click="$store.app.selectMood('very-happy')"
+                            class="p-4 rounded-3xl border-2 transition-all flex flex-col items-center text-center cursor-pointer"
+                            :class="$store.app.selectedMood === 'very-happy' ? 'bg-[#F0F5FF] border-[#568BFF] shadow-lg scale-105 ring-2 ring-[#A8C5FF]' : 'bg-white border-[#E9EEF7] hover:border-[#A8C5FF]'">
+                        <span class="text-4xl mb-2">😊</span>
+                        <span class="text-xs font-bold text-[#1E293B]">Sangat Bahagia</span>
+                        <span class="text-[10px] text-[#568BFF] font-semibold mt-0.5">Intensitas: 10</span>
+                    </button>
+
+                    <!-- Happy -->
+                    <button type="button" @click="$store.app.selectMood('happy')"
+                            class="p-4 rounded-3xl border-2 transition-all flex flex-col items-center text-center cursor-pointer"
+                            :class="$store.app.selectedMood === 'happy' ? 'bg-[#F0F5FF] border-[#568BFF] shadow-lg scale-105 ring-2 ring-[#A8C5FF]' : 'bg-white border-[#E9EEF7] hover:border-[#A8C5FF]'">
+                        <span class="text-4xl mb-2">🙂</span>
+                        <span class="text-xs font-bold text-[#1E293B]">Bahagia</span>
+                        <span class="text-[10px] text-[#568BFF] font-semibold mt-0.5">Intensitas: 8</span>
+                    </button>
+
+                    <!-- Neutral -->
+                    <button type="button" @click="$store.app.selectMood('neutral')"
+                            class="p-4 rounded-3xl border-2 transition-all flex flex-col items-center text-center cursor-pointer"
+                            :class="$store.app.selectedMood === 'neutral' ? 'bg-[#FFF3D6]/50 border-amber-400 shadow-lg scale-105 ring-2 ring-amber-200' : 'bg-white border-[#E9EEF7] hover:border-[#A8C5FF]'">
+                        <span class="text-4xl mb-2">😐</span>
+                        <span class="text-xs font-bold text-[#1E293B]">Biasa Saja</span>
+                        <span class="text-[10px] text-amber-600 font-semibold mt-0.5">Intensitas: 5</span>
+                    </button>
+
+                    <!-- Sad -->
+                    <button type="button" @click="$store.app.selectMood('sad')"
+                            class="p-4 rounded-3xl border-2 transition-all flex flex-col items-center text-center cursor-pointer"
+                            :class="$store.app.selectedMood === 'sad' ? 'bg-sky-50 border-sky-400 shadow-lg scale-105 ring-2 ring-sky-200' : 'bg-white border-[#E9EEF7] hover:border-[#A8C5FF]'">
+                        <span class="text-4xl mb-2">😔</span>
+                        <span class="text-xs font-bold text-[#1E293B]">Sedih</span>
+                        <span class="text-[10px] text-sky-600 font-semibold mt-0.5">Intensitas: 3</span>
+                    </button>
+
+                    <!-- Stressed -->
+                    <button type="button" @click="$store.app.selectMood('stressed')"
+                            class="p-4 rounded-3xl border-2 transition-all flex flex-col items-center text-center cursor-pointer"
+                            :class="$store.app.selectedMood === 'stressed' ? 'bg-rose-50 border-rose-400 shadow-lg scale-105 ring-2 ring-rose-200' : 'bg-white border-[#E9EEF7] hover:border-[#A8C5FF]'">
+                        <span class="text-4xl mb-2">😢</span>
+                        <span class="text-xs font-bold text-[#1E293B]">Stres / Cemas</span>
+                        <span class="text-[10px] text-rose-600 font-semibold mt-0.5">Intensitas: 2</span>
+                    </button>
+
+                    <!-- Angry -->
+                    <button type="button" @click="$store.app.selectMood('angry')"
+                            class="p-4 rounded-3xl border-2 transition-all flex flex-col items-center text-center cursor-pointer"
+                            :class="$store.app.selectedMood === 'angry' ? 'bg-amber-50 border-amber-500 shadow-lg scale-105 ring-2 ring-amber-200' : 'bg-white border-[#E9EEF7] hover:border-[#A8C5FF]'">
+                        <span class="text-4xl mb-2">😡</span>
+                        <span class="text-xs font-bold text-[#1E293B]">Marah</span>
+                        <span class="text-[10px] text-amber-700 font-semibold mt-0.5">Intensitas: 1</span>
+                    </button>
+                </div>
+
+                <!-- Mood Intensity & Note Form -->
+                <div class="bg-white p-6 rounded-3xl border border-[#E9EEF7] shadow-lg max-w-lg mx-auto space-y-5">
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <div class="flex items-center gap-2">
+                                <label class="text-xs font-bold text-[#1E293B] uppercase tracking-wider">Intensitas Emosi (1-10)</label>
+                                <span class="px-2 py-0.5 rounded-full bg-[#E1ECFF] text-[#568BFF] text-[10px] font-bold">Otomatis Terisi ✨</span>
+                            </div>
+                            <span class="text-sm font-extrabold text-[#568BFF] px-2.5 py-0.5 rounded-lg bg-[#F0F5FF]" x-text="$store.app.moodIntensity">10</span>
+                        </div>
+                        <input type="range" min="1" max="10" x-model="$store.app.moodIntensity"
+                               class="w-full accent-[#568BFF] bg-[#E9EEF7] h-2.5 rounded-lg cursor-pointer">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-[#1E293B] mb-2 uppercase tracking-wider">Catatan Tambahan (Opsional)</label>
+                        <textarea x-model="$store.app.moodNote" rows="3"
+                                  placeholder="Ceritakan singkat apa yang memicu perasaan ini..."
+                                  class="w-full px-4 py-3 rounded-2xl bg-[#F8FAFD] border border-[#E9EEF7] text-sm text-[#1E293B] focus:bg-white focus:border-[#568BFF] focus:outline-none transition-all resize-none"></textarea>
+                    </div>
+
+                    <button @click="$store.app.logMood()"
+                            class="w-full py-4 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white font-semibold shadow-lg shadow-[#A8C5FF]/40 hover:scale-[1.02] active:scale-[0.98] transition-all text-base">
+                        Simpan Catatan Mood
+                    </button>
+                </div>
+
+                <!-- Mood History Timeline -->
+                <div class="max-w-lg mx-auto bg-white p-6 rounded-3xl border border-[#E9EEF7] shadow-lg">
+                    <h3 class="text-base font-bold text-[#1E293B] mb-4">Riwayat Catatan Mood</h3>
+                    <div class="space-y-3">
+                        <template x-if="$store.app.moodHistory.length === 0">
+                            <div class="text-center py-8 text-[#64748B] text-xs">
+                                Belum ada catatan mood yang disimpan.
+                            </div>
+                        </template>
+                        <template x-for="item in $store.app.moodHistory" :key="item.id">
+                            <div class="p-4 rounded-2xl bg-[#F8FAFD] border border-[#E9EEF7] flex items-start gap-3.5">
+                                <span class="text-3xl shrink-0" x-text="item.emoji"></span>
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-center">
+                                        <h4 class="text-sm font-bold text-[#1E293B]" x-text="item.label"></h4>
+                                        <span class="text-[11px] text-[#64748B]" x-text="item.date"></span>
+                                    </div>
+                                    <p class="text-xs text-[#64748B] mt-1" x-text="item.note"></p>
+                                    <div class="inline-flex items-center gap-1 mt-2 px-2.5 py-0.5 rounded-full bg-[#E1ECFF] text-[10px] font-semibold text-[#568BFF]">
+                                        Intensitas <span x-text="item.intensity"></span>/10
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 8. JOURNAL SCREEN -->
+            <section x-show="$store.app.currentScreen === 'journal'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-6">
+
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-[#1E293B]">Jurnal Refleksi Diri</h2>
+                        <p class="text-sm text-[#64748B]">Ruang bebas penghakiman untuk menuliskan setiap rasa</p>
+                    </div>
+                    <button @click="$store.app.showModal = 'addJournal'"
+                            class="px-5 py-3 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white text-sm font-semibold shadow-md shadow-[#A8C5FF]/30 hover:scale-105 transition-all flex items-center justify-center gap-2">
+                        <i data-lucide="plus" class="w-4 h-4"></i>
+                        Tulis Jurnal Baru
+                    </button>
+                </div>
+
+                <!-- Daily Prompt Suggestion Card -->
+                <div class="p-5 rounded-3xl bg-gradient-to-r from-[#FFF3D6] to-[#FFE5AA] border border-amber-200/60 shadow-sm flex items-start gap-3.5">
+                    <span class="text-2xl">💡</span>
+                    <div>
+                        <h4 class="text-xs font-bold text-amber-900 uppercase tracking-wider">Inspirasi Jurnal Hari Ini</h4>
+                        <p class="text-sm font-medium text-amber-950 mt-0.5">
+                            "Apa satu kebaikan kecil dari orang lain yang membuatmu tersenyum hari ini?"
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Journal Entries List -->
+                <div class="space-y-4">
+                    <template x-if="$store.app.journals.length === 0">
+                        <div class="text-center py-12 px-4 bg-white rounded-3xl border border-[#E9EEF7]">
+                            <span class="text-4xl">✍️</span>
+                            <h3 class="text-lg font-bold text-[#1E293B] mt-3">Belum ada jurnal ditulis</h3>
+                            <p class="text-xs text-[#64748B] mt-1">Luapkan pikiran dan perasaanmu hari ini ke dalam tulisan.</p>
+                        </div>
+                    </template>
+                    <template x-for="j in $store.app.journals" :key="j.id">
+                        <div class="p-6 rounded-3xl bg-white border border-[#E9EEF7] shadow-lg card-hover">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <span class="px-3 py-1 rounded-full bg-[#F0F5FF] text-[11px] font-semibold text-[#568BFF]" x-text="j.tag"></span>
+                                    <h3 class="text-lg font-bold text-[#1E293B] mt-2" x-text="j.title"></h3>
+                                </div>
+                                <button @click="$store.app.deleteJournal(j.id)" class="text-[#64748B] hover:text-rose-500 transition-colors p-1" title="Hapus">
+                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                            <p class="text-sm text-[#64748B] leading-relaxed mb-4" x-text="j.content"></p>
+                            <div class="flex justify-between items-center text-xs text-[#64748B] pt-3 border-t border-[#E9EEF7]">
+                                <span class="flex items-center gap-1 font-medium text-[#1E293B]">
+                                    <span x-text="j.mood"></span> Mood Terkait
+                                </span>
+                                <span x-text="j.date"></span>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </section>
+
+            <!-- 9. SELF CARE SCREEN -->
+            <section x-show="$store.app.currentScreen === 'selfcare'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-6">
+
+                <div class="text-center max-w-md mx-auto">
+                    <h2 class="text-2xl font-bold text-[#1E293B]">Rutinitas Self-Care</h2>
+                    <p class="text-sm text-[#64748B] mt-1">Lakukan kebiasaan kecil berkesinambungan untuk kesehatan jiwamu</p>
+                </div>
+
+                <div class="space-y-3 max-w-lg mx-auto">
+                    <template x-for="habit in $store.app.habits" :key="habit.id">
+                        <div @click="$store.app.toggleHabit(habit.id)"
+                             class="p-4 rounded-3xl bg-white border border-[#E9EEF7] shadow-lg card-hover cursor-pointer flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <div class="w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all shrink-0"
+                                     :class="habit.completed ? 'border-emerald-500 bg-emerald-500 text-white' : 'border-[#CBD5E1] bg-white'">
+                                    <i data-lucide="check" class="w-4 h-4"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-bold" :class="habit.completed ? 'line-through text-[#64748B]' : 'text-[#1E293B]'" x-text="habit.name"></h4>
+                                    <span class="text-xs text-[#64748B]" x-text="habit.category"></span>
+                                </div>
+                            </div>
+                            <span class="px-3 py-1 rounded-full bg-[#FFF3D6] text-xs font-bold text-amber-900">
+                                🔥 <span x-text="habit.streak"></span> Hari
+                            </span>
+                        </div>
+                    </template>
+                </div>
+            </section>
+
+            <!-- 10. BREATHING EXERCISE SCREEN -->
+            <section x-show="$store.app.currentScreen === 'breathing'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="min-h-[70vh] flex flex-col items-center justify-around py-6 text-center">
+
+                <div>
+                    <h2 class="text-2xl font-bold text-[#1E293B]">Pernapasan Relaksasi 4-4-4</h2>
+                    <p class="text-sm text-[#64748B] mt-1">Ikuti irama lingkaran untuk menenangkan pikiran yang cemas</p>
+                </div>
+
+                <!-- Animated Breathing Visual Circle -->
+                <div class="breathing-circle-container my-8">
+                    <div class="breathing-outer-ring"
+                         :class="{
+                             'inhale': $store.app.breathing.phase === 'Tarik Napas',
+                             'hold': $store.app.breathing.phase === 'Tahan',
+                             'exhale': $store.app.breathing.phase === 'Hembuskan'
+                         }"></div>
+                    <div class="breathing-inner-circle">
+                        <span class="text-lg font-bold text-[#1E293B]" x-text="$store.app.breathing.phase">Siap</span>
+                        <span class="text-3xl font-extrabold text-[#568BFF] mt-1" x-text="$store.app.breathing.secondsLeft">4</span>
+                        <span class="text-[10px] text-[#64748B] uppercase tracking-wider mt-1" x-text="`Siklus ${$store.app.breathing.currentCycle}/${$store.app.breathing.targetCycles}`"></span>
+                    </div>
+                </div>
+
+                <div class="w-full max-w-xs space-y-3">
+                    <button x-show="!$store.app.breathing.active"
+                            @click="$store.app.startBreathing()"
+                            class="w-full py-4 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white font-semibold shadow-lg shadow-[#A8C5FF]/40 hover:scale-[1.02] active:scale-[0.98] transition-all text-base">
+                        Mulai Latihan Napas
+                    </button>
+                    <button x-show="$store.app.breathing.active"
+                            @click="$store.app.stopBreathing()"
+                            class="w-full py-4 rounded-full bg-rose-100 border border-rose-200 text-rose-600 font-semibold hover:bg-rose-200 transition-all text-base">
+                        Hentikan Latihan
+                    </button>
+                </div>
+            </section>
+
+            <!-- 11. MEDITATION SCREEN -->
+            <section x-show="$store.app.currentScreen === 'meditation'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-6 text-center max-w-md mx-auto">
+
+                <div>
+                    <h2 class="text-2xl font-bold text-[#1E293B]">Meditasi Suara Alam</h2>
+                    <p class="text-sm text-[#64748B] mt-1">Dengarkan alunan frekuensi ramah untuk mereda stres</p>
+                </div>
+
+                <!-- Meditation Audio Card -->
+                <div class="p-8 rounded-3xl bg-gradient-to-br from-white via-[#F0F5FF] to-[#FFF3D6] border border-[#E9EEF7] shadow-lg flex flex-col items-center">
+                    <div class="w-28 h-28 rounded-full bg-white shadow-soft flex items-center justify-center text-5xl mb-4">
+                        🌧️
+                    </div>
+                    <h3 class="text-xl font-bold text-[#1E293B]" x-text="$store.app.meditation.soundName">Suara Hujan Lembut</h3>
+                    <p class="text-xs text-[#64748B] mt-1">Fokus & Ketenangan Jiwa</p>
+
+                    <!-- Timer Display -->
+                    <div class="my-6 text-4xl font-extrabold text-[#568BFF] tracking-wider" x-text="$store.app.formatTime($store.app.meditation.timeLeft)">
+                        05:00
+                    </div>
+
+                    <!-- Duration Presets -->
+                    <div class="flex gap-2 mb-6">
+                        <button @click="$store.app.resetMeditation(300)" class="px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all" :class="$store.app.meditation.totalTime === 300 ? 'bg-[#568BFF] text-white border-[#568BFF]' : 'bg-white text-[#64748B] border-[#E9EEF7]'">5 Menit</button>
+                        <button @click="$store.app.resetMeditation(600)" class="px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all" :class="$store.app.meditation.totalTime === 600 ? 'bg-[#568BFF] text-white border-[#568BFF]' : 'bg-white text-[#64748B] border-[#E9EEF7]'">10 Menit</button>
+                        <button @click="$store.app.resetMeditation(900)" class="px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all" :class="$store.app.meditation.totalTime === 900 ? 'bg-[#568BFF] text-white border-[#568BFF]' : 'bg-white text-[#64748B] border-[#E9EEF7]'">15 Menit</button>
+                    </div>
+
+                    <!-- Play / Pause Button -->
+                    <button @click="$store.app.toggleMeditation()"
+                            class="w-full py-4 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white font-semibold shadow-lg shadow-[#A8C5FF]/40 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-base">
+                        <span x-show="!$store.app.meditation.isPlaying" class="flex items-center gap-2">
+                            <i data-lucide="play" class="w-5 h-5"></i>
+                            <span>Mulai Meditasi</span>
+                        </span>
+                        <span x-show="$store.app.meditation.isPlaying" class="flex items-center gap-2">
+                            <i data-lucide="pause" class="w-5 h-5"></i>
+                            <span>Jeda Audio</span>
+                        </span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- 12. SLEEP TRACKER SCREEN -->
+            <section x-show="$store.app.currentScreen === 'sleeptracker'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-6 max-w-md mx-auto">
+
+                <div class="text-center">
+                    <h2 class="text-2xl font-bold text-[#1E293B]">Pelacak Kualitas Tidur</h2>
+                    <p class="text-sm text-[#64748B] mt-1">Istirahat optimal menciptakan hari yang bahagia</p>
+                </div>
+
+                <form @submit.prevent="$store.app.logSleep()" class="bg-white p-6 rounded-3xl border border-[#E9EEF7] shadow-lg space-y-4">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-[#1E293B] mb-1 uppercase tracking-wider">Jam Tidur</label>
+                            <input type="text" x-model="$store.app.sleepInput.bedtime" class="timepicker w-full px-4 py-3 rounded-full bg-[#F8FAFD] border border-[#E9EEF7] text-sm text-[#1E293B] focus:bg-white focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-[#1E293B] mb-1 uppercase tracking-wider">Jam Bangun</label>
+                            <input type="text" x-model="$store.app.sleepInput.waketime" class="timepicker w-full px-4 py-3 rounded-full bg-[#F8FAFD] border border-[#E9EEF7] text-sm text-[#1E293B] focus:bg-white focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-[#1E293B] mb-2 uppercase tracking-wider">Kualitas Tidur Bangun</label>
+                        <div class="flex justify-between items-center bg-[#F8FAFD] p-3 rounded-2xl border border-[#E9EEF7]">
+                            <template x-for="star in [1,2,3,4,5]" :key="star">
+                                <button type="button" @click="$store.app.sleepInput.quality = star" class="text-2xl transition-transform hover:scale-125">
+                                    <span :class="star <= $store.app.sleepInput.quality ? 'text-amber-400' : 'text-gray-300'">★</span>
+                                </button>
+                            </template>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full py-3.5 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white font-semibold shadow-md hover:scale-[1.02] transition-all">
+                        Simpan Catatan Tidur
+                    </button>
+                </form>
+            </section>
+
+            <!-- 13. WATER TRACKER SCREEN -->
+            <section x-show="$store.app.currentScreen === 'watertracker'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-6 text-center max-w-md mx-auto">
+
+                <div>
+                    <h2 class="text-2xl font-bold text-[#1E293B]">Pelacak Hidrasi Air</h2>
+                    <p class="text-sm text-[#64748B] mt-1">Pastikan tubuh dan otak terhidrasi dengan baik</p>
+                </div>
+
+                <!-- Water Fill Animation Container -->
+                <div class="p-8 rounded-3xl bg-white border border-[#E9EEF7] shadow-lg flex flex-col items-center">
+                    <div class="water-container mb-4">
+                        <div class="water-fill" :style="`height: ${$store.app.waterTarget ? Math.min(100, ($store.app.waterLogged / $store.app.waterTarget) * 100) : 0}%`">
+                            <div class="water-wave"></div>
+                        </div>
+                    </div>
+
+                    <h3 class="text-3xl font-extrabold text-[#1E293B] mb-1">
+                        <span x-text="$store.app.waterLogged">1250</span> <span class="text-base font-normal text-[#64748B]">/ <span x-text="$store.app.waterTarget">2000</span> ml</span>
+                    </h3>
+                    <p class="text-xs text-[#568BFF] font-semibold mb-6" x-text="'Pencapaian: ' + ($store.app.waterTarget ? Math.round(($store.app.waterLogged / $store.app.waterTarget) * 100) : 0) + '% Target'"></p>
+
+                    <!-- Add Buttons -->
+                    <div class="grid grid-cols-2 gap-3 w-full">
+                        <button @click="$store.app.addWater(250)" class="py-3 rounded-full bg-[#F0F5FF] border border-[#A8C5FF]/50 text-[#568BFF] font-bold text-sm hover:bg-[#A8C5FF] hover:text-white transition-all">
+                            +250 ml Gelas
+                        </button>
+                        <button @click="$store.app.addWater(500)" class="py-3 rounded-full bg-[#F0F5FF] border border-[#A8C5FF]/50 text-[#568BFF] font-bold text-sm hover:bg-[#A8C5FF] hover:text-white transition-all">
+                            +500 ml Botol
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 14. STATISTICS SCREEN -->
+            <section x-show="$store.app.currentScreen === 'stats'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-6">
+
+                <div>
+                    <h2 class="text-2xl font-bold text-[#1E293B]">Analisis & Statistik</h2>
+                    <p class="text-sm text-[#64748B]">Ringkasan progres kesehatan mental & kebiasaan sehatmu</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Sleep Duration Chart -->
+                    <div class="bg-white p-5 rounded-3xl border border-[#E9EEF7] shadow-lg">
+                        <h3 class="text-sm font-bold text-[#1E293B] mb-3">Statistik Tidur (Jam)</h3>
+                        <div class="h-44">
+                            <canvas id="sleepChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Water Intake Chart -->
+                    <div class="bg-white p-5 rounded-3xl border border-[#E9EEF7] shadow-lg">
+                        <h3 class="text-sm font-bold text-[#1E293B] mb-3">Asupan Air Minum (ml)</h3>
+                        <div class="h-44">
+                            <canvas id="waterChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Selfcare Completion Chart -->
+                    <div class="bg-white p-5 rounded-3xl border border-[#E9EEF7] shadow-lg md:col-span-2">
+                        <h3 class="text-sm font-bold text-[#1E293B] mb-3">Rasio Kebiasaan Selesai</h3>
+                        <div class="h-48">
+                            <canvas id="selfcareChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 15. REMINDER SCREEN -->
+            <section x-show="$store.app.currentScreen === 'reminder'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-6 max-w-md mx-auto">
+
+                <div>
+                    <h2 class="text-2xl font-bold text-[#1E293B]">Pengingat Harian</h2>
+                    <p class="text-sm text-[#64748B]">Atur jadwal notifikasi ramah untuk mendukung konsistensimu</p>
+                </div>
+
+                <div class="space-y-3">
+                    <template x-for="r in $store.app.reminders" :key="r.id">
+                        <div class="p-4 rounded-3xl bg-white border border-[#E9EEF7] shadow-lg flex items-center justify-between">
+                            <div>
+                                <h4 class="text-sm font-bold text-[#1E293B]" x-text="r.title"></h4>
+                                <span class="text-xs text-[#64748B]" x-text="`${r.type} • ${r.time}`"></span>
+                            </div>
+                            <button @click="$store.app.toggleReminder(r.id)"
+                                    class="w-12 h-6 rounded-full transition-colors relative"
+                                    :class="r.enabled ? 'bg-[#568BFF]' : 'bg-gray-200'">
+                                <div class="w-5 h-5 rounded-full bg-white absolute top-0.5 transition-transform"
+                                     :class="r.enabled ? 'right-0.5' : 'left-0.5'"></div>
+                            </button>
+                        </div>
+                    </template>
+                </div>
+            </section>
+
+            <!-- 16. EDUCATION SCREEN -->
+            <section x-show="$store.app.currentScreen === 'education'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-6">
+
+                <div>
+                    <h2 class="text-2xl font-bold text-[#1E293B]">Pusat Edukasi & Artikel</h2>
+                    <p class="text-sm text-[#64748B]">Pengetahuan praktis untuk memelihara jiwa yang sehat</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <template x-for="art in $store.app.articles" :key="art.id">
+                        <div @click="$store.app.readArticle(art)"
+                             class="bg-white rounded-3xl border border-[#E9EEF7] shadow-lg overflow-hidden card-hover cursor-pointer transition-all">
+                            <img :src="art.image" class="w-full h-36 object-cover" alt="Article image">
+                            <div class="p-4">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-[10px] font-bold uppercase tracking-wider text-[#568BFF]" x-text="art.category"></span>
+                                    <span class="text-[10px] text-[#64748B] font-medium flex items-center gap-1">
+                                        <i data-lucide="clock" class="w-3 h-3"></i>
+                                        <span x-text="art.readTime"></span>
+                                    </span>
+                                </div>
+                                <h3 class="text-base font-bold text-[#1E293B] mt-1" x-text="art.title"></h3>
+                                <p class="text-xs text-[#64748B] mt-2 line-clamp-2" x-text="art.excerpt"></p>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </section>
+
+            <!-- 16b. ARTICLE DETAIL SCREEN -->
+            <section x-show="$store.app.currentScreen === 'article-detail'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-6 max-w-2xl mx-auto"
+                     style="display: none;">
+                
+                <template x-if="$store.app.selectedArticle">
+                    <div class="bg-white rounded-3xl border border-[#E9EEF7] shadow-xl overflow-hidden">
+                        <!-- Cover Image -->
+                        <div class="relative h-60 sm:h-72 w-full">
+                            <img :src="$store.app.selectedArticle.image" class="w-full h-full object-cover" alt="Article Cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                            
+                            <!-- Floating Back Button on Image -->
+                            <button @click="$store.app.navigateTo('education')" 
+                                    class="absolute top-4 left-4 w-10 h-10 rounded-full bg-white/95 backdrop-blur-xs flex items-center justify-center text-[#1E293B] shadow-lg hover:scale-105 transition-all">
+                                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                            </button>
+
+                            <!-- Category & Read Time -->
+                            <div class="absolute bottom-4 left-5 right-5 flex justify-between items-center text-white">
+                                <span class="px-3.5 py-1 rounded-full bg-[#568BFF] text-xs font-bold uppercase tracking-wider" x-text="$store.app.selectedArticle.category"></span>
+                                <span class="text-xs font-medium flex items-center gap-1">
+                                    <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+                                    <span x-text="$store.app.selectedArticle.readTime"></span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Content Details -->
+                        <div class="p-6 sm:p-8 space-y-4">
+                            <h2 class="text-2xl font-extrabold text-[#1E293B] tracking-tight leading-tight" x-text="$store.app.selectedArticle.title"></h2>
+                            
+                            <div class="border-b border-[#E9EEF7] pb-4 flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-[#FFF3D6] flex items-center justify-center text-sm shadow-xs">🧘‍♀️</div>
+                                <div>
+                                    <p class="text-xs font-bold text-[#1E293B]">TemanJiwa Health Specialist</p>
+                                    <p class="text-[10px] text-[#64748B]">Ditinjau oleh Tim Konselor Medis</p>
+                                </div>
+                            </div>
+
+                            <!-- Body Text paragraphs -->
+                            <div class="text-sm sm:text-base text-[#475569] leading-relaxed space-y-4 pt-2 font-medium">
+                                <template x-for="p in $store.app.selectedArticle.content.split('\n\n')">
+                                    <p class="whitespace-pre-line text-justify" x-text="p"></p>
+                                </template>
+                            </div>
+                        </div>
+
+                        <!-- Bottom Footer Actions -->
+                        <div class="bg-[#F8FAFD] border-t border-[#E9EEF7] px-6 py-4 flex items-center justify-between">
+                            <button @click="$store.app.navigateTo('education')" 
+                                    class="px-5 py-2.5 rounded-full bg-white border border-[#E9EEF7] text-xs font-bold text-[#64748B] hover:text-[#1E293B] hover:bg-[#F8FAFD] transition-all">
+                                Kembali ke Artikel
+                            </button>
+                            <button @click="$store.app.navigateTo('dashboard')" 
+                                    class="px-5 py-2.5 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white text-xs font-bold shadow-md hover:scale-105 transition-all">
+                                Kembali ke Beranda 🌿
+                            </button>
+                        </div>
+                    </div>
+                </template>
+            </section>
+
+            <!-- 17. EMERGENCY HELP SCREEN (SOS) -->
+            <section x-show="$store.app.currentScreen === 'emergency'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-6 max-w-md mx-auto">
+
+                <div class="p-6 rounded-3xl bg-rose-50 border border-rose-200 text-center">
+                    <div class="w-16 h-16 rounded-full bg-rose-500 text-white flex items-center justify-center mx-auto mb-3 text-2xl shadow-lg">
+                        🆘
+                    </div>
+                    <h2 class="text-xl font-bold text-rose-950">Layanan Bantuan Darurat</h2>
+                    <p class="text-xs text-rose-800 mt-1">Kamu tidak sendirian. Bantuan profesional selalu siap mendengarkan.</p>
+                    
+                    <a href="tel:119" class="mt-4 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-rose-600 text-white font-bold text-sm shadow-md hover:bg-rose-700 transition-all">
+                        <i data-lucide="phone-call" class="w-4 h-4"></i>
+                        Hubungi Hotline 119 Ext 8
+                    </a>
+                </div>
+
+                <!-- 5-4-3-2-1 Grounding Technique -->
+                <div class="bg-white p-6 rounded-3xl border border-[#E9EEF7] shadow-lg space-y-4">
+                    <h3 class="text-base font-bold text-[#1E293B]">Teknik Penenang Grounding 5-4-3-2-1</h3>
+                    <div class="space-y-2 text-xs text-[#64748B]">
+                        <p class="p-2.5 rounded-2xl bg-[#F8FAFD] border border-[#E9EEF7]"><strong class="text-[#1E293B]">👁️ 5 Hal:</strong> Pandang 5 benda di sekitarmu.</p>
+                        <p class="p-2.5 rounded-2xl bg-[#F8FAFD] border border-[#E9EEF7]"><strong class="text-[#1E293B]">✋ 4 Hal:</strong> Raba 4 permukaan tekstur di dekatmu.</p>
+                        <p class="p-2.5 rounded-2xl bg-[#F8FAFD] border border-[#E9EEF7]"><strong class="text-[#1E293B]">👂 3 Hal:</strong> Dengarkan 3 suara samar di ruangan.</p>
+                        <p class="p-2.5 rounded-2xl bg-[#F8FAFD] border border-[#E9EEF7]"><strong class="text-[#1E293B]">👃 2 Hal:</strong> Hirup 2 aroma di sekitarmu.</p>
+                        <p class="p-2.5 rounded-2xl bg-[#F8FAFD] border border-[#E9EEF7]"><strong class="text-[#1E293B]">👅 1 Hal:</strong> Rasakan 1 sensasi di lidah atau air minum.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 18. NOTIFICATIONS SCREEN -->
+            <section x-show="$store.app.currentScreen === 'notifications'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-4 max-w-md mx-auto">
+
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-bold text-[#1E293B]">Notifikasi</h2>
+                    <button @click="$store.app.markAllRead()" class="text-xs font-semibold text-[#568BFF] hover:underline">
+                        Tandai Dibaca
+                    </button>
+                </div>
+
+                <div class="space-y-2.5">
+                    <template x-for="n in $store.app.notifications" :key="n.id">
+                        <div class="p-4 rounded-3xl border transition-all flex items-start gap-3"
+                             :class="n.read ? 'bg-white border-[#E9EEF7]' : 'bg-[#F0F5FF] border-[#A8C5FF] shadow-sm'">
+                            <span class="text-xl shrink-0">🔔</span>
+                            <div>
+                                <h4 class="text-xs font-bold text-[#1E293B]" x-text="n.title"></h4>
+                                <p class="text-xs text-[#64748B] mt-0.5" x-text="n.message"></p>
+                                <span class="text-[10px] text-[#94A3B8] mt-1 block" x-text="n.time"></span>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </section>
+
+            <!-- 19. PROFILE SCREEN -->
+            <section x-show="$store.app.currentScreen === 'profile'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-6 max-w-md mx-auto"
+                     style="display: none;">
+
+                <!-- Social-Media Style Profile Card -->
+                <div class="bg-white rounded-3xl border border-[#E9EEF7] shadow-lg overflow-hidden relative">
+                    <!-- Dynamic Cover Header -->
+                    <div class="h-28 w-full transition-all duration-300 relative"
+                         :style="`background-color: ${$store.app.user.coverColor || '#A8C5FF'}`">
+                        <!-- Tiny Overlay Gradient -->
+                        <div class="absolute inset-0 bg-gradient-to-b from-black/10 to-black/20"></div>
+
+                        <!-- Floating Edit button in cover -->
+                        <button @click="$store.app.startEditProfile()" 
+                                class="absolute top-3 right-3 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-xs text-xs font-bold text-[#1E293B] shadow-sm hover:scale-105 active:scale-95 transition-all flex items-center gap-1.5">
+                            <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+                            Edit Profil
+                        </button>
+                    </div>
+
+                    <!-- Profile Information overlapping cover -->
+                    <div class="px-6 pb-6 pt-1 flex flex-col items-center text-center relative z-10">
+                        <!-- Overlapping Avatar -->
+                        <div class="w-20 h-20 rounded-full border-4 border-white bg-[#FFF3D6] text-4xl flex items-center justify-center -mt-10 shadow-md transform hover:rotate-12 transition-all">
+                            <span x-text="$store.app.user.avatar || '🌸'">🌸</span>
+                        </div>
+
+                        <!-- Name and Email -->
+                        <h2 class="text-xl font-extrabold text-[#1E293B] mt-2 tracking-tight flex items-center gap-1.5 justify-center">
+                            <span x-text="$store.app.user.name"></span>
+                            <span class="text-emerald-500 text-xs shrink-0 flex items-center" title="Akun Terverifikasi">
+                                <i data-lucide="badge-check" class="w-4 h-4 fill-emerald-500 text-white"></i>
+                            </span>
+                        </h2>
+                        <p class="text-xs text-[#64748B] font-medium" x-text="$store.app.user.email"></p>
+
+                        <!-- User Biography / Social Status -->
+                        <div class="mt-3.5 px-4 py-2.5 rounded-2xl bg-[#F8FAFD] border border-[#E9EEF7] w-full text-xs text-[#475569] leading-relaxed italic text-center max-w-sm">
+                            <span class="text-[#94A3B8] font-bold text-sm leading-none mr-0.5">“</span>
+                            <span x-text="$store.app.user.bio || 'Menemukan kedamaian di setiap hela napas.'"></span>
+                            <span class="text-[#94A3B8] font-bold text-sm leading-none ml-0.5">”</span>
+                        </div>
+
+                        <!-- Level and XP badge -->
+                        <div class="mt-4 px-4 py-1.5 rounded-full bg-[#F0F5FF] border border-[#A8C5FF]/40 text-xs font-bold text-[#568BFF] flex items-center gap-1.5 shadow-xs">
+                            <span>🏆 Level <span x-text="$store.app.user.level">3</span> Warrior</span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-[#A8C5FF]"></span>
+                            <span><span x-text="$store.app.user.xp">240</span> XP</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Links -->
+                <div class="bg-white rounded-3xl border border-[#E9EEF7] shadow-lg divide-y divide-[#E9EEF7] overflow-hidden">
+                    <!-- Developer Only: Rekap Kuesioner Access -->
+                    <template x-if="$store.app.isDeveloper">
+                        <button @click="$store.app.openDeveloperPanel()" class="w-full p-4 text-left flex items-center justify-between bg-emerald-50 hover:bg-emerald-100/70 text-emerald-800 transition-all">
+                            <div class="flex items-center gap-3">
+                                <span class="w-8 h-8 rounded-xl bg-emerald-500 text-white flex items-center justify-center text-sm font-bold shadow-xs">
+                                    <i data-lucide="database" class="w-4 h-4"></i>
+                                </span>
+                                <div>
+                                    <span class="text-sm font-bold flex items-center gap-1.5">
+                                        Rekap Data Kuesioner (Developer)
+                                        <span class="px-1.5 py-0.5 rounded text-[9px] bg-emerald-200 text-emerald-900 font-extrabold uppercase">VIP</span>
+                                    </span>
+                                    <p class="text-[11px] text-emerald-700 font-normal">Akses berkas rekap_kuesioner.json penelitian</p>
+                                </div>
+                            </div>
+                            <i data-lucide="chevron-right" class="w-4 h-4 text-emerald-600"></i>
+                        </button>
+                    </template>
+                    <button @click="$store.app.navigateTo('reminder')" class="w-full p-4 text-left flex items-center justify-between hover:bg-[#F8FAFD] transition-all">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-xl bg-[#E1ECFF] text-[#568BFF] flex items-center justify-center text-sm"><i data-lucide="bell" class="w-4 h-4"></i></span>
+                            <span class="text-sm font-bold text-[#1E293B]">Pengingat Harian</span>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-[#CBD5E1]"></i>
+                    </button>
+                    <button @click="$store.app.navigateTo('settings')" class="w-full p-4 text-left flex items-center justify-between hover:bg-[#F8FAFD] transition-all">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-sm"><i data-lucide="settings" class="w-4 h-4"></i></span>
+                            <span class="text-sm font-bold text-[#1E293B]">Pengaturan Aplikasi</span>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-[#CBD5E1]"></i>
+                    </button>
+                    <button @click="$store.app.navigateTo('privacy')" class="w-full p-4 text-left flex items-center justify-between hover:bg-[#F8FAFD] transition-all">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm"><i data-lucide="shield-check" class="w-4 h-4"></i></span>
+                            <span class="text-sm font-bold text-[#1E293B]">Kebijakan Privasi</span>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-[#CBD5E1]"></i>
+                    </button>
+                    <button @click="$store.app.navigateTo('about')" class="w-full p-4 text-left flex items-center justify-between hover:bg-[#F8FAFD] transition-all">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-sm"><i data-lucide="info" class="w-4 h-4"></i></span>
+                            <span class="text-sm font-bold text-[#1E293B]">Tentang TemanJiwa</span>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-[#CBD5E1]"></i>
+                    </button>
+                    <button @click="$store.app.logoutUser()" class="w-full p-4 text-left flex items-center justify-between hover:bg-rose-50 text-rose-600 transition-all">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-sm"><i data-lucide="log-out" class="w-4 h-4"></i></span>
+                            <span class="text-sm font-bold">Keluar Akun</span>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-rose-300"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- 19b. EDIT PROFILE SCREEN -->
+            <section x-show="$store.app.currentScreen === 'edit-profile'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-6 max-w-md mx-auto"
+                     style="display: none;">
+
+                <div class="flex items-center gap-3">
+                    <button @click="$store.app.navigateTo('profile')" 
+                            class="w-10 h-10 rounded-full bg-white border border-[#E9EEF7] flex items-center justify-center text-[#64748B] hover:text-[#1E293B] hover:bg-[#F8FAFD] transition-all">
+                        <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                    </button>
+                    <div>
+                        <h2 class="text-xl font-bold text-[#1E293B]">Edit Profil Anda</h2>
+                        <p class="text-xs text-[#64748B]">Kustomisasi akun sosial wellness milikmu</p>
+                    </div>
+                </div>
+
+                <form @submit.prevent="$store.app.saveProfile()" class="bg-white p-6 sm:p-7 rounded-3xl border border-[#E9EEF7] shadow-lg space-y-5">
+                    <!-- Cover Color Picker -->
+                    <div>
+                        <label class="block text-xs font-bold text-[#1E293B] mb-2 uppercase tracking-wider text-left">Pilih Warna Sampul (Cover Theme)</label>
+                        <div class="flex gap-2.5 flex-wrap">
+                            <template x-for="color in ['#A8C5FF', '#FFF3D6', '#86EFAC', '#FCA5A5', '#E9D5FF', '#CBD5E1', '#F59E0B', '#10B981']">
+                                <button type="button" @click="$store.app.profileEdit.coverColor = color"
+                                        class="w-8 h-8 rounded-full border-2 transition-all"
+                                        :class="$store.app.profileEdit.coverColor === color ? 'border-[#1E293B] scale-110 shadow-md' : 'border-transparent hover:scale-105'"
+                                        :style="`background-color: ${color}`"></button>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- Avatar emoji select row -->
+                    <div>
+                        <label class="block text-xs font-bold text-[#1E293B] mb-2 uppercase tracking-wider text-left">Pilih Avatar Ketenangan</label>
+                        <div class="flex justify-between items-center bg-[#F8FAFD] p-3.5 rounded-2xl border border-[#E9EEF7] overflow-x-auto no-scrollbar gap-2">
+                            <template x-for="emoji in ['🌿', '🧘‍♀️', '🕊️', '🌸', '🌱', '✨', '🌊', '☀️', '🐱', '🦋']">
+                                <button type="button" @click="$store.app.profileEdit.avatar = emoji"
+                                        class="text-3xl p-1.5 rounded-xl transition-all"
+                                        :class="$store.app.profileEdit.avatar === emoji ? 'bg-white shadow-md border border-[#E9EEF7] scale-110' : 'hover:scale-105'"
+                                        x-text="emoji"></button>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- Full Name -->
+                    <div>
+                        <label class="block text-xs font-bold text-[#1E293B] mb-2 uppercase tracking-wider text-left">Nama Lengkap</label>
+                        <input type="text" x-model="$store.app.profileEdit.name" required
+                               class="w-full px-5 py-3.5 rounded-full bg-[#F8FAFD] border border-[#E9EEF7] text-sm text-[#1E293B] focus:bg-white focus:border-[#568BFF] focus:outline-none transition-all"
+                               placeholder="Nama lengkapmu">
+                    </div>
+
+                    <!-- Email Address -->
+                    <div>
+                        <label class="block text-xs font-bold text-[#1E293B] mb-2 uppercase tracking-wider text-left">Alamat Email</label>
+                        <input type="email" x-model="$store.app.profileEdit.email" required
+                               class="w-full px-5 py-3.5 rounded-full bg-[#F8FAFD] border border-[#E9EEF7] text-sm text-[#1E293B] focus:bg-white focus:border-[#568BFF] focus:outline-none transition-all"
+                               placeholder="nama@email.com">
+                    </div>
+
+                    <!-- Biography / Wellness Bio -->
+                    <div>
+                        <label class="block text-xs font-bold text-[#1E293B] mb-2 uppercase tracking-wider text-left">Bio Ketenangan (Wellness Bio)</label>
+                        <textarea x-model="$store.app.profileEdit.bio" rows="3" maxlength="150"
+                                  class="w-full px-5 py-3 rounded-2xl bg-[#F8FAFD] border border-[#E9EEF7] text-sm text-[#1E293B] focus:bg-white focus:border-[#568BFF] focus:outline-none transition-all resize-none"
+                                  placeholder="Bagikan motto hidup damaimu... (Maksimal 150 karakter)"></textarea>
+                    </div>
+
+                    <!-- Action buttons -->
+                    <div class="flex gap-3 pt-2">
+                        <button type="button" @click="$store.app.navigateTo('profile')"
+                                class="w-1/2 py-3.5 rounded-full bg-white border border-[#E9EEF7] text-[#64748B] text-sm font-semibold hover:bg-[#F8FAFD] transition-all">
+                            Batal
+                        </button>
+                        <button type="submit"
+                                class="w-1/2 py-3.5 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white text-sm font-semibold shadow-md hover:scale-[1.02] transition-all">
+                            Simpan Profil
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- 20. SETTINGS SCREEN -->
+            <section x-show="$store.app.currentScreen === 'settings'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-4 max-w-md mx-auto">
+                <h2 class="text-xl font-bold text-[#1E293B]">Pengaturan</h2>
+                <div class="bg-white p-5 rounded-3xl border border-[#E9EEF7] shadow-lg space-y-4 text-sm">
+                    <div class="flex justify-between items-center">
+                        <span>Suara Efek Meditasi</span>
+                        <input type="checkbox" checked class="w-5 h-5 rounded text-[#568BFF]">
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span>Notifikasi Harian</span>
+                        <input type="checkbox" checked class="w-5 h-5 rounded text-[#568BFF]">
+                    </div>
+                </div>
+            </section>
+
+            <!-- 21. PRIVACY SCREEN -->
+            <section x-show="$store.app.currentScreen === 'privacy'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-4 max-w-md mx-auto">
+                <h2 class="text-xl font-bold text-[#1E293B]">Kebijakan Privasi</h2>
+                <div class="bg-white p-5 rounded-3xl border border-[#E9EEF7] shadow-lg text-xs text-[#64748B] space-y-3 leading-relaxed">
+                    <p>TemanJiwa berkomitmen penuh melindungi privasi data emosional dan catatan jurnal Anda. Semua data disimpan secara lokal pada perangkat Anda.</p>
+                </div>
+            </section>
+
+            <!-- 22. ABOUT SCREEN -->
+            <section x-show="$store.app.currentScreen === 'about'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-4 max-w-md mx-auto text-center">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#A8C5FF] to-[#FFF3D6] mx-auto flex items-center justify-center text-3xl shadow-sm">
+                    🌿
+                </div>
+                <h2 class="text-xl font-bold text-[#1E293B]">TemanJiwa v2.0</h2>
+                <p class="text-xs text-[#64748B]">Dibuat dengan kasih untuk kesehatan mental yang lebih baik.</p>
+            </section>
+
+            <!-- 23. AI COMPANION CHAT SCREEN -->
+            <section x-show="$store.app.currentScreen === 'aichat'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-4 max-w-lg mx-auto w-full">
+
+                <!-- Header / Title & Quick Action Bar -->
+                <div class="bg-gradient-to-r from-[#F0F5FF] via-white to-[#FFF3D6] p-5 rounded-3xl border border-[#E9EEF7] shadow-sm space-y-3">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-2xl bg-white border border-[#A8C5FF]/40 shadow-sm flex items-center justify-center text-2xl">
+                                🤖
+                            </div>
+                            <div>
+                                <h2 class="text-base font-bold text-[#1E293B] flex items-center gap-1.5">
+                                    Asisten AI TemanJiwa
+                                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse inline-block" title="Online & Mendengar"></span>
+                                </h2>
+                                <p class="text-xs text-[#64748B]">Teman Curhat Empatis & Ketenangan Batin 24/7</p>
+                            </div>
+                        </div>
+                        <button @click="$store.app.clearAiChat()" class="p-2 rounded-2xl bg-white border border-[#E9EEF7] text-[#64748B] hover:text-rose-500 hover:border-rose-200 transition-all flex items-center gap-1 text-xs font-medium" title="Reset Obrolan">
+                            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                            <span class="hidden sm:inline">Reset</span>
+                        </button>
+                    </div>
+
+                    <!-- Quick Mindful Action Shortcuts Bar -->
+                    <div class="pt-2 border-t border-[#E9EEF7]/80 flex items-center justify-between gap-2 text-xs">
+                        <span class="text-[11px] font-semibold text-[#64748B] shrink-0">Bantuan Langsung:</span>
+                        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+                            <button @click="$store.app.startBreathingFromAi()" class="px-2.5 py-1 rounded-full bg-white border border-[#BAE6FD] text-[#0284C7] font-semibold text-[11px] hover:bg-[#E0F2FE] transition-all whitespace-nowrap">
+                                🫁 Relaksasi Napas
+                            </button>
+                            <button @click="$store.app.startMeditationFromAi()" class="px-2.5 py-1 rounded-full bg-white border border-amber-200 text-amber-700 font-semibold text-[11px] hover:bg-[#FFF3D6] transition-all whitespace-nowrap">
+                                🌧️ Suara Hujan
+                            </button>
+                            <button @click="$store.app.openJournalFromAi()" class="px-2.5 py-1 rounded-full bg-white border border-emerald-200 text-emerald-700 font-semibold text-[11px] hover:bg-emerald-50 transition-all whitespace-nowrap">
+                                📝 Catat Jurnal
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Prompts Pill List -->
+                <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+                    <button @click="$store.app.sendAiMessage('Saya merasa cemas & overthinking hari ini 💚')" class="px-3.5 py-1.5 rounded-full bg-white border border-[#E9EEF7] text-xs font-semibold text-[#568BFF] whitespace-nowrap shadow-xs hover:bg-[#F0F5FF] transition-all shrink-0">
+                        💚 Cemas & Overthinking
+                    </button>
+                    <button @click="$store.app.sendAiMessage('Berikan saya afirmasi positif & ketenangan malam ini 🕯️')" class="px-3.5 py-1.5 rounded-full bg-white border border-[#E9EEF7] text-xs font-semibold text-amber-600 whitespace-nowrap shadow-xs hover:bg-[#FFF3D6]/50 transition-all shrink-0">
+                        🕯️ Afirmasi Kedamaian
+                    </button>
+                    <button @click="$store.app.sendAiMessage('Saya merasa lelah sekali dengan pekerjaan & tugas ☕')" class="px-3.5 py-1.5 rounded-full bg-white border border-[#E9EEF7] text-xs font-semibold text-rose-600 whitespace-nowrap shadow-xs hover:bg-rose-50 transition-all shrink-0">
+                        ☕ Stres Kerja & Lelah
+                    </button>
+                    <button @click="$store.app.sendAiMessage('Saya sedang merasa sedih & butuh teman bicara 😔')" class="px-3.5 py-1.5 rounded-full bg-white border border-[#E9EEF7] text-xs font-semibold text-sky-600 whitespace-nowrap shadow-xs hover:bg-sky-50 transition-all shrink-0">
+                        😔 Sedih & Butuh Teman
+                    </button>
+                    <button @click="$store.app.sendAiMessage('Pikiran saya berpacu dan susah tidur malam ini 🌙')" class="px-3.5 py-1.5 rounded-full bg-white border border-[#E9EEF7] text-xs font-semibold text-indigo-600 whitespace-nowrap shadow-xs hover:bg-indigo-50 transition-all shrink-0">
+                        🌙 Susah Tidur Malam
+                    </button>
+                    <button @click="$store.app.sendAiMessage('Saya merasa insecure dan takut gagal 🌸')" class="px-3.5 py-1.5 rounded-full bg-white border border-[#E9EEF7] text-xs font-semibold text-purple-600 whitespace-nowrap shadow-xs hover:bg-purple-50 transition-all shrink-0">
+                        🌸 Insecure & Ragu
+                    </button>
+                    <button @click="$store.app.sendAiMessage('Bagaimana langkah relaksasi pernapasan tercepat? 🫁')" class="px-3.5 py-1.5 rounded-full bg-white border border-[#E9EEF7] text-xs font-semibold text-emerald-600 whitespace-nowrap shadow-xs hover:bg-emerald-50 transition-all shrink-0">
+                        🫁 Panduan Napas 4-4-4
+                    </button>
+                </div>
+
+                <!-- Messages Container -->
+                <div id="chatContainer" class="bg-white p-4 sm:p-5 rounded-3xl border border-[#E9EEF7] shadow-lg h-[430px] overflow-y-auto space-y-4 flex flex-col">
+                    <template x-for="msg in $store.app.aiChat.messages" :key="msg.id">
+                        <div class="flex flex-col" :class="msg.sender === 'user' ? 'items-end' : 'items-start'">
+                            <div x-show="msg.sender === 'ai'" class="text-[10px] font-bold text-[#568BFF] mb-1 flex items-center gap-1">
+                                🕊️ TemanJiwa AI Companion
+                            </div>
+                            <div class="max-w-[88%] sm:max-w-[82%] p-4 text-xs sm:text-sm leading-relaxed"
+                                 :class="msg.sender === 'user' ? 'chat-bubble-user' : 'chat-bubble-ai'">
+                                <p class="whitespace-pre-line leading-relaxed" x-text="msg.text"></p>
+                            </div>
+                            <span class="text-[10px] text-[#94A3B8] mt-1 px-1" x-text="msg.time"></span>
+                        </div>
+                    </template>
+
+                    <!-- Typing Indicator -->
+                    <div x-show="$store.app.aiChat.isTyping" class="flex flex-col items-start gap-1">
+                        <span class="text-[10px] font-bold text-[#568BFF]">TemanJiwa sedang menyusun jawaban hangat...</span>
+                        <div class="flex items-center gap-1.5 p-3 rounded-2xl bg-white border border-[#E9EEF7] w-fit shadow-xs">
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Message Input Box -->
+                <form @submit.prevent="$store.app.sendAiMessage()" class="relative flex items-center">
+                    <input type="text" x-model="$store.app.aiChat.userMessage" placeholder="Luapkan atau ceritakan apa saja yang sedang kamu rasakan..." required
+                           class="w-full pl-5 pr-14 py-4 rounded-full bg-white border border-[#E9EEF7] text-sm text-[#1E293B] shadow-lg focus:outline-none focus:border-[#568BFF] transition-all">
+                    <button type="submit" class="absolute right-2 w-10 h-10 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white flex items-center justify-center shadow-md hover:scale-105 active:scale-95 transition-all">
+                        <i data-lucide="send" class="w-4 h-4"></i>
+                    </button>
+                </form>
+            </section>
+
+            <!-- 23. MANDATORY RESEARCH QUESTIONNAIRE SCREEN (67 QUESTIONS) -->
+            <section x-show="$store.app.currentScreen === 'questionnaire'"
+                     x-transition:enter="transition ease-out duration-300"
+                     class="space-y-6 max-w-3xl mx-auto w-full pb-12">
+
+                <!-- STATE A: QUESTIONNAIRE ALREADY COMPLETED -->
+                <div x-show="$store.app.questionnaireStatus === 'completed'" class="space-y-6">
+                    <div class="relative overflow-hidden rounded-4xl bg-gradient-to-br from-emerald-50 via-white to-[#F0FDF4] border border-emerald-200 p-6 sm:p-8 text-center shadow-soft">
+                        <div class="w-20 h-20 mx-auto rounded-3xl bg-emerald-100 border border-emerald-200 flex items-center justify-center text-4xl shadow-sm mb-4">
+                            🎉
+                        </div>
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold mb-3">
+                            <i data-lucide="check-circle" class="w-4 h-4"></i>
+                            Kuesioner Berhasil Diselesaikan
+                        </span>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-[#1E293B] tracking-tight mb-2">
+                            Terima Kasih Atas Partisipasi Anda!
+                        </h2>
+                        <p class="text-xs sm:text-sm text-[#64748B] max-w-lg mx-auto leading-relaxed mb-4">
+                            Seluruh 67 pertanyaan instrumen penelitian skripsi berjudul <em>"Analisis UI/UX Mental Health Tracker untuk Generasi Z Menggunakan Metode Design Thinking"</em> telah lengkap dan tersimpan aman di akun Anda.
+                        </p>
+                        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-white border border-emerald-200 text-xs font-medium text-[#1E293B] shadow-xs">
+                            <i data-lucide="clock" class="w-4 h-4 text-emerald-600"></i>
+                            <span x-text="'Waktu Selesai: ' + ($store.app.questionnaireCompletedAt || 'Tersimpan')"></span>
+                        </div>
+                    </div>
+
+                    <!-- Rekap Kuesioner File Download & Sync Box (Developer Only) -->
+                    <div x-show="$store.app.isDeveloper" class="p-5 sm:p-6 rounded-3xl bg-white border border-emerald-200 shadow-sm space-y-3">
+                        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <div class="flex items-center gap-3 text-left">
+                                <div class="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-600 flex items-center justify-center text-2xl shrink-0">
+                                    📁
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-bold text-[#1E293B] flex items-center gap-1.5 flex-wrap">
+                                        <span>Berkas Arsip:</span>
+                                        <code class="px-2 py-0.5 rounded-lg bg-[#F0F5FF] text-[#568BFF] text-xs font-mono font-bold">rekap_kuesioner.json</code>
+                                        <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">Akses Khusus Pengembang</span>
+                                    </h4>
+                                    <p class="text-xs text-[#64748B] mt-0.5">
+                                        Seluruh 67 jawaban terstruktur telah diarsipkan dan dapat diunduh untuk kebutuhan pengolahan data skripsi.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2 w-full sm:w-auto shrink-0 justify-end">
+                                <button type="button" @click="$store.app.downloadRekapJson()"
+                                        class="flex-1 sm:flex-initial px-4 py-2.5 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs shadow-md shadow-emerald-500/20 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-1.5">
+                                    <i data-lucide="download" class="w-4 h-4"></i>
+                                    <span>Unduh JSON</span>
+                                </button>
+                                <button type="button" @click="$store.app.copyRekapJson()"
+                                        class="flex-1 sm:flex-initial px-4 py-2.5 rounded-full bg-[#F8FAFD] border border-[#E9EEF7] text-[#1E293B] hover:bg-white font-semibold text-xs shadow-xs hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-1.5">
+                                    <i data-lucide="copy" class="w-4 h-4"></i>
+                                    <span>Salin Data</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons for Completed State -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+                        <button @click="$store.app.navigateTo('dashboard')"
+                                class="w-full sm:w-auto px-6 py-3.5 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white font-bold text-sm shadow-md shadow-[#A8C5FF]/40 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2">
+                            <i data-lucide="home" class="w-4 h-4"></i>
+                            Kembali ke Beranda
+                        </button>
+                        <button @click="$store.app.questionnaireExpandedAnswerReview = !$store.app.questionnaireExpandedAnswerReview"
+                                class="w-full sm:w-auto px-6 py-3.5 rounded-full bg-white border border-[#E9EEF7] text-[#1E293B] font-semibold text-sm hover:bg-[#F8FAFD] transition-all flex items-center justify-center gap-2">
+                            <i data-lucide="list" class="w-4 h-4 text-[#64748B]"></i>
+                            <span x-text="$store.app.questionnaireExpandedAnswerReview ? 'Sembunyikan Ringkasan' : 'Lihat Ringkasan Jawaban Saya'"></span>
+                        </button>
+                    </div>
+
+                    <!-- Review Accordion of Submitted Answers -->
+                    <div x-show="$store.app.questionnaireExpandedAnswerReview" class="space-y-4 pt-4">
+                        <div class="p-5 rounded-3xl bg-white border border-[#E9EEF7] shadow-sm space-y-4">
+                            <h3 class="text-sm font-bold text-[#1E293B] flex items-center gap-2">
+                                <i data-lucide="file-check" class="w-4 h-4 text-emerald-600"></i>
+                                Arsip Data Jawaban Responden
+                            </h3>
+                            <div class="divide-y divide-[#E9EEF7] text-xs">
+                                <template x-for="sec in window.TEMANJIWA_QUESTIONNAIRE.sections" :key="sec.id">
+                                    <div class="py-3">
+                                        <div class="font-bold text-[#1E293B] mb-2 flex items-center justify-between">
+                                            <span x-text="sec.badge + ': ' + sec.title"></span>
+                                            <span class="text-[10px] text-emerald-600 font-semibold">67 Pertanyaan Selesai</span>
+                                        </div>
+                                        <div class="space-y-1.5 pl-2 border-l-2 border-[#A8C5FF]/40">
+                                            <template x-for="q in sec.questions" :key="q.id">
+                                                <div class="flex items-start justify-between gap-4 py-1">
+                                                    <span class="text-[#64748B]" x-text="q.number + '. ' + q.text"></span>
+                                                    <span class="font-bold text-[#1E293B] shrink-0 max-w-[200px] text-right truncate"
+                                                          x-text="$store.app.getQuestionnaireAnswer(q.id) === 'Yang lain' ? ('Yang lain: ' + $store.app.getQuestionnaireOther(q.id)) : ($store.app.getQuestionnaireAnswer(q.id) || '-')">
+                                                    </span>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STATE B: QUESTIONNAIRE IN PROGRESS / NOT COMPLETED -->
+                <div x-show="$store.app.questionnaireStatus !== 'completed'" class="space-y-6">
+
+                    <!-- Header Research Card -->
+                    <div class="rounded-3xl bg-white border border-[#E9EEF7] p-5 sm:p-6 shadow-soft space-y-4">
+                        <div class="flex items-center gap-2">
+                            <span class="px-3 py-1 rounded-full bg-[#A8C5FF]/30 text-[#1E293B] text-[11px] font-bold">
+                                📋 Penelitian Skripsi Mahasiswa
+                            </span>
+                            <span class="px-3 py-1 rounded-full bg-[#FFF3D6] text-[#B45309] text-[11px] font-bold">
+                                Estimasi 5–10 Menit
+                            </span>
+                        </div>
+                        <div>
+                            <h2 class="text-xl sm:text-2xl font-extrabold text-[#1E293B] tracking-tight leading-snug">
+                                Analisis UI/UX Mental Health Tracker untuk Generasi Z Menggunakan Metode Design Thinking
+                            </h2>
+                            <p class="text-xs text-[#64748B] mt-1 font-medium">
+                                Peneliti: <strong>Risma Elfaryani</strong> • Program Studi Sistem Informasi • STMIK IKMI Cirebon
+                            </p>
+                        </div>
+                        
+                        <div class="p-4 rounded-2xl bg-[#F8FAFD] border border-[#E9EEF7] text-xs text-[#475569] leading-relaxed space-y-2">
+                            <p>
+                                <strong>Yth. Responden</strong>, penelitian ini mengevaluasi pengalaman pengguna (User Experience), kemudahan penggunaan, tampilan antarmuka, dan manfaat fitur-fitur TemanJiwa (Mood Tracker, Journal, Self Care, Sleep, Water, Meditation, Reminder, dan Artikel Edukasi).
+                            </p>
+                            <p class="text-[11px] text-[#64748B]">
+                                🔒 Seluruh jawaban dijaga kerahasiaannya dan hanya digunakan untuk kepentingan akademik. Tidak ada jawaban yang benar atau salah. Seluruh pertanyaan bertanda (*) wajib diisi.
+                            </p>
+                        </div>
+
+                        <!-- Active Mandatory Questionnaire Warning -->
+                        <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs flex items-center gap-2.5">
+                            <span class="text-base">🔒</span>
+                            <span><strong>Mode Pengisian Wajib Aktif</strong>: Silakan selesaikan seluruh pertanyaan sebelum dapat meninggalkan sesi kuesioner. Progres tersimpan secara otomatis.</span>
+                        </div>
+                    </div>
+
+                    <!-- Progress Bar & Overall Status -->
+                    <div class="sticky top-20 z-20 rounded-3xl bg-white/95 backdrop-blur-md border border-[#E9EEF7] p-4 sm:p-5 shadow-soft space-y-3">
+                        <div class="flex items-center justify-between text-xs font-bold text-[#1E293B]">
+                            <span class="flex items-center gap-1.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                <span x-text="'Pertanyaan Terjawab: ' + $store.app.getTotalAnsweredCount() + ' dari 67'"></span>
+                            </span>
+                            <span class="px-2.5 py-0.5 rounded-full bg-[#A8C5FF]/30 text-[#1E293B] text-[11px]"
+                                  x-text="$store.app.questionnaireProgress + '% Selesai'"></span>
+                        </div>
+
+                        <!-- Progress Bar -->
+                        <div class="w-full bg-[#F1F5F9] rounded-full h-3 overflow-hidden p-0.5 border border-[#E9EEF7]">
+                            <div class="bg-gradient-to-r from-[#A8C5FF] to-[#568BFF] h-full rounded-full transition-all duration-300"
+                                 :style="'width: ' + $store.app.questionnaireProgress + '%'"></div>
+                        </div>
+
+                        <!-- Horizontal Section Tabs Stepper -->
+                        <div class="flex items-center gap-2 overflow-x-auto pb-1 pt-1 no-scrollbar">
+                            <template x-for="(sec, idx) in window.TEMANJIWA_QUESTIONNAIRE.sections" :key="sec.id">
+                                <button type="button"
+                                        @click="$store.app.goToQuestionnaireSection(idx)"
+                                        class="px-3 py-1.5 rounded-xl text-[11px] font-semibold shrink-0 transition-all flex items-center gap-1.5"
+                                        :class="$store.app.questionnaireCurrentSection === idx ? 'bg-[#568BFF] text-white shadow-xs' : ($store.app.getAnsweredCountForSection(sec) === sec.questions.length ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-[#F8FAFD] text-[#64748B] border border-[#E9EEF7] hover:bg-white')">
+                                    <span x-text="sec.badge"></span>
+                                    <span x-show="$store.app.getAnsweredCountForSection(sec) === sec.questions.length" class="text-[10px]">✓</span>
+                                </button>
+                            </template>
+                            <button type="button"
+                                    @click="$store.app.goToQuestionnaireSection(8)"
+                                    class="px-3 py-1.5 rounded-xl text-[11px] font-semibold shrink-0 transition-all flex items-center gap-1.5"
+                                    :class="$store.app.questionnaireCurrentSection === 8 ? 'bg-[#568BFF] text-white shadow-xs' : 'bg-[#F8FAFD] text-[#64748B] border border-[#E9EEF7] hover:bg-white'">
+                                <span>Ringkasan</span>
+                                <span x-show="$store.app.getTotalAnsweredCount() === 67" class="text-[10px]">✓</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- DYNAMIC QUESTIONS SECTIONS (0 TO 7) -->
+                    <template x-for="(sec, secIdx) in window.TEMANJIWA_QUESTIONNAIRE.sections" :key="sec.id">
+                        <div x-show="$store.app.questionnaireCurrentSection === secIdx" class="space-y-6">
+
+                            <!-- Section Header Card -->
+                            <div class="p-5 sm:p-6 rounded-3xl bg-gradient-to-br from-white to-[#F8FAFD] border border-[#E9EEF7] shadow-xs space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <span class="px-3 py-0.5 rounded-full bg-[#A8C5FF]/30 text-[#1E293B] text-[11px] font-bold" x-text="sec.badge"></span>
+                                    <span class="text-xs font-semibold text-[#64748B]"
+                                          x-text="$store.app.getAnsweredCountForSection(sec) + ' / ' + sec.questions.length + ' Dijawab'"></span>
+                                </div>
+                                <h3 class="text-lg sm:text-xl font-bold text-[#1E293B]" x-text="sec.title"></h3>
+                                <p class="text-xs text-[#64748B] leading-relaxed" x-text="sec.description"></p>
+
+                                <!-- Likert Scale Visual Legend Card if section is Likert -->
+                                <div x-show="sec.isLikert" class="mt-3 p-3.5 rounded-2xl bg-[#F0F5FF] border border-[#A8C5FF]/40">
+                                    <span class="text-[11px] font-bold text-[#1E293B] block mb-2">Panduan Skala Penilaian:</span>
+                                    <div class="grid grid-cols-5 gap-1 text-center text-[10px] font-medium text-[#475569]">
+                                        <div class="p-1 rounded-lg bg-white border border-[#E9EEF7]"><span class="font-bold text-[#1E293B] block">1</span>Sangat Tidak Setuju</div>
+                                        <div class="p-1 rounded-lg bg-white border border-[#E9EEF7]"><span class="font-bold text-[#1E293B] block">2</span>Tidak Setuju</div>
+                                        <div class="p-1 rounded-lg bg-white border border-[#E9EEF7]"><span class="font-bold text-[#1E293B] block">3</span>Netral</div>
+                                        <div class="p-1 rounded-lg bg-white border border-[#E9EEF7]"><span class="font-bold text-[#1E293B] block">4</span>Setuju</div>
+                                        <div class="p-1 rounded-lg bg-white border border-[#E9EEF7]"><span class="font-bold text-[#1E293B] block">5</span>Sangat Setuju</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Questions List in this Section -->
+                            <div class="space-y-4">
+                                <template x-for="q in sec.questions" :key="q.id">
+                                    <div :id="'card-' + q.id"
+                                         class="p-5 sm:p-6 rounded-3xl bg-white border transition-all duration-200 shadow-xs space-y-3"
+                                         :class="$store.app.questionnaireValidationErrors[q.id] ? 'border-rose-400 bg-rose-50/20 ring-1 ring-rose-400' : ($store.app.isQuestionAnswered(q) ? 'border-emerald-200 bg-white' : 'border-[#E9EEF7]')">
+                                        
+                                        <!-- Question Header -->
+                                        <div class="flex items-start justify-between gap-3">
+                                            <div class="space-y-1">
+                                                <div class="flex items-center gap-2">
+                                                    <span class="w-6 h-6 rounded-full text-xs font-bold flex items-center justify-center shrink-0"
+                                                          :class="$store.app.isQuestionAnswered(q) ? 'bg-emerald-100 text-emerald-800' : 'bg-[#E9EEF7] text-[#64748B]'"
+                                                          x-text="q.number"></span>
+                                                    <span class="text-xs font-semibold text-[#64748B]">Pertanyaan Wajib</span>
+                                                    <span class="text-rose-500 font-bold">*</span>
+                                                </div>
+                                                <h4 class="text-sm sm:text-base font-bold text-[#1E293B] leading-snug pt-0.5" x-text="q.text"></h4>
+                                            </div>
+
+                                            <span x-show="$store.app.isQuestionAnswered(q)"
+                                                  class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 text-xs font-bold" title="Sudah Dijawab">
+                                                ✓
+                                            </span>
+                                        </div>
+
+                                        <!-- Validation Error Text -->
+                                        <div x-show="$store.app.questionnaireValidationErrors[q.id]"
+                                             class="text-xs font-semibold text-rose-600 flex items-center gap-1.5 py-1">
+                                            <i data-lucide="alert-circle" class="w-4 h-4"></i>
+                                            <span>Pertanyaan ini wajib dijawab sebelum dapat melanjutkan.</span>
+                                        </div>
+
+                                        <!-- INPUT TYPE: TEXT -->
+                                        <div x-show="q.type === 'text'" class="pt-1">
+                                            <input type="text"
+                                                   :value="$store.app.getQuestionnaireAnswer(q.id) || ''"
+                                                   @input="$store.app.setQuestionnaireAnswer(q.id, $event.target.value)"
+                                                   :placeholder="q.placeholder || 'Ketikkan jawaban Anda...'"
+                                                   class="w-full px-4 py-3 rounded-2xl bg-[#F8FAFD] border border-[#E9EEF7] text-sm text-[#1E293B] focus:outline-none focus:border-[#568BFF] focus:bg-white transition-all">
+                                        </div>
+
+                                        <!-- INPUT TYPE: NUMBER -->
+                                        <div x-show="q.type === 'number'" class="pt-1">
+                                            <input type="number"
+                                                   :min="q.min"
+                                                   :max="q.max"
+                                                   :value="$store.app.getQuestionnaireAnswer(q.id) || ''"
+                                                   @input="$store.app.setQuestionnaireAnswer(q.id, $event.target.value)"
+                                                   :placeholder="q.placeholder || 'Masukkan angka...'"
+                                                   class="w-full px-4 py-3 rounded-2xl bg-[#F8FAFD] border border-[#E9EEF7] text-sm text-[#1E293B] focus:outline-none focus:border-[#568BFF] focus:bg-white transition-all">
+                                        </div>
+
+                                        <!-- INPUT TYPE: RADIO (SINGLE CHOICE) -->
+                                        <div x-show="q.type === 'radio'" class="space-y-2 pt-1">
+                                            <template x-for="opt in q.options" :key="opt">
+                                                <button type="button"
+                                                        @click="$store.app.setQuestionnaireAnswer(q.id, opt)"
+                                                        class="w-full p-3.5 rounded-2xl border text-left text-xs sm:text-sm font-medium flex items-center justify-between transition-all"
+                                                        :class="$store.app.getQuestionnaireAnswer(q.id) === opt ? 'bg-[#A8C5FF]/20 border-[#568BFF] text-[#1E293B] font-bold shadow-xs' : 'bg-white border-[#E9EEF7] text-[#64748B] hover:bg-[#F8FAFD] hover:text-[#1E293B]'">
+                                                    <span x-text="opt"></span>
+                                                    <span class="w-5 h-5 rounded-full border flex items-center justify-center shrink-0"
+                                                          :class="$store.app.getQuestionnaireAnswer(q.id) === opt ? 'border-[#568BFF] bg-[#568BFF] text-white' : 'border-[#CBD5E1] bg-white'">
+                                                        <span x-show="$store.app.getQuestionnaireAnswer(q.id) === opt" class="text-xs">✓</span>
+                                                    </span>
+                                                </button>
+                                            </template>
+
+                                            <!-- "Yang lain:" Option if permitted -->
+                                            <div x-show="q.hasOther" class="space-y-2 pt-1">
+                                                <button type="button"
+                                                        @click="$store.app.setQuestionnaireAnswer(q.id, 'Yang lain')"
+                                                        class="w-full p-3.5 rounded-2xl border text-left text-xs sm:text-sm font-medium flex items-center justify-between transition-all"
+                                                        :class="['Yang lain', 'Lainnya'].includes($store.app.getQuestionnaireAnswer(q.id)) ? 'bg-[#A8C5FF]/20 border-[#568BFF] text-[#1E293B] font-bold shadow-xs' : 'bg-white border-[#E9EEF7] text-[#64748B] hover:bg-[#F8FAFD]'">
+                                                    <span class="flex items-center gap-1.5">
+                                                        <span>✏️</span>
+                                                        <span>Yang lain:</span>
+                                                    </span>
+                                                    <span class="w-5 h-5 rounded-full border flex items-center justify-center shrink-0"
+                                                          :class="['Yang lain', 'Lainnya'].includes($store.app.getQuestionnaireAnswer(q.id)) ? 'border-[#568BFF] bg-[#568BFF] text-white' : 'border-[#CBD5E1] bg-white'">
+                                                        <span x-show="['Yang lain', 'Lainnya'].includes($store.app.getQuestionnaireAnswer(q.id))" class="text-xs">✓</span>
+                                                    </span>
+                                                </button>
+                                                
+                                                <div x-show="['Yang lain', 'Lainnya'].includes($store.app.getQuestionnaireAnswer(q.id))" class="pl-2">
+                                                    <input type="text"
+                                                           :value="$store.app.getQuestionnaireOther(q.id)"
+                                                           @input="$store.app.setQuestionnaireOther(q.id, $event.target.value)"
+                                                           :placeholder="q.otherPlaceholder || 'Tuliskan jawaban spesifik Anda di sini...'"
+                                                           class="w-full px-4 py-2.5 rounded-xl bg-white border border-[#A8C5FF] text-xs sm:text-sm text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#A8C5FF]">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- INPUT TYPE: LIKERT 5-POINT SCALE -->
+                                        <div x-show="q.type === 'likert5'" class="pt-2">
+                                            <div class="grid grid-cols-5 gap-1.5 sm:gap-2.5">
+                                                <template x-for="scale in window.TEMANJIWA_QUESTIONNAIRE.likertScale" :key="scale.value">
+                                                    <button type="button"
+                                                            @click="$store.app.setQuestionnaireAnswer(q.id, scale.value)"
+                                                            class="flex flex-col items-center justify-center p-2.5 sm:p-3.5 rounded-2xl border transition-all text-center cursor-pointer select-none active:scale-95"
+                                                            :class="$store.app.getQuestionnaireAnswer(q.id) === scale.value ? 'ring-2 ring-[#568BFF] shadow-sm font-bold scale-[1.02]' : 'bg-white border-[#E9EEF7] text-[#64748B] hover:bg-[#F8FAFD] hover:border-[#A8C5FF]'"
+                                                            :style="$store.app.getQuestionnaireAnswer(q.id) === scale.value ? 'background-color: ' + scale.color + '40; border-color: ' + scale.border : ''">
+                                                        <span class="text-lg sm:text-xl font-extrabold"
+                                                              :class="$store.app.getQuestionnaireAnswer(q.id) === scale.value ? 'text-[#1E293B]' : 'text-[#64748B]'"
+                                                              x-text="scale.value"></span>
+                                                        <span class="text-[9px] sm:text-[10px] leading-tight mt-1 line-clamp-2"
+                                                              :class="$store.app.getQuestionnaireAnswer(q.id) === scale.value ? 'text-[#1E293B] font-semibold' : 'text-[#94A3B8]'"
+                                                              x-text="scale.short"></span>
+                                                    </button>
+                                                </template>
+                                            </div>
+                                        </div>
+
+                                        <!-- INPUT TYPE: TEXTAREA (QUALITATIVE FEEDBACK) -->
+                                        <div x-show="q.type === 'textarea'" class="pt-1">
+                                            <textarea rows="3"
+                                                      :value="$store.app.getQuestionnaireAnswer(q.id) || ''"
+                                                      @input="$store.app.setQuestionnaireAnswer(q.id, $event.target.value)"
+                                                      :placeholder="q.placeholder || 'Tuliskan pendapat, evaluasi, atau saran Anda secara jujur...'"
+                                                      class="w-full px-4 py-3 rounded-2xl bg-[#F8FAFD] border border-[#E9EEF7] text-sm text-[#1E293B] focus:outline-none focus:border-[#568BFF] focus:bg-white transition-all resize-none"></textarea>
+                                        </div>
+
+                                    </div>
+                                </template>
+                            </div>
+
+                        </div>
+                    </template>
+
+                    <!-- SECTION 8: RINGKASAN & VERIFIKASI AKHIR SEBELUM SUBMIT -->
+                    <div x-show="$store.app.questionnaireCurrentSection === 8" class="space-y-6">
+                        <div class="p-6 rounded-3xl bg-white border border-[#E9EEF7] shadow-soft space-y-4">
+                            <div class="flex items-center gap-2">
+                                <span class="px-3 py-1 rounded-full bg-[#A8C5FF]/30 text-[#1E293B] text-xs font-bold">
+                                    Tahap Verifikasi Akhir
+                                </span>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-[#1E293B]">Ringkasan Kelengkapan Instrumen Penelitian</h3>
+                            <p class="text-xs text-[#64748B] leading-relaxed">
+                                Pastikan seluruh 8 bagian telah terisi lengkap. Anda dapat mengeklik tombol pada masing-masing bagian untuk memeriksa kembali jawaban Anda sebelum mengirimkannya secara permanen.
+                            </p>
+
+                            <!-- Breakdown of 8 sections -->
+                            <div class="space-y-2.5 pt-2">
+                                <template x-for="(sec, idx) in window.TEMANJIWA_QUESTIONNAIRE.sections" :key="sec.id">
+                                    <div class="p-3.5 rounded-2xl border flex items-center justify-between gap-3 transition-all"
+                                         :class="$store.app.getAnsweredCountForSection(sec) === sec.questions.length ? 'bg-emerald-50/50 border-emerald-200' : 'bg-rose-50/50 border-rose-200'">
+                                        <div class="space-y-0.5">
+                                            <div class="flex items-center gap-2">
+                                                <span class="text-xs font-bold text-[#1E293B]" x-text="sec.badge + ': ' + sec.title"></span>
+                                            </div>
+                                            <span class="text-[11px] text-[#64748B]"
+                                                  x-text="$store.app.getAnsweredCountForSection(sec) + ' dari ' + sec.questions.length + ' pertanyaan dijawab'"></span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <span x-show="$store.app.getAnsweredCountForSection(sec) === sec.questions.length"
+                                                  class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">
+                                                ✓ Lengkap
+                                            </span>
+                                            <button type="button"
+                                                    @click="$store.app.goToQuestionnaireSection(idx)"
+                                                    class="px-3 py-1 rounded-full text-xs font-semibold border transition-all"
+                                                    :class="$store.app.getAnsweredCountForSection(sec) === sec.questions.length ? 'bg-white border-[#E9EEF7] text-[#1E293B] hover:bg-[#F8FAFD]' : 'bg-rose-500 text-white border-transparent hover:bg-rose-600'">
+                                                <span x-text="$store.app.getAnsweredCountForSection(sec) === sec.questions.length ? 'Periksa' : 'Lengkapi Sekarang'"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <!-- Final Summary Alert -->
+                            <div class="pt-4 border-t border-[#E9EEF7]">
+                                <div x-show="$store.app.getTotalAnsweredCount() === 67"
+                                     class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs flex items-center gap-2.5 mb-4">
+                                    <span class="text-lg">🎉</span>
+                                    <span><strong>Sempurna!</strong> Seluruh 67 pertanyaan telah lengkap dijawab. Silakan klik tombol di bawah untuk menyelesaikan kuesioner.</span>
+                                </div>
+
+                                <div x-show="$store.app.getTotalAnsweredCount() < 67"
+                                     class="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs flex items-center gap-2.5 mb-4">
+                                    <span class="text-lg">⚠️</span>
+                                    <span x-text="'Masih ada ' + (67 - $store.app.getTotalAnsweredCount()) + ' pertanyaan wajib yang belum dijawab. Lengkapi terlebih dahulu untuk dapat menyelesaikan kuesioner.'"></span>
+                                </div>
+
+                                <button @click="$store.app.submitQuestionnaire()"
+                                        :disabled="$store.app.questionnaireSaving || $store.app.getTotalAnsweredCount() < 67"
+                                        class="w-full py-4 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white font-bold text-sm shadow-lg shadow-[#A8C5FF]/40 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2">
+                                    <span x-show="!$store.app.questionnaireSaving" class="flex items-center gap-2">
+                                        <i data-lucide="check-circle" class="w-5 h-5"></i>
+                                        Selesaikan & Kirim Kuesioner
+                                    </span>
+                                    <span x-show="$store.app.questionnaireSaving" class="flex items-center gap-2">
+                                        <span class="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin"></span>
+                                        Menyimpan Jawaban...
+                                    </span>
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Bottom Floating Navigation Buttons -->
+                    <div class="sticky bottom-16 sm:bottom-20 z-20 bg-white/95 backdrop-blur-md p-4 rounded-3xl border border-[#E9EEF7] shadow-lg flex items-center justify-between gap-3">
+                        <button type="button"
+                                @click="$store.app.prevQuestionnaireSection()"
+                                :disabled="$store.app.questionnaireCurrentSection === 0"
+                                class="px-4 py-2.5 rounded-full border border-[#E9EEF7] text-xs font-bold text-[#64748B] hover:text-[#1E293B] hover:bg-[#F8FAFD] disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center gap-1.5">
+                            <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                            <span>Sebelumnya</span>
+                        </button>
+
+                        <div class="text-center">
+                            <span class="text-xs font-bold text-[#1E293B] block"
+                                  x-text="'Bagian ' + ($store.app.questionnaireCurrentSection + 1) + ' dari 9'"></span>
+                            <span class="text-[10px] text-[#64748B]"
+                                  x-text="$store.app.questionnaireCurrentSection === 8 ? 'Verifikasi' : window.TEMANJIWA_QUESTIONNAIRE.sections[$store.app.questionnaireCurrentSection]?.badge"></span>
+                        </div>
+
+                        <button type="button"
+                                @click="$store.app.nextQuestionnaireSection()"
+                                class="px-5 py-2.5 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white text-xs font-bold shadow-md shadow-[#A8C5FF]/30 hover:scale-105 active:scale-95 transition-all flex items-center gap-1.5">
+                            <span x-text="$store.app.questionnaireCurrentSection === 7 ? 'Tinjau Ringkasan' : ($store.app.questionnaireCurrentSection === 8 ? 'Ke Bagian 1' : 'Lanjut')"></span>
+                            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+        <!-- ========================================== -->
+        <!-- MODAL ADD JOURNAL -->
+        <!-- ========================================== -->
+        <div x-show="$store.app.showModal === 'addJournal'"
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
+            <div class="bg-white rounded-3xl p-6 w-full max-w-lg shadow-2xl border border-[#E9EEF7] space-y-4" @click.outside="$store.app.showModal = null">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-lg font-bold text-[#1E293B]">Tulis Jurnal Refleksi</h3>
+                    <button @click="$store.app.showModal = null" class="text-[#64748B] hover:text-[#1E293B]">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-[#1E293B] mb-1">Judul Jurnal</label>
+                    <input type="text" x-model="$store.app.newJournal.title" placeholder="Contoh: Belajar Menerima Proses" class="w-full px-4 py-3 rounded-full bg-[#F8FAFD] border border-[#E9EEF7] text-sm focus:outline-none focus:border-[#568BFF]">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-[#1E293B] mb-1">Kategori Tag</label>
+                    <select x-model="$store.app.newJournal.tag" class="w-full px-4 py-3 rounded-full bg-[#F8FAFD] border border-[#E9EEF7] text-sm focus:outline-none">
+                        <option value="Refleksi">Refleksi Diri</option>
+                        <option value="Rasa Syukur">Rasa Syukur</option>
+                        <option value="Mindfulness">Mindfulness</option>
+                        <option value="Evaluasi">Evaluasi Emosi</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-[#1E293B] mb-1">Isi Jurnal Refleksi</label>
+                    <textarea x-model="$store.app.newJournal.content" rows="4" placeholder="Tuliskan secara bebas pikiran dan perasaanmu hari ini..." class="w-full px-4 py-3 rounded-2xl bg-[#F8FAFD] border border-[#E9EEF7] text-sm focus:outline-none focus:border-[#568BFF] resize-none"></textarea>
+                </div>
+                <button @click="$store.app.addJournal()" class="w-full py-3.5 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white font-semibold shadow-md hover:scale-[1.01] transition-all">
+                    Simpan Jurnal Refleksi
+                </button>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- MODAL QUESTIONNAIRE NAVIGATION LEAVE WARNING -->
+        <!-- ========================================== -->
+        <div x-show="$store.app.showQuestionnaireLeaveWarning"
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 scale-95"
+             x-transition:enter-end="opacity-100 scale-100"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-95"
+             class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4"
+             style="display: none;">
+            <div class="bg-white rounded-3xl p-6 sm:p-7 w-full max-w-md shadow-2xl border border-amber-200 text-center space-y-4">
+                <div class="w-16 h-16 rounded-full bg-amber-100 border border-amber-200 text-amber-600 flex items-center justify-center text-3xl mx-auto shadow-sm">
+                    ⚠️
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-[#1E293B] tracking-tight">Kuesioner Belum Selesai</h3>
+                    <p class="text-xs sm:text-sm text-[#64748B] mt-2 leading-relaxed">
+                        Anda sedang berada dalam sesi kuesioner penelitian skripsi wajib. Silakan lengkapi seluruh pertanyaan terlebih dahulu sebelum dapat mengakses fitur aplikasi lainnya.
+                    </p>
+                </div>
+                <div class="p-3 rounded-2xl bg-[#F8FAFD] border border-[#E9EEF7] text-xs text-[#64748B] flex items-center justify-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span>Seluruh jawaban yang telah Anda isi tersimpan otomatis.</span>
+                </div>
+                <button @click="$store.app.showQuestionnaireLeaveWarning = false"
+                        class="w-full py-3.5 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white font-bold text-sm shadow-md hover:scale-[1.01] transition-all">
+                    Lanjutkan Pengisian Kuesioner
+                </button>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- MODAL QUESTIONNAIRE LOGOUT CONFIRMATION -->
+        <!-- ========================================== -->
+        <div x-show="$store.app.showLogoutQuestionnaireModal"
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 scale-95"
+             x-transition:enter-end="opacity-100 scale-100"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-95"
+             class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4"
+             style="display: none;">
+            <div class="bg-white rounded-3xl p-6 sm:p-7 w-full max-w-md shadow-2xl border border-[#E9EEF7] text-center space-y-4">
+                <div class="w-16 h-16 rounded-full bg-rose-50 border border-rose-200 text-rose-500 flex items-center justify-center text-3xl mx-auto shadow-sm">
+                    🚪
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-[#1E293B] tracking-tight">Konfirmasi Keluar Akun</h3>
+                    <p class="text-xs sm:text-sm text-[#64748B] mt-2 leading-relaxed">
+                        Kuesioner penelitian Anda saat ini sedang berlangsung. Keluar dari akun akan mengakhiri sesi autentikasi saat ini, tetapi <strong>seluruh progres jawaban Anda tetap tersimpan dengan aman</strong> dan wajib diselesaikan saat Anda masuk kembali.
+                    </p>
+                </div>
+                <div class="space-y-2 pt-2">
+                    <button @click="$store.app.showLogoutQuestionnaireModal = false"
+                            class="w-full py-3 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white font-bold text-xs shadow-md hover:scale-[1.01] transition-all">
+                        Tetap di Kuesioner & Lanjutkan
+                    </button>
+                    <button @click="$store.app.confirmLogoutDuringQuestionnaire()"
+                            class="w-full py-3 rounded-full bg-white border border-[#E9EEF7] text-rose-600 font-semibold text-xs hover:bg-rose-50 transition-all">
+                        Simpan Progres & Keluar Akun
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- iOS STYLE BOTTOM NAVIGATION BAR -->
+        <!-- ========================================== -->
+        <nav x-show="['dashboard', 'mood', 'journal', 'selfcare', 'stats', 'profile', 'questionnaire'].includes($store.app.currentScreen)"
+             class="fixed bottom-0 left-1/2 -translate-x-1/2 z-40 w-full max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-5xl bg-white/95 backdrop-blur-md border-t border-[#E9EEF7] px-2 py-2 flex items-center justify-around shadow-nav rounded-t-3xl transition-all">
+            
+            <!-- Dashboard -->
+            <button @click="$store.app.navigateTo('dashboard')"
+                    class="flex flex-col items-center gap-1 px-2.5 py-1.5 rounded-2xl transition-all"
+                    :class="$store.app.activeNav === 'dashboard' ? 'text-[#568BFF] font-bold' : 'text-[#64748B] font-medium hover:text-[#1E293B]'">
+                <i data-lucide="home" class="w-5 h-5"></i>
+                <span class="text-[10px]">Beranda</span>
+            </button>
+
+            <!-- Mood -->
+            <button @click="$store.app.navigateTo('mood')"
+                    class="flex flex-col items-center gap-1 px-2.5 py-1.5 rounded-2xl transition-all"
+                    :class="$store.app.activeNav === 'mood' ? 'text-[#568BFF] font-bold' : 'text-[#64748B] font-medium hover:text-[#1E293B]'">
+                <i data-lucide="smile" class="w-5 h-5"></i>
+                <span class="text-[10px]">Mood</span>
+            </button>
+
+            <!-- Journal -->
+            <button @click="$store.app.navigateTo('journal')"
+                    class="flex flex-col items-center gap-1 px-2.5 py-1.5 rounded-2xl transition-all"
+                    :class="$store.app.activeNav === 'journal' ? 'text-[#568BFF] font-bold' : 'text-[#64748B] font-medium hover:text-[#1E293B]'">
+                <i data-lucide="book-open" class="w-5 h-5"></i>
+                <span class="text-[10px]">Jurnal</span>
+            </button>
+
+            <!-- Selfcare -->
+            <button @click="$store.app.navigateTo('selfcare')"
+                    class="flex flex-col items-center gap-1 px-2.5 py-1.5 rounded-2xl transition-all"
+                    :class="$store.app.activeNav === 'selfcare' ? 'text-[#568BFF] font-bold' : 'text-[#64748B] font-medium hover:text-[#1E293B]'">
+                <i data-lucide="heart" class="w-5 h-5"></i>
+                <span class="text-[10px]">Self Care</span>
+            </button>
+
+            <!-- Kuesioner (Penelitian) -->
+            <button @click="$store.app.openQuestionnaire()"
+                    class="flex flex-col items-center gap-1 px-2.5 py-1.5 rounded-2xl transition-all relative"
+                    :class="$store.app.activeNav === 'questionnaire' ? 'text-[#568BFF] font-bold' : 'text-[#64748B] font-medium hover:text-[#1E293B]'">
+                <div class="relative">
+                    <i data-lucide="clipboard-check" class="w-5 h-5"></i>
+                    <span x-show="$store.app.questionnaireStatus === 'in_progress'" class="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse" title="Sedang Berlangsung"></span>
+                    <span x-show="$store.app.questionnaireStatus === 'completed'" class="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-emerald-500" title="Selesai"></span>
+                </div>
+                <span class="text-[10px]">Kuesioner</span>
+            </button>
+
+            <!-- Stats -->
+            <button @click="$store.app.navigateTo('stats')"
+                    class="flex flex-col items-center gap-1 px-2.5 py-1.5 rounded-2xl transition-all"
+                    :class="$store.app.activeNav === 'stats' ? 'text-[#568BFF] font-bold' : 'text-[#64748B] font-medium hover:text-[#1E293B]'">
+                <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+                <span class="text-[10px]">Statistik</span>
+            </button>
+        </nav>
+
+        <!-- ========================================== -->
+        <!-- SECRET DEVELOPER AUTH MODAL (DISCRETE) -->
+        <!-- ========================================== -->
+        <div x-show="$store.app.showSecretDevModal"
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0 scale-95"
+             x-transition:enter-end="opacity-100 scale-100"
+             x-transition:leave="transition ease-in duration-150"
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-95"
+             class="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 backdrop-blur-xs p-4"
+             style="display: none;">
+            <div class="bg-white rounded-3xl border border-[#E9EEF7] p-6 max-w-sm w-full shadow-2xl space-y-4"
+                 @click.outside="$store.app.showSecretDevModal = false">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center text-sm font-bold">🔐</span>
+                        <h3 class="text-sm font-bold text-[#1E293B]">Akses Khusus Pengembang</h3>
+                    </div>
+                    <button @click="$store.app.showSecretDevModal = false" class="p-1 rounded-full text-slate-400 hover:text-slate-600">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </div>
+                <p class="text-xs text-[#64748B] leading-relaxed">
+                    Masukkan kredensial khusus pemilik aplikasi untuk mengakses rekapitulasi data instrumen kuesioner.
+                </p>
+                <form @submit.prevent="$store.app.submitSecretDevLogin()" class="space-y-3">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-[#1E293B] mb-1">Username</label>
+                        <input type="text" x-model="$store.app.devLoginInput.username" required autocomplete="off"
+                               class="w-full px-4 py-2.5 rounded-xl bg-[#F8FAFD] border border-[#E9EEF7] text-xs text-[#1E293B] focus:bg-white focus:border-[#568BFF] focus:outline-none"
+                               placeholder="Username">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-[#1E293B] mb-1">Kata Sandi</label>
+                        <input type="password" x-model="$store.app.devLoginInput.password" required autocomplete="off"
+                               class="w-full px-4 py-2.5 rounded-xl bg-[#F8FAFD] border border-[#E9EEF7] text-xs text-[#1E293B] focus:bg-white focus:border-[#568BFF] focus:outline-none"
+                               placeholder="••••••••">
+                    </div>
+                    <div class="flex items-center gap-2 pt-2">
+                        <button type="button" @click="$store.app.showSecretDevModal = false"
+                                class="w-1/2 py-2.5 rounded-xl bg-slate-100 text-slate-600 text-xs font-semibold hover:bg-slate-200 transition-all">
+                            Batal
+                        </button>
+                        <button type="submit"
+                                class="w-1/2 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-sm">
+                            Verifikasi
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- DEVELOPER REKAP KUESIONER HUB MODAL -->
+        <!-- ========================================== -->
+        <div x-show="$store.app.showDeveloperPanelModal"
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0 scale-95"
+             x-transition:enter-end="opacity-100 scale-100"
+             x-transition:leave="transition ease-in duration-150"
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-95"
+             class="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 backdrop-blur-xs p-4"
+             style="display: none;">
+            <div class="bg-white rounded-3xl border border-[#E9EEF7] p-6 max-w-2xl w-full shadow-2xl max-h-[90vh] flex flex-col space-y-4"
+                 @click.outside="$store.app.showDeveloperPanelModal = false">
+                
+                <!-- Modal Header -->
+                <div class="flex items-center justify-between pb-3 border-b border-[#E9EEF7]">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-600 flex items-center justify-center text-xl">
+                            📊
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h3 class="text-base font-bold text-[#1E293B]">Panel Rekap Kuesioner (Developer)</h3>
+                                <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-bold">Terverifikasi: re</span>
+                            </div>
+                            <p class="text-xs text-[#64748B]">Peneliti: Risma Elfaryani (STMIK IKMI Cirebon)</p>
+                        </div>
+                    </div>
+                    <button @click="$store.app.showDeveloperPanelModal = false" class="p-2 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-all">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <!-- Statistics & Download Action Bar -->
+                <div class="p-4 rounded-2xl bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div>
+                        <div class="text-[11px] font-semibold text-emerald-800 uppercase tracking-wider">Total Responden Terkumpul</div>
+                        <div class="text-2xl font-black text-emerald-900 flex items-baseline gap-2 mt-0.5">
+                            <span x-text="$store.app.getMasterRekapCount()"></span>
+                            <span class="text-xs font-semibold text-emerald-700">Responden (67 Pertanyaan)</span>
+                        </div>
+                        <p class="text-[11px] text-emerald-700 mt-1">
+                            Target Berkas: <code class="px-1.5 py-0.5 rounded bg-white text-emerald-800 font-mono text-[10px] font-bold">rekap_kuesioner.json</code>
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <button type="button" @click="$store.app.downloadRekapJson()"
+                                class="flex-1 sm:flex-initial px-4 py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md shadow-emerald-600/20 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-1.5">
+                            <i data-lucide="download" class="w-4 h-4"></i>
+                            <span>Unduh JSON</span>
+                        </button>
+                        <button type="button" @click="$store.app.copyRekapJson()"
+                                class="flex-1 sm:flex-initial px-4 py-2.5 rounded-2xl bg-white border border-emerald-200 text-emerald-800 hover:bg-emerald-50 font-semibold text-xs shadow-xs hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-1.5">
+                            <i data-lucide="copy" class="w-4 h-4"></i>
+                            <span>Salin JSON</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- List of Respondents -->
+                <div class="flex-1 overflow-y-auto space-y-2 pr-1 max-h-[40vh]">
+                    <div class="flex items-center justify-between text-xs text-[#64748B] font-semibold px-1">
+                        <span>Daftar Responden Tersimpan</span>
+                        <span x-text="'Total: ' + $store.app.getMasterRekapCount()"></span>
+                    </div>
+                    
+                    <template x-if="$store.app.getMasterRekapCount() === 0">
+                        <div class="p-8 text-center text-xs text-slate-400 bg-slate-50 rounded-2xl border border-dashed border-slate-200">
+                            Belum ada data kuesioner yang tersimpan di perangkat ini.
+                        </div>
+                    </template>
+
+                    <template x-for="(resp, idx) in $store.app.getMasterRekapList()" :key="resp.id || idx">
+                        <div class="p-3.5 rounded-2xl bg-[#F8FAFD] border border-[#E9EEF7] flex items-center justify-between text-xs hover:bg-white hover:border-[#CBD5E1] transition-all">
+                            <div class="flex items-center gap-3">
+                                <div class="w-7 h-7 rounded-xl bg-white border border-[#CBD5E1] flex items-center justify-center font-bold text-slate-700 text-[11px]" x-text="idx + 1"></div>
+                                <div>
+                                    <div class="font-bold text-[#1E293B]" x-text="(resp.respondent && resp.respondent.name) || 'Responden'"></div>
+                                    <div class="text-[11px] text-[#64748B] flex items-center gap-2 mt-0.5">
+                                        <span x-text="(resp.respondent && resp.respondent.gender) || '-'"></span>
+                                        <span>•</span>
+                                        <span x-text="(resp.respondent && resp.respondent.age ? resp.respondent.age + ' thn' : '-')"></span>
+                                        <span>•</span>
+                                        <span x-text="(resp.respondent && resp.respondent.status) || '-'"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-bold">67 Jawaban Lengkap</span>
+                                <div class="text-[10px] text-slate-400 mt-1" x-text="resp.submittedFormatted || (resp.submittedAt ? new Date(resp.submittedAt).toLocaleDateString('id-ID') : '-')"></div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="pt-3 border-t border-[#E9EEF7] flex items-center justify-between text-xs">
+                    <button type="button" @click="$store.app.clearMasterRekap()"
+                            class="text-rose-600 hover:text-rose-700 font-semibold hover:underline flex items-center gap-1">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                        Reset Data Rekap
+                    </button>
+                    <button type="button" @click="$store.app.showDeveloperPanelModal = false"
+                            class="px-5 py-2.5 rounded-full bg-slate-900 text-white font-semibold hover:bg-slate-800 transition-all">
+                        Tutup Panel
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js').catch(err => {
+                    console.info('Service Worker registration skipped:', err.message);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
