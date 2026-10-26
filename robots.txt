@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 User-agent: *
 Allow: /
 
 Sitemap: https://temanjiwa.id/sitemap.xml
+=======
+User-agent: *
+Allow: /
+
+Sitemap: https://temanjiwa.id/sitemap.xml
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a

@@ -300,6 +300,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 @keyframes typingPulse {
     0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
     40% { transform: scale(1.2); opacity: 1; background-color: #568BFF; }
+<<<<<<< HEAD
 }
 
 /* Questionnaire UI Utilities */
@@ -312,4 +313,6 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 }
 .likert-btn:active {
     transform: translateY(0);
+=======
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
 }

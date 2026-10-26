@@ -15,6 +15,7 @@ document.addEventListener('alpine:init', () => {
         loadingTitle: 'Memuat TemanJiwa...',
         loadingMessage: 'Menyiapkan ruang ketenangan untuk jiwamu',
 
+<<<<<<< HEAD
         // Mandatory Research Questionnaire State
         questionnaireStatus: 'not_started', // 'not_started' | 'in_progress' | 'completed'
         questionnaireStarted: false,
@@ -43,6 +44,8 @@ document.addEventListener('alpine:init', () => {
         devSecretTapCount: 0,
         devSecretTapTimer: null,
 
+=======
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
         // Auth State
         isLoggedIn: false,
         user: {
@@ -75,8 +78,13 @@ document.addEventListener('alpine:init', () => {
 
         // Mood State
         selectedMood: 'very-happy',
+<<<<<<< HEAD
         moodIntensity: 10,
         moodNote: 'Merasa penuh energi, bersyukur, dan bahagia hari ini! ✨',
+=======
+        moodIntensity: 8,
+        moodNote: '',
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
         moodHistory: [
             { id: 1, mood: 'very-happy', label: 'Sangat Bahagia', emoji: '😊', intensity: 9, note: 'Menyelesaikan proyek tepat waktu & minum teh sore', date: 'Hari ini, 14:30', dayName: 'Kam' },
             { id: 2, mood: 'happy', label: 'Bahagia', emoji: '🙂', intensity: 7, note: 'Jalan-jalan di taman kota bersama sahabat', date: 'Kemarin, 19:15', dayName: 'Rabu' },
@@ -182,7 +190,11 @@ document.addEventListener('alpine:init', () => {
                 title: 'Mindfulness Untuk Pekerja Kreatif',
                 category: 'Produktivitas',
                 readTime: '3 menit',
+<<<<<<< HEAD
                 image: 'https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=600&q=80',
+=======
+                image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnmbCpLWI_EklKjRF9uJ_OJY0o2BgrgTue0L7kOHl21A&s=10',
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
                 excerpt: 'Menjaga fokus dan kesehatan emosional di tengah dinamika pekerjaan yang padat.',
                 content: 'Di dunia modern yang serba cepat, pekerja kreatif sering kali dituntut untuk terus menghasilkan ide-ide segar di bawah tekanan deadline. Hal ini kerap kali memicu kelelahan mental (burnout) jika tidak diimbangi dengan jeda kesadaran yang baik.\n\nMindfulness bukanlah proses mengosongkan pikiran, melainkan membawa perhatian penuh pada apa yang sedang kita kerjakan saat ini tanpa menghakimi diri sendiri. Ketika Anda menulis, mendesain, atau merancang ide, fokuslah sepenuhnya pada satu tugas tersebut (single-tasking) alih-alih melakukan multitasking yang memecah konsentrasi.\n\nSediakan waktu 5 menit setiap beberapa jam untuk melakukan jeda sadar. Cukup rasakan napas Anda, lakukan peregangan otot bahu yang kaku, atau tatap pemandangan di luar jendela. Jeda singkat ini membantu menyegarkan kembali neurotransmiter di otak Anda, meningkatkan daya fokus, serta memicu munculnya inspirasi baru yang segar.'
             },
@@ -191,7 +203,11 @@ document.addEventListener('alpine:init', () => {
                 title: 'Pentingnya Hidrasi Bagi Kesehatan Mental',
                 category: 'Kesehatan Fisik',
                 readTime: '3 menit',
+<<<<<<< HEAD
                 image: 'https://images.unsplash.com/photo-1548839140-29a749e1bc4e?auto=format&fit=crop&w=600&q=80',
+=======
+                image: 'https://www.google.com/imgres?q=Hidrasi%20Bagi%20Kesehatan%20Mental&imgurl=https%3A%2F%2Fbertsolution.com%2Fwp-content%2Fuploads%2F2021%2F10%2F3-Fakta-Tentang-Pentingnya-Hidrasi-Tubuh-sebagai-Investasi-Kesehatan.jpg&imgrefurl=https%3A%2F%2Fbertsolution.com%2Farticle%2F3-fakta-tentang-pentingnya-hidrasi-tubuh-sebagai-investasi-kesehatan%2F&docid=QnJfz-T8bpiW2M&tbnid=sdReL6Y0wqaKaM&vet=12ahUKEwjLrsSbyOyVAxX6jOEIHQhhFz4QnPAOegUIkgIQAA..i&w=1440&h=788&hcb=2&ved=2ahUKEwjLrsSbyOyVAxX6jOEIHQhhFz4QnPAOegUIkgIQAA',
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
                 excerpt: 'Bagaimana dehidrasi dapat memicu peningkatan kecemasan dan kelelahan mental.',
                 content: 'Air menyusun sekitar 75% dari total volume otak kita. Oleh karena itu, penurunan tingkat hidrasi tubuh sekecil apa pun dapat berdampak langsung pada penurunan fungsi kognitif, kelelahan, serta memicu ketidakseimbangan mood.\n\nPenelitian menunjukkan bahwa kondisi dehidrasi ringan dapat meningkatkan sekresi hormon stres kortisol, yang memicu gejala fisik mirip kecemasan, seperti jantung berdebar-debar, sakit kepala ringan, dan kesulitan berkonsentrasi. Tubuh yang kurang cairan sering kali salah mengartikan dehidrasi sebagai ancaman stres.\n\nCobalah untuk mencatat asupan air harian Anda secara teratur. Biasakan minum segelas air putih hangat segera setelah bangun tidur untuk menggantikan cairan yang hilang di malam hari. Jadikan target minum minimal 2 liter per hari sebagai bagian integral dari rutinitas perawatan diri (self-care) Anda.'
             },
@@ -235,6 +251,7 @@ document.addEventListener('alpine:init', () => {
             this.initLucideIcons();
             this.initRealtimeClock();
 
+<<<<<<< HEAD
             // Register discrete developer keyboard shortcut (Ctrl+Shift+D or Alt+D)
             window.addEventListener('keydown', (e) => {
                 if ((e.ctrlKey && e.shiftKey && (e.key === 'D' || e.key === 'd')) ||
@@ -252,17 +269,26 @@ document.addEventListener('alpine:init', () => {
                 } else {
                     this.currentScreen = 'dashboard';
                 }
+=======
+            // Set current Screen dynamically based on login state
+            if (this.isLoggedIn) {
+                this.currentScreen = 'dashboard';
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
             } else {
                 this.currentScreen = 'splash';
             }
 
             // Trigger centered loading screen on app launch
+<<<<<<< HEAD
             this.triggerLoading('Menyiapkan TemanJiwa...', 'Menghubungkan ke ruang ketenangan jiwamu', 700, () => {
                 this.initLucideIcons();
                 if (this.currentScreen === 'dashboard' || this.currentScreen === 'stats') {
                     this.renderCharts();
                 }
             });
+=======
+            this.triggerLoading('Menyiapkan TemanJiwa...', 'Menghubungkan ke ruang ketenangan jiwamu', 700);
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
         },
 
         // Real-Time System Monitor (Reminders & Clock Ticks)
@@ -350,6 +376,7 @@ document.addEventListener('alpine:init', () => {
         },
 
         loginUser() {
+<<<<<<< HEAD
             const rawEmailOrUser = (this.loginInput.email || '').trim();
             const cleanEmailKey = rawEmailOrUser.toLowerCase();
             const cleanPassword = (this.loginInput.password || '').trim();
@@ -400,19 +427,36 @@ document.addEventListener('alpine:init', () => {
 
             const savedUsers = JSON.parse(localStorage.getItem('temanjiwa_users_db') || '[]');
             let foundUser = savedUsers.find(u => (u.email && u.email.toLowerCase() === cleanEmailKey) || (u.name && u.name.toLowerCase() === cleanEmailKey));
+=======
+            const cleanEmail = (this.loginInput.email || '').trim();
+            const cleanEmailKey = cleanEmail.toLowerCase();
+            const inputName = (this.loginInput.name || '').trim();
+
+            const savedUsers = JSON.parse(localStorage.getItem('temanjiwa_users_db') || '[]');
+            let foundUser = savedUsers.find(u => u.email.toLowerCase() === cleanEmailKey);
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
 
             if (!foundUser) {
                 // Create a dynamic profile for this new email log in
                 let displayName = inputName;
+<<<<<<< HEAD
                 if (!displayName && rawEmailOrUser) {
                     const emailFront = rawEmailOrUser.includes('@') ? rawEmailOrUser.split('@')[0].replace(/[._-]/g, ' ') : rawEmailOrUser;
+=======
+                if (!displayName && cleanEmail) {
+                    const emailFront = cleanEmail.split('@')[0].replace(/[._-]/g, ' ');
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
                     displayName = emailFront.charAt(0).toUpperCase() + emailFront.slice(1);
                 }
                 if (!displayName) displayName = 'Teman Jiwa';
 
                 foundUser = {
                     name: displayName,
+<<<<<<< HEAD
                     email: rawEmailOrUser.includes('@') ? rawEmailOrUser : `${rawEmailOrUser.toLowerCase().replace(/\s+/g, '')}@temanjiwa.id`,
+=======
+                    email: cleanEmail || 'user@temanjiwa.id',
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
                     avatar: '🧘‍♀️',
                     bio: 'Menemukan ketenangan di setiap hela napas.',
                     coverColor: '#A8C5FF',
@@ -450,6 +494,7 @@ document.addEventListener('alpine:init', () => {
             });
         },
 
+<<<<<<< HEAD
         logoutUser(force = false) {
             if (!force && this.questionnaireSessionActive && this.questionnaireStatus === 'in_progress') {
                 this.showLogoutQuestionnaireModal = true;
@@ -462,6 +507,12 @@ document.addEventListener('alpine:init', () => {
             this.questionnaireSessionActive = false;
             localStorage.removeItem('temanjiwa_active_email');
             localStorage.removeItem('temanjiwa_is_developer');
+=======
+        logoutUser() {
+            this.saveToStorage();
+            this.isLoggedIn = false;
+            localStorage.removeItem('temanjiwa_active_email');
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
 
             // Reset to defaults so no previous state leaks in guest screens
             this.resetStateToDefault(null);
@@ -634,6 +685,7 @@ document.addEventListener('alpine:init', () => {
                     }
                 ]
             };
+<<<<<<< HEAD
 
             // Reset questionnaire state for fresh / other user
             this.questionnaireStatus = 'not_started';
@@ -650,6 +702,8 @@ document.addEventListener('alpine:init', () => {
             this.showQuestionnaireLeaveWarning = false;
             this.showLogoutQuestionnaireModal = false;
             this.showQuestionnaireReviewModal = false;
+=======
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
         },
 
         // AI Chat Methods
@@ -850,6 +904,7 @@ Pesan Curhat Pengguna: ${promptText}`;
             this.navigateTo('article-detail');
         },
 
+<<<<<<< HEAD
         // Navigation Helper with Centralized Navigation Guard
         navigateTo(screen) {
             // 1. CENTRALIZED NAVIGATION GUARD:
@@ -865,6 +920,10 @@ Pesan Curhat Pengguna: ${promptText}`;
                 }
             }
 
+=======
+        // Navigation Helper
+        navigateTo(screen) {
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
             // Stop other running exercises/audio when leaving their screen
             if (screen !== 'meditation') {
                 this.stopMeditation();
@@ -875,6 +934,7 @@ Pesan Curhat Pengguna: ${promptText}`;
                 }
             }
 
+<<<<<<< HEAD
             // Questionnaire Screen Entry Handling
             if (screen === 'questionnaire') {
                 if (this.questionnaireStatus === 'not_started') {
@@ -897,6 +957,13 @@ Pesan Curhat Pengguna: ${promptText}`;
 
             // Set active bottom nav item
             const navScreens = ['dashboard', 'mood', 'journal', 'selfcare', 'stats', 'profile', 'questionnaire'];
+=======
+            this.previousScreen = this.currentScreen;
+            this.currentScreen = screen;
+
+            // Set active bottom nav item
+            const navScreens = ['dashboard', 'mood', 'journal', 'selfcare', 'stats', 'profile'];
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
             if (navScreens.includes(screen)) {
                 this.activeNav = screen;
             }
@@ -940,6 +1007,7 @@ Pesan Curhat Pengguna: ${promptText}`;
                 sleepToday: this.sleepToday,
                 reminders: this.reminders,
                 notifications: this.notifications,
+<<<<<<< HEAD
                 aiMessages: this.aiChat.messages,
                 questionnaire: {
                     status: this.questionnaireStatus,
@@ -951,6 +1019,9 @@ Pesan Curhat Pengguna: ${promptText}`;
                     completedAt: this.questionnaireCompletedAt,
                     version: 1
                 }
+=======
+                aiMessages: this.aiChat.messages
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
             };
             localStorage.setItem(`temanjiwa_app_data_${emailKey}`, JSON.stringify(data));
             localStorage.setItem('temanjiwa_active_email', emailKey);
@@ -984,6 +1055,7 @@ Pesan Curhat Pengguna: ${promptText}`;
                         if (parsed.reminders) this.reminders = parsed.reminders;
                         if (parsed.notifications) this.notifications = parsed.notifications;
                         if (parsed.aiMessages && parsed.aiMessages.length > 0) this.aiChat.messages = parsed.aiMessages;
+<<<<<<< HEAD
                         if (parsed.questionnaire) {
                             this.questionnaireStatus = parsed.questionnaire.status || 'not_started';
                             this.questionnaireStarted = !!parsed.questionnaire.started;
@@ -996,6 +1068,9 @@ Pesan Curhat Pengguna: ${promptText}`;
                         }
                         this.isLoggedIn = true;
                         this.isDeveloper = localStorage.getItem('temanjiwa_is_developer') === 'true';
+=======
+                        this.isLoggedIn = true;
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
                         return;
                     } catch (e) {
                         console.error("Failed loading state:", e);
@@ -1039,6 +1114,7 @@ Pesan Curhat Pengguna: ${promptText}`;
         },
 
         // Mood Methods
+<<<<<<< HEAD
         selectMood(moodKey) {
             this.selectedMood = moodKey;
             const intensityMap = {
@@ -1106,6 +1182,8 @@ Pesan Curhat Pengguna: ${promptText}`;
             return 'Disarankan Melakukan Latihan Relaksasi Napas 🫁';
         },
 
+=======
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
         logMood() {
             const moodMap = {
                 'very-happy': { label: 'Sangat Bahagia', emoji: '😊' },
@@ -1117,15 +1195,19 @@ Pesan Curhat Pengguna: ${promptText}`;
             };
 
             const selected = moodMap[this.selectedMood] || moodMap['happy'];
+<<<<<<< HEAD
             const dayNames = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
             const todayDay = dayNames[new Date().getDay()];
 
+=======
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
             const newEntry = {
                 id: Date.now(),
                 mood: this.selectedMood,
                 label: selected.label,
                 emoji: selected.emoji,
                 intensity: parseInt(this.moodIntensity),
+<<<<<<< HEAD
                 note: this.moodNote || 'Refleksi emosi harian.',
                 date: 'Hari ini, ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                 dayName: todayDay
@@ -1141,6 +1223,20 @@ Pesan Curhat Pengguna: ${promptText}`;
                     this.initLucideIcons();
                     this.renderCharts();
                 }, 150);
+=======
+                note: this.moodNote || 'Tidak ada catatan tambahan.',
+                date: 'Hari ini, ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                dayName: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'][new Date().getDay()]
+            };
+
+            this.triggerLoading('Menyimpan Catatan Mood...', 'Menganalisis pola emosi harianmu', 700, () => {
+                this.moodHistory.unshift(newEntry);
+                this.user.xp += 15;
+                this.moodNote = '';
+                this.saveToStorage();
+                this.showToast('Mood berhasil dicatat! (+15 XP)');
+                this.navigateTo('dashboard');
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
             });
         },
 
@@ -1167,7 +1263,10 @@ Pesan Curhat Pengguna: ${promptText}`;
                 this.showModal = null;
                 this.saveToStorage();
                 this.showToast('Jurnal refleksi berhasil disimpan! (+20 XP)');
+<<<<<<< HEAD
                 setTimeout(() => this.initLucideIcons(), 50);
+=======
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
             });
         },
 
@@ -1190,7 +1289,10 @@ Pesan Curhat Pengguna: ${promptText}`;
                     habit.streak = Math.max(0, habit.streak - 1);
                 }
                 this.saveToStorage();
+<<<<<<< HEAD
                 setTimeout(() => this.initLucideIcons(), 50);
+=======
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
             }
         },
 
@@ -1210,6 +1312,7 @@ Pesan Curhat Pengguna: ${promptText}`;
 
         // Sleep Methods
         logSleep() {
+<<<<<<< HEAD
             if (!this.sleepInput.bedtime || !this.sleepInput.waketime) {
                 this.showToast('Silakan pilih jam tidur dan jam bangun terlebih dahulu!');
                 return;
@@ -1223,22 +1326,34 @@ Pesan Curhat Pengguna: ${promptText}`;
                 this.showToast('Format waktu tidur tidak valid!');
                 return;
             }
+=======
+            // Compute duration from bedtime to waketime
+            const [bH, bM] = this.sleepInput.bedtime.split(':').map(Number);
+            const [wH, wM] = this.sleepInput.waketime.split(':').map(Number);
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
 
             let bedDate = new Date(2026, 0, 1, bH, bM);
             let wakeDate = new Date(2026, 0, bH > wH ? 2 : 1, wH, wM);
             let diffHours = (wakeDate - bedDate) / (1000 * 60 * 60);
             if (diffHours <= 0) diffHours += 24;
 
+<<<<<<< HEAD
             const durationVal = parseFloat(diffHours.toFixed(1));
             const qualityVal = parseInt(this.sleepInput.quality) || 4;
 
             this.sleepToday = {
                 duration: durationVal,
                 quality: qualityVal,
+=======
+            this.sleepToday = {
+                duration: parseFloat(diffHours.toFixed(1)),
+                quality: parseInt(this.sleepInput.quality),
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
                 bedtime: this.sleepInput.bedtime,
                 waketime: this.sleepInput.waketime
             };
 
+<<<<<<< HEAD
             // Update today in sleepHistory
             const dayNames = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
             const todayDay = dayNames[new Date().getDay()];
@@ -1250,6 +1365,8 @@ Pesan Curhat Pengguna: ${promptText}`;
                 }
             }
 
+=======
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
             this.user.xp += 15;
             this.saveToStorage();
             this.showToast('Catatan tidur tersimpan! (+15 XP)');
@@ -1419,20 +1536,42 @@ Pesan Curhat Pengguna: ${promptText}`;
         renderCharts() {
             if (!window.Chart) return;
 
+<<<<<<< HEAD
             // Mood Chart Dashboard & Stats (Automatically Updated)
+=======
+            // Mood Chart Dashboard & Stats
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
             const moodCtx = document.getElementById('moodChart');
             if (moodCtx) {
                 if (window.moodChartInstance) window.moodChartInstance.destroy();
 
+<<<<<<< HEAD
                 const weekly = this.getWeeklyMoodChartData();
+=======
+                let labels = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
+                let data = [6, 5, 8, 7, 9, 9, 8];
+
+                if (this.moodHistory && this.moodHistory.length > 0) {
+                    const recentMoods = this.moodHistory.slice(0, 7).reverse();
+                    labels = recentMoods.map(m => m.dayName || 'Hari ini');
+                    data = recentMoods.map(m => m.intensity);
+                }
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
 
                 window.moodChartInstance = new Chart(moodCtx, {
                     type: 'line',
                     data: {
+<<<<<<< HEAD
                         labels: weekly.labels,
                         datasets: [{
                             label: 'Skala Mood (1-10)',
                             data: weekly.data,
+=======
+                        labels: labels,
+                        datasets: [{
+                            label: 'Skala Mood (1-10)',
+                            data: data,
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
                             borderColor: '#568BFF',
                             backgroundColor: 'rgba(168, 197, 255, 0.25)',
                             borderWidth: 3,
@@ -1441,13 +1580,18 @@ Pesan Curhat Pengguna: ${promptText}`;
                             pointBackgroundColor: '#FFFFFF',
                             pointBorderColor: '#568BFF',
                             pointBorderWidth: 3,
+<<<<<<< HEAD
                             pointRadius: 6,
                             pointHoverRadius: 8
+=======
+                            pointRadius: 6
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
                         }]
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
+<<<<<<< HEAD
                         plugins: {
                             legend: { display: false },
                             tooltip: {
@@ -1483,6 +1627,11 @@ Pesan Curhat Pengguna: ${promptText}`;
                                 },
                                 grid: { color: '#E9EEF7' }
                             },
+=======
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { min: 1, max: 10, grid: { color: '#E9EEF7' } },
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
                             x: { grid: { display: false } }
                         }
                     }
@@ -1493,6 +1642,7 @@ Pesan Curhat Pengguna: ${promptText}`;
             const sleepCtx = document.getElementById('sleepChart');
             if (sleepCtx) {
                 if (window.sleepChartInstance) window.sleepChartInstance.destroy();
+<<<<<<< HEAD
                 let sleepLabels = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
                 let sleepData = [7.2, 6.8, 8.0, 7.5, 8.2, 8.5, 8.0];
                 if (this.sleepHistory && this.sleepHistory.length > 0) {
@@ -1507,6 +1657,15 @@ Pesan Curhat Pengguna: ${promptText}`;
                         datasets: [{
                             label: 'Durasi Tidur (Jam)',
                             data: sleepData,
+=======
+                window.sleepChartInstance = new Chart(sleepCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+                        datasets: [{
+                            label: 'Durasi Tidur (Jam)',
+                            data: [7.2, 6.8, 8.0, 7.5, 8.2, 8.5, 8.0],
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
                             backgroundColor: '#A8C5FF',
                             borderRadius: 12,
                             hoverBackgroundColor: '#568BFF'
@@ -1528,6 +1687,7 @@ Pesan Curhat Pengguna: ${promptText}`;
             const waterCtx = document.getElementById('waterChart');
             if (waterCtx) {
                 if (window.waterChartInstance) window.waterChartInstance.destroy();
+<<<<<<< HEAD
                 let waterLabels = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
                 let waterData = [1800, 2000, 1500, 2000, 2250, 1750, this.waterLogged || 1250];
 
@@ -1538,6 +1698,15 @@ Pesan Curhat Pengguna: ${promptText}`;
                         datasets: [{
                             label: 'Air (ml)',
                             data: waterData,
+=======
+                window.waterChartInstance = new Chart(waterCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+                        datasets: [{
+                            label: 'Air (ml)',
+                            data: [1800, 2000, 1500, 2000, 2250, 1750, 1250],
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
                             backgroundColor: '#FFF3D6',
                             borderColor: '#FCD34D',
                             borderWidth: 1.5,
@@ -1561,16 +1730,24 @@ Pesan Curhat Pengguna: ${promptText}`;
             const selfcareCtx = document.getElementById('selfcareChart');
             if (selfcareCtx) {
                 if (window.selfcareChartInstance) window.selfcareChartInstance.destroy();
+<<<<<<< HEAD
                 const completedHabits = this.habits ? this.habits.filter(h => h.completed).length : 0;
                 const uncompletedHabits = this.habits ? Math.max(0, this.habits.length - completedHabits) : 0;
 
+=======
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
                 window.selfcareChartInstance = new Chart(selfcareCtx, {
                     type: 'doughnut',
                     data: {
                         labels: ['Selesai', 'Belum Selesai'],
                         datasets: [{
+<<<<<<< HEAD
                             data: [completedHabits, uncompletedHabits],
                             backgroundColor: ['#86EFAC', '#FFF3D6'],
+=======
+                            data: [3, 2],
+                            backgroundColor: ['#A8C5FF', '#FFF3D6'],
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
                             borderWidth: 0
                         }]
                     },
@@ -1582,6 +1759,7 @@ Pesan Curhat Pengguna: ${promptText}`;
                     }
                 });
             }
+<<<<<<< HEAD
         },
 
         // ==========================================
@@ -2111,3 +2289,8 @@ window.addEventListener('popstate', (e) => {
         }
     } catch (err) {}
 });
+=======
+        }
+    });
+});
+>>>>>>> 790e768564da6b2361531255b76e213be89ecf1a
