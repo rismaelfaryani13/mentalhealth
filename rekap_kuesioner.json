@@ -5,13 +5,14 @@
   "program": "Program Studi Sistem Informasi",
   "targetGroup": "Generasi Z",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1vjYnoduryaryCUgbzxB93yzRwzezAIHC0DqhahKUkM4/edit?usp=sharing",
+  "webhookUrl": "https://script.google.com/macros/s/AKfycbyKVubO_gsd_Nbe4vj_afVutfYkwI3p1QloqZ_OJvYkYg4RLV4oxOpJvFVVyCUH_6H4QA/exec",
   "totalQuestions": 67,
-  "totalResponses": 33,
-  "lastUpdated": "2026-10-27T01:40:56.517Z",
-  "lastUpdatedFormatted": "27/10/2026, 08.40.56",
+  "totalResponses": 34,
+  "lastUpdated": "2026-10-27T02:06:16.811Z",
+  "lastUpdatedFormatted": "27/10/2026, 09.06.16",
   "responses": [
     {
-      "id": "RESP-GSheet-001-TX2R",
+      "id": "RESP-GSheet-001",
       "source": "Google Spreadsheet",
       "submittedAt": "24/07/2026 23:33:46",
       "submittedFormatted": "24/07/2026 23:33:46",
@@ -94,7 +95,7 @@
       "otherAnswers": {}
     },
     {
-      "id": "RESP-GSheet-002-ZJNY",
+      "id": "RESP-GSheet-002",
       "source": "Google Spreadsheet",
       "submittedAt": "25/07/2026 0:28:07",
       "submittedFormatted": "25/07/2026 0:28:07",
@@ -177,7 +178,7 @@
       "otherAnswers": {}
     },
     {
-      "id": "RESP-GSheet-003-OEF3",
+      "id": "RESP-GSheet-003",
       "source": "Google Spreadsheet",
       "submittedAt": "25/07/2026 1:17:05",
       "submittedFormatted": "25/07/2026 1:17:05",
@@ -260,7 +261,7 @@
       "otherAnswers": {}
     },
     {
-      "id": "RESP-GSheet-004-335L",
+      "id": "RESP-GSheet-004",
       "source": "Google Spreadsheet",
       "submittedAt": "25/07/2026 2:25:00",
       "submittedFormatted": "25/07/2026 2:25:00",
@@ -342,7 +343,7 @@
       "otherAnswers": {}
     },
     {
-      "id": "RESP-GSheet-005-G305",
+      "id": "RESP-GSheet-005",
       "source": "Google Spreadsheet",
       "submittedAt": "25/07/2026 5:41:11",
       "submittedFormatted": "25/07/2026 5:41:11",
@@ -425,7 +426,7 @@
       "otherAnswers": {}
     },
     {
-      "id": "RESP-GSheet-006-L7PL",
+      "id": "RESP-GSheet-006",
       "source": "Google Spreadsheet",
       "submittedAt": "25/07/2026 6:25:57",
       "submittedFormatted": "25/07/2026 6:25:57",
@@ -508,7 +509,7 @@
       "otherAnswers": {}
     },
     {
-      "id": "RESP-GSheet-007-DANF",
+      "id": "RESP-GSheet-007",
       "source": "Google Spreadsheet",
       "submittedAt": "25/07/2026 7:18:46",
       "submittedFormatted": "25/07/2026 7:18:46",
@@ -591,7 +592,7 @@
       "otherAnswers": {}
     },
     {
-      "id": "RESP-GSheet-008-ZO36",
+      "id": "RESP-GSheet-008",
       "source": "Google Spreadsheet",
       "submittedAt": "25/07/2026 7:20:56",
       "submittedFormatted": "25/07/2026 7:20:56",
@@ -673,7 +674,7 @@
       "otherAnswers": {}
     },
     {
-      "id": "RESP-GSheet-009-12IS",
+      "id": "RESP-GSheet-009",
       "source": "Google Spreadsheet",
       "submittedAt": "25/07/2026 7:26:52",
       "submittedFormatted": "25/07/2026 7:26:52",
@@ -756,7 +757,7 @@
       "otherAnswers": {}
     },
     {
-      "id": "RESP-GSheet-010-93S1",
+      "id": "RESP-GSheet-010",
       "source": "Google Spreadsheet",
       "submittedAt": "25/07/2026 10:17:19",
       "submittedFormatted": "25/07/2026 10:17:19",
@@ -839,7 +840,7 @@
       "otherAnswers": {}
     },
     {
-      "id": "RESP-GSheet-011-6V7V",
+      "id": "RESP-GSheet-011",
       "source": "Google Spreadsheet",
       "submittedAt": "25/07/2026 13:48:20",
       "submittedFormatted": "25/07/2026 13:48:20",
@@ -922,7 +923,7 @@
       "otherAnswers": {}
     },
     {
-      "id": "RESP-GSheet-012-DAJV",
+      "id": "RESP-GSheet-012",
       "source": "Google Spreadsheet",
       "submittedAt": "25/07/2026 16:07:47",
       "submittedFormatted": "25/07/2026 16:07:47",
@@ -1005,7 +1006,7 @@
       "otherAnswers": {}
     },
     {
-      "id": "RESP-GSheet-013-NX7V",
+      "id": "RESP-GSheet-013",
       "source": "Google Spreadsheet",
       "submittedAt": "25/07/2026 18:28:32",
       "submittedFormatted": "25/07/2026 18:28:32",
@@ -1088,7 +1089,7 @@
       "otherAnswers": {}
     },
     {
-      "id": "RESP-GSheet-014-RA4X",
+      "id": "RESP-GSheet-014",
       "source": "Google Spreadsheet",
       "submittedAt": "25/07/2026 18:36:41",
       "submittedFormatted": "25/07/2026 18:36:41",
@@ -1171,7 +1172,7 @@
       "otherAnswers": {}
     },
     {
-      "id": "RESP-GSheet-015-99Y3",
+      "id": "RESP-GSheet-015",
       "source": "Google Spreadsheet",
       "submittedAt": "25/07/2026 18:45:05",
       "submittedFormatted": "25/07/2026 18:45:05",
@@ -1254,7 +1255,7 @@
       "otherAnswers": {}
     },
     {
-      "id": "RESP-GSheet-016-SBWH",
+      "id": "RESP-GSheet-016",
       "source": "Google Spreadsheet",
       "submittedAt": "25/07/2026 19:13:26",
       "submittedFormatted": "25/07/2026 19:13:26",
@@ -1336,7 +1337,7 @@
       "otherAnswers": {}
     },
     {
-      "id": "RESP-GSheet-017-8ZLZ",
+      "id": "RESP-GSheet-017",
       "source": "Google Spreadsheet",
       "submittedAt": "25/07/2026 20:42:21",
       "submittedFormatted": "25/07/2026 20:42:21",
@@ -1419,7 +1420,7 @@
       "otherAnswers": {}
     },
     {
-      "id": "RESP-GSheet-018-Y3G8",
+      "id": "RESP-GSheet-018",
       "source": "Google Spreadsheet",
       "submittedAt": "25/07/2026 21:35:32",
       "submittedFormatted": "25/07/2026 21:35:32",
@@ -1502,7 +1503,7 @@
       "otherAnswers": {}
     },
     {
-      "id": "RESP-GSheet-019-LOLN",
+      "id": "RESP-GSheet-019",
       "source": "Google Spreadsheet",
       "submittedAt": "25/07/2026 21:36:20",
       "submittedFormatted": "25/07/2026 21:36:20",
@@ -1585,7 +1586,7 @@
       "otherAnswers": {}
     },
     {
-      "id": "RESP-GSheet-020-CHFY",
+      "id": "RESP-GSheet-020",
       "source": "Google Spreadsheet",
       "submittedAt": "25/07/2026 21:51:40",
       "submittedFormatted": "25/07/2026 21:51:40",
@@ -1668,7 +1669,7 @@
       "otherAnswers": {}
     },
     {
-      "id": "RESP-GSheet-021-VPT0",
+      "id": "RESP-GSheet-021",
       "source": "Google Spreadsheet",
       "submittedAt": "25/07/2026 21:58:07",
       "submittedFormatted": "25/07/2026 21:58:07",
@@ -1750,7 +1751,7 @@
       "otherAnswers": {}
     },
     {
-      "id": "RESP-GSheet-022-Z2MO",
+      "id": "RESP-GSheet-022",
       "source": "Google Spreadsheet",
       "submittedAt": "25/07/2026 22:39:40",
       "submittedFormatted": "25/07/2026 22:39:40",
@@ -1833,7 +1834,7 @@
       "otherAnswers": {}
     },
     {
-      "id": "RESP-GSheet-023-55XC",
+      "id": "RESP-GSheet-023",
       "source": "Google Spreadsheet",
       "submittedAt": "25/07/2026 23:31:31",
       "submittedFormatted": "25/07/2026 23:31:31",
@@ -1916,7 +1917,7 @@
       "otherAnswers": {}
     },
     {
-      "id": "RESP-GSheet-024-YY30",
+      "id": "RESP-GSheet-024",
       "source": "Google Spreadsheet",
       "submittedAt": "25/07/2026 23:51:37",
       "submittedFormatted": "25/07/2026 23:51:37",
@@ -1999,7 +2000,7 @@
       "otherAnswers": {}
     },
     {
-      "id": "RESP-GSheet-025-7GPB",
+      "id": "RESP-GSheet-025",
       "source": "Google Spreadsheet",
       "submittedAt": "26/07/2026 4:32:13",
       "submittedFormatted": "26/07/2026 4:32:13",
@@ -2082,7 +2083,7 @@
       "otherAnswers": {}
     },
     {
-      "id": "RESP-GSheet-026-2BYQ",
+      "id": "RESP-GSheet-026",
       "source": "Google Spreadsheet",
       "submittedAt": "26/07/2026 8:07:40",
       "submittedFormatted": "26/07/2026 8:07:40",
@@ -2165,7 +2166,7 @@
       "otherAnswers": {}
     },
     {
-      "id": "RESP-GSheet-027-PUMS",
+      "id": "RESP-GSheet-027",
       "source": "Google Spreadsheet",
       "submittedAt": "26/07/2026 13:21:27",
       "submittedFormatted": "26/07/2026 13:21:27",
@@ -2248,7 +2249,7 @@
       "otherAnswers": {}
     },
     {
-      "id": "RESP-GSheet-028-CGE8",
+      "id": "RESP-GSheet-028",
       "source": "Google Spreadsheet",
       "submittedAt": "26/07/2026 23:23:26",
       "submittedFormatted": "26/07/2026 23:23:26",
@@ -2331,7 +2332,7 @@
       "otherAnswers": {}
     },
     {
-      "id": "RESP-GSheet-029-G6WX",
+      "id": "RESP-GSheet-029",
       "source": "Google Spreadsheet",
       "submittedAt": "27/07/2026 2:37:44",
       "submittedFormatted": "27/07/2026 2:37:44",
@@ -2414,7 +2415,7 @@
       "otherAnswers": {}
     },
     {
-      "id": "RESP-GSheet-030-CXHH",
+      "id": "RESP-GSheet-030",
       "source": "Google Spreadsheet",
       "submittedAt": "27/07/2026 20:04:21",
       "submittedFormatted": "27/07/2026 20:04:21",
@@ -2497,7 +2498,7 @@
       "otherAnswers": {}
     },
     {
-      "id": "RESP-GSheet-031-ZUK6",
+      "id": "RESP-GSheet-031",
       "source": "Google Spreadsheet",
       "submittedAt": "31/07/2026 22:47:08",
       "submittedFormatted": "31/07/2026 22:47:08",
@@ -2580,7 +2581,7 @@
       "otherAnswers": {}
     },
     {
-      "id": "RESP-GSheet-032-LXV8",
+      "id": "RESP-GSheet-032",
       "source": "Google Spreadsheet",
       "submittedAt": "25/10/2026 12:04:05",
       "submittedFormatted": "25/10/2026 12:04:05",
@@ -2663,7 +2664,7 @@
       "otherAnswers": {}
     },
     {
-      "id": "RESP-GSheet-033-H657",
+      "id": "RESP-GSheet-033",
       "source": "Google Spreadsheet",
       "submittedAt": "25/10/2026 12:26:38",
       "submittedFormatted": "25/10/2026 12:26:38",
@@ -2742,6 +2743,89 @@
         "q65": "menurut saya, beberapa bagian tampilan masih bisa dibuat lebih konsisten, terutama ukuran tulisan, jarak antar elemen, dan penempatan menu. hal ini penting agar informasi lebih mudah dibaca dan tampilan terasa lebih rapih",
         "q66": "saya ingin ada fitur pengingat harian untuk mencatat suasana hati dan menulis jurnal. fitur ini dapat membantu pengguna membangun kebiasaan memantau kondisi emosional secara rutin",
         "q67": "aplikasi ini dapat dikembangkan dengan meningkatkan kemudahan penggunaan, memperjelas informasi pada setiap fitur, dan menambahkan panduan singkat bagi pengguna baru. selain itu, keamanan dan kerahasiaan data pribadi perlu diperhatikan agar pengguna merasa lebih nyaman"
+      },
+      "otherAnswers": {}
+    },
+    {
+      "id": "RESP-GSheet-034",
+      "source": "Google Spreadsheet",
+      "submittedAt": "27/10/2026 9:03:28",
+      "submittedFormatted": "27/10/2026 9:03:28",
+      "respondent": {
+        "name": "Uji Webhook TemanJiwa",
+        "age": 22,
+        "gender": "Perempuan",
+        "status": "Kuliah",
+        "accountEmail": "ujiwebhooktemanjiwa@responden.id"
+      },
+      "answers": {
+        "q1": "Uji Webhook TemanJiwa",
+        "q2": "22",
+        "q3": "Perempuan",
+        "q4": "Kuliah",
+        "q5": "Sangat Baik",
+        "q6": "Jarang",
+        "q7": "Mudah",
+        "q8": "Sering",
+        "q9": "7-8 jam",
+        "q10": "Sangat sering",
+        "q11": "Belum pernah",
+        "q12": "Memantau suasana hati (Mood Tracker)",
+        "q13": "Mood Tracker",
+        "q14": "Sangat Penting",
+        "q15": "5",
+        "q16": "5",
+        "q17": "5",
+        "q18": "5",
+        "q19": "5",
+        "q20": "5",
+        "q21": "5",
+        "q22": "5",
+        "q23": "5",
+        "q24": "5",
+        "q25": "5",
+        "q26": "5",
+        "q27": "5",
+        "q28": "5",
+        "q29": "5",
+        "q30": "5",
+        "q31": "5",
+        "q32": "5",
+        "q33": "5",
+        "q34": "5",
+        "q35": "5",
+        "q36": "5",
+        "q37": "5",
+        "q38": "5",
+        "q39": "5",
+        "q40": "5",
+        "q41": "5",
+        "q42": "5",
+        "q43": "5",
+        "q44": "5",
+        "q45": "5",
+        "q46": "5",
+        "q47": "5",
+        "q48": "5",
+        "q49": "5",
+        "q50": "5",
+        "q51": "5",
+        "q52": "5",
+        "q53": "5",
+        "q54": "5",
+        "q55": "5",
+        "q56": "5",
+        "q57": "5",
+        "q58": "5",
+        "q59": "5",
+        "q60": "5",
+        "q61": "5",
+        "q62": "5",
+        "q63": "Fitur Mood Tracker dan AI Companion",
+        "q64": "Sudah berjalan sangat baik",
+        "q65": "Warna pastel dan tata letak sudah sangat rapi",
+        "q66": "Fitur integrasi spreadsheet luar biasa",
+        "q67": "Semoga sukses dan lancar sidangnya!"
       },
       "otherAnswers": {}
     }

@@ -48,10 +48,10 @@ document.addEventListener('alpine:init', () => {
             sheetId: '1vjYnoduryaryCUgbzxB93yzRwzezAIHC0DqhahKUkM4',
             sheetUrl: 'https://docs.google.com/spreadsheets/d/1vjYnoduryaryCUgbzxB93yzRwzezAIHC0DqhahKUkM4/edit?usp=sharing',
             csvUrl: 'https://docs.google.com/spreadsheets/d/1vjYnoduryaryCUgbzxB93yzRwzezAIHC0DqhahKUkM4/gviz/tq?tqx=out:csv',
-            webAppUrl: localStorage.getItem('temanjiwa_gsheet_webapp_url') || ''
+            webAppUrl: localStorage.getItem('temanjiwa_gsheet_webapp_url') || 'https://script.google.com/macros/s/AKfycbyKVubO_gsd_Nbe4vj_afVutfYkwI3p1QloqZ_OJvYkYg4RLV4oxOpJvFVVyCUH_6H4QA/exec'
         },
         isSyncingGSheet: false,
-        googleSheetInputUrl: localStorage.getItem('temanjiwa_gsheet_webapp_url') || '',
+        googleSheetInputUrl: localStorage.getItem('temanjiwa_gsheet_webapp_url') || 'https://script.google.com/macros/s/AKfycbyKVubO_gsd_Nbe4vj_afVutfYkwI3p1QloqZ_OJvYkYg4RLV4oxOpJvFVVyCUH_6H4QA/exec',
 
         // Auth State
         isLoggedIn: false,
@@ -2258,7 +2258,7 @@ Pesan Curhat Pengguna: ${promptText}`;
 
         // Send newly answered questionnaire to Google Spreadsheet (Apps Script Webhook)
         async sendResponseToGoogleSheet(record) {
-            const webAppUrl = this.googleSheetConfig.webAppUrl || localStorage.getItem('temanjiwa_gsheet_webapp_url');
+            const webAppUrl = this.googleSheetConfig.webAppUrl || localStorage.getItem('temanjiwa_gsheet_webapp_url') || 'https://script.google.com/macros/s/AKfycbyKVubO_gsd_Nbe4vj_afVutfYkwI3p1QloqZ_OJvYkYg4RLV4oxOpJvFVVyCUH_6H4QA/exec';
             if (!webAppUrl || !webAppUrl.trim()) {
                 console.info('Google Apps Script Webhook belum dikonfigurasi. Data diarsipkan secara lokal dan siap diekspor.');
                 return false;
@@ -2273,6 +2273,10 @@ Pesan Curhat Pengguna: ${promptText}`;
                     body: JSON.stringify(record)
                 });
                 console.info('Response dispatched to Google Apps Script Webhook successfully');
+                // Refresh local cache after a short delay
+                setTimeout(() => {
+                    this.syncWithGoogleSheets(false);
+                }, 2000);
                 return true;
             } catch (err) {
                 console.warn('Gagal mengirim ke Google Apps Script Webhook:', err.message);
