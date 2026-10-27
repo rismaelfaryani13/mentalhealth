@@ -2302,7 +2302,7 @@ Pesan Curhat Pengguna: ${promptText}`;
             window.open(this.googleSheetConfig.sheetUrl, '_blank');
         },
 
-        // Push any local / browser-stored responses (e.g. from adik/saudara) to Google Spreadsheet
+        // Push any local / browser-stored responses (e.g. from Teman - Teman) to Google Spreadsheet
         async pushPendingLocalResponsesToGoogleSheet(showToast = false) {
             let masterList = JSON.parse(localStorage.getItem('temanjiwa_rekap_kuesioner_all') || '[]');
             let pendingRecords = [];
@@ -2371,12 +2371,12 @@ Pesan Curhat Pengguna: ${promptText}`;
             }
 
             if (sentCount > 0) {
-                this.showToast(`Berhasil mengirim ${sentCount} data kuesioner adik/saudara ke Google Spreadsheet! 🚀`);
+                this.showToast(`Berhasil mengirim ${sentCount} data kuesioner Teman - Teman ke Google Spreadsheet! 🚀`);
                 setTimeout(() => {
                     this.syncWithGoogleSheets(false);
                 }, 2500);
             } else if (showToast) {
-                this.showToast('Data kuesioner adik/saudara sudah ada di Google Spreadsheet.');
+                this.showToast('Data kuesioner Teman - Teman sudah ada di Google Spreadsheet.');
             }
         },
 
