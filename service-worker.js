@@ -1,4 +1,4 @@
-const CACHE_NAME = 'temanjiwa-v1';
+const CACHE_NAME = 'temanjiwa-v2';
 const ASSETS = [
     './index.html',
     './style.css',
@@ -10,6 +10,7 @@ const ASSETS = [
 
 // Install Event
 self.addEventListener('install', event => {
+    self.skipWaiting();
     event.waitUntil(
         caches.open(CACHE_NAME).then(async cache => {
             for (const asset of ASSETS) {
@@ -19,11 +20,11 @@ self.addEventListener('install', event => {
                     console.info('SW asset cache skipped:', asset);
                 }
             }
-        }).then(() => self.skipWaiting())
+        })
     );
 });
 
-// Activate Event
+// Activate Event - purge old caches immediately
 self.addEventListener('activate', event => {
     event.waitUntil(
         caches.keys().then(keys => {
@@ -38,20 +39,26 @@ self.addEventListener('activate', event => {
     );
 });
 
-// Fetch Event (Cache First, Network Fallback)
+// Fetch Event - Network First with Cache Fallback for code assets
 self.addEventListener('fetch', event => {
-    // Only handle GET requests and http/https schemes
     if (event.request.method !== 'GET' || !event.request.url.startsWith('http')) {
         return;
     }
 
     event.respondWith(
-        caches.match(event.request).then(cachedResponse => {
-            if (cachedResponse) {
-                return cachedResponse;
+        fetch(event.request).then(networkResponse => {
+            if (networkResponse && networkResponse.status === 200) {
+                const responseClone = networkResponse.clone();
+                caches.open(CACHE_NAME).then(cache => {
+                    cache.put(event.request, responseClone);
+                });
             }
-            return fetch(event.request).catch(() => {
-                // Fallback for offline if request is for document page
+            return networkResponse;
+        }).catch(() => {
+            return caches.match(event.request).then(cachedResponse => {
+                if (cachedResponse) {
+                    return cachedResponse;
+                }
                 if (event.request.mode === 'navigate') {
                     return caches.match('./index.html');
                 }

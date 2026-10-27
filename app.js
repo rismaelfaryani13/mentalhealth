@@ -245,6 +245,7 @@ document.addEventListener('alpine:init', () => {
             this.initLucideIcons();
             this.initRealtimeClock();
             this.syncWithGoogleSheets(false); // Automatically pull live Google Spreadsheet responses
+            setTimeout(() => this.pushPendingLocalResponsesToGoogleSheet(false), 2500);
 
             // Register discrete developer keyboard shortcut (Ctrl+Shift+D or Alt+D)
             window.addEventListener('keydown', (e) => {
@@ -2299,6 +2300,84 @@ Pesan Curhat Pengguna: ${promptText}`;
 
         openGoogleSpreadsheet() {
             window.open(this.googleSheetConfig.sheetUrl, '_blank');
+        },
+
+        // Push any local / browser-stored responses (e.g. from adik/saudara) to Google Spreadsheet
+        async pushPendingLocalResponsesToGoogleSheet(showToast = false) {
+            let masterList = JSON.parse(localStorage.getItem('temanjiwa_rekap_kuesioner_all') || '[]');
+            let pendingRecords = [];
+
+            // 1. Check master list records that are not from Google Spreadsheet
+            masterList.forEach(rec => {
+                if (rec.source !== 'Google Spreadsheet' && rec.respondent && rec.respondent.name) {
+                    pendingRecords.push(rec);
+                }
+            });
+
+            // 2. Scan all localStorage accounts for completed questionnaires
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith('temanjiwa_app_data_')) {
+                    try {
+                        const raw = localStorage.getItem(key);
+                        const parsed = JSON.parse(raw);
+                        if (parsed && parsed.questionnaire && (parsed.questionnaire.status === 'completed' || Object.keys(parsed.questionnaire.answers || {}).length >= 5)) {
+                            const ans = parsed.questionnaire.answers || {};
+                            const respondentName = (ans['q1'] || (parsed.user && parsed.user.name) || '').trim();
+                            if (respondentName && !['risma elfaryani', 'teman jiwa', 'pengujian sistem otomatis', 'uji webhook temanjiwa'].includes(respondentName.toLowerCase())) {
+                                const alreadyInPending = pendingRecords.some(p => 
+                                    (p.respondent && p.respondent.name.toLowerCase() === respondentName.toLowerCase()) ||
+                                    (p.answers && p.answers['q1'] && p.answers['q1'].toLowerCase() === respondentName.toLowerCase())
+                                );
+                                if (!alreadyInPending) {
+                                    pendingRecords.push({
+                                        id: 'RESP-LOCAL-' + Date.now() + '-' + Math.random().toString(36).substring(2, 6).toUpperCase(),
+                                        submittedAt: parsed.questionnaire.completedAt || new Date().toISOString(),
+                                        submittedFormatted: parsed.questionnaire.completedAt || new Date().toLocaleString('id-ID'),
+                                        respondent: {
+                                            name: respondentName,
+                                            age: Number(ans['q2']) || (parsed.user && parsed.user.age) || null,
+                                            gender: ans['q3'] || '',
+                                            status: ans['q4'] || '',
+                                            accountEmail: (parsed.user && parsed.user.email) || `${respondentName.toLowerCase().replace(/[^a-z0-9]/g, '')}@responden.id`
+                                        },
+                                        answers: { ...ans },
+                                        otherAnswers: parsed.questionnaire.otherAnswers || {}
+                                    });
+                                }
+                            }
+                        }
+                    } catch (err) {}
+                }
+            }
+
+            if (pendingRecords.length === 0) {
+                if (showToast) this.showToast('Semua data kuesioner pada perangkat ini sudah tersinkron dengan Google Spreadsheet.');
+                return;
+            }
+
+            let sentCount = 0;
+            for (const rec of pendingRecords) {
+                const inSheet = masterList.some(m => 
+                    m.source === 'Google Spreadsheet' && 
+                    m.respondent && 
+                    m.respondent.name.toLowerCase().trim() === (rec.respondent.name || '').toLowerCase().trim()
+                );
+
+                if (!inSheet) {
+                    await this.sendResponseToGoogleSheet(rec);
+                    sentCount++;
+                }
+            }
+
+            if (sentCount > 0) {
+                this.showToast(`Berhasil mengirim ${sentCount} data kuesioner adik/saudara ke Google Spreadsheet! 🚀`);
+                setTimeout(() => {
+                    this.syncWithGoogleSheets(false);
+                }, 2500);
+            } else if (showToast) {
+                this.showToast('Data kuesioner adik/saudara sudah ada di Google Spreadsheet.');
+            }
         },
 
         // Export all respondents to exact Google Spreadsheet CSV format

@@ -78,8 +78,8 @@
     <!-- Questionnaire Research Data -->
     <script src="questionnaire-data.js"></script>
 
-    <!-- Application Script -->
-    <script defer src="app.js"></script>
+    <!-- Application Script (Cache-Busted for instant updates) -->
+    <script defer src="app.js?v=2.5"></script>
 
     <!-- Alpine.js & Plugins CDN -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -2540,8 +2540,13 @@
                         </div>
                     </div>
 
-                    <!-- Action Buttons for Data Export -->
+                    <!-- Action Buttons for Data Export & Sync -->
                     <div class="pt-2 border-t border-emerald-200/60 flex items-center gap-2 flex-wrap">
+                        <button type="button" @click="$store.app.pushPendingLocalResponsesToGoogleSheet(true)"
+                                class="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs shadow-xs flex items-center gap-1.5 cursor-pointer">
+                            <i data-lucide="cloud-upload" class="w-3.5 h-3.5"></i>
+                            <span>Upload Data Browser Ini ke Spreadsheet 🚀</span>
+                        </button>
                         <button type="button" @click="$store.app.downloadRekapJson()"
                                 class="px-3 py-1.5 rounded-xl bg-white border border-slate-300 text-slate-800 hover:bg-slate-50 font-semibold text-xs shadow-xs flex items-center gap-1.5">
                             <i data-lucide="download" class="w-3.5 h-3.5 text-emerald-600"></i>
