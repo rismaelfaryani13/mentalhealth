@@ -43,6 +43,16 @@ document.addEventListener('alpine:init', () => {
         devSecretTapCount: 0,
         devSecretTapTimer: null,
 
+        // Google Sheets Integration State
+        googleSheetConfig: {
+            sheetId: '1vjYnoduryaryCUgbzxB93yzRwzezAIHC0DqhahKUkM4',
+            sheetUrl: 'https://docs.google.com/spreadsheets/d/1vjYnoduryaryCUgbzxB93yzRwzezAIHC0DqhahKUkM4/edit?usp=sharing',
+            csvUrl: 'https://docs.google.com/spreadsheets/d/1vjYnoduryaryCUgbzxB93yzRwzezAIHC0DqhahKUkM4/gviz/tq?tqx=out:csv',
+            webAppUrl: localStorage.getItem('temanjiwa_gsheet_webapp_url') || ''
+        },
+        isSyncingGSheet: false,
+        googleSheetInputUrl: localStorage.getItem('temanjiwa_gsheet_webapp_url') || '',
+
         // Auth State
         isLoggedIn: false,
         user: {
@@ -234,6 +244,7 @@ document.addEventListener('alpine:init', () => {
             this.loadFromStorage();
             this.initLucideIcons();
             this.initRealtimeClock();
+            this.syncWithGoogleSheets(false); // Automatically pull live Google Spreadsheet responses
 
             // Register discrete developer keyboard shortcut (Ctrl+Shift+D or Alt+D)
             window.addEventListener('keydown', (e) => {
@@ -2005,7 +2016,10 @@ Pesan Curhat Pengguna: ${promptText}`;
                 // 2. Try sending to server if running on Node / PHP
                 this.sendResponseToServer(record);
 
-                // 3. Trigger download of rekap_kuesioner.json file ONLY if developer
+                // 3. Send response to live Google Spreadsheet
+                this.sendResponseToGoogleSheet(record);
+
+                // 4. Trigger download of rekap_kuesioner.json file ONLY if developer
                 if (this.isDeveloper) {
                     this.downloadRekapJson(record);
                     this.showToast('Kuesioner selesai & data tersimpan di rekap_kuesioner.json! 🎉');
@@ -2102,6 +2116,251 @@ Pesan Curhat Pengguna: ${promptText}`;
             }
         },
 
+        // Helper: Robust CSV parser supporting quotes & newlines inside cells
+        parseCSVToRows(text) {
+            const rows = [];
+            let curRow = [];
+            let curVal = '';
+            let inQuotes = false;
+
+            for (let i = 0; i < text.length; i++) {
+                const c = text[i];
+                if (c === '"') {
+                    if (inQuotes && text[i + 1] === '"') {
+                        curVal += '"';
+                        i++;
+                    } else {
+                        inQuotes = !inQuotes;
+                    }
+                } else if (c === ',' && !inQuotes) {
+                    curRow.push(curVal);
+                    curVal = '';
+                } else if ((c === '\r' || c === '\n') && !inQuotes) {
+                    if (c === '\r' && text[i + 1] === '\n') {
+                        i++;
+                    }
+                    curRow.push(curVal);
+                    curVal = '';
+                    if (curRow.length > 1 || (curRow.length === 1 && curRow[0] !== '')) {
+                        rows.push(curRow);
+                    }
+                    curRow = [];
+                } else {
+                    curVal += c;
+                }
+            }
+            if (curVal !== '' || curRow.length > 0) {
+                curRow.push(curVal);
+                rows.push(curRow);
+            }
+            return rows;
+        },
+
+        // Sync data directly from Google Spreadsheet
+        async syncWithGoogleSheets(showToastNotif = false) {
+            this.isSyncingGSheet = true;
+            try {
+                let masterList = JSON.parse(localStorage.getItem('temanjiwa_rekap_kuesioner_all') || '[]');
+                let fetchedFromSheet = false;
+
+                // 1. Try fetching directly from user's live Google Spreadsheet
+                try {
+                    const csvUrl = (this.googleSheetConfig.csvUrl || 'https://docs.google.com/spreadsheets/d/1vjYnoduryaryCUgbzxB93yzRwzezAIHC0DqhahKUkM4/gviz/tq?tqx=out:csv') + '&t=' + Date.now();
+                    const res = await fetch(csvUrl);
+                    if (res.ok) {
+                        const csvText = await res.text();
+                        const rows = this.parseCSVToRows(csvText);
+                        if (rows && rows.length > 1) {
+                            for (let r = 1; r < rows.length; r++) {
+                                const row = rows[r];
+                                if (!row || row.length < 5 || !row[1]) continue;
+
+                                const timestamp = row[0] || '';
+                                const name = row[1].trim();
+                                const age = parseInt(row[2], 10) || null;
+                                const gender = row[3] ? row[3].trim() : '';
+                                const status = row[4] ? row[4].trim() : '';
+
+                                const answers = {};
+                                answers['q1'] = name;
+                                if (age) answers['q2'] = age.toString();
+                                answers['q3'] = gender;
+                                answers['q4'] = status;
+
+                                for (let qNum = 5; qNum <= 67; qNum++) {
+                                    answers['q' + qNum] = (row[qNum] !== undefined ? row[qNum].trim() : '');
+                                }
+
+                                const respId = 'RESP-GSheet-' + r.toString().padStart(3, '0');
+                                const existingIdx = masterList.findIndex(item => 
+                                    (item.respondent && item.respondent.name.toLowerCase() === name.toLowerCase() && item.submittedAt === timestamp) ||
+                                    item.id === respId
+                                );
+
+                                const recordObj = {
+                                    id: respId,
+                                    source: 'Google Spreadsheet',
+                                    submittedAt: timestamp,
+                                    submittedFormatted: timestamp,
+                                    respondent: {
+                                        name: name,
+                                        age: age,
+                                        gender: gender,
+                                        status: status,
+                                        accountEmail: `${name.toLowerCase().replace(/[^a-z0-9]/g, '')}@responden.id`
+                                    },
+                                    answers: answers,
+                                    otherAnswers: {}
+                                };
+
+                                if (existingIdx >= 0) {
+                                    masterList[existingIdx] = { ...masterList[existingIdx], ...recordObj };
+                                } else {
+                                    masterList.push(recordObj);
+                                }
+                            }
+                            fetchedFromSheet = true;
+                        }
+                    }
+                } catch (csvErr) {
+                    console.info('GSheet live fetch note:', csvErr.message);
+                }
+
+                // 2. Synchronize with bundled/static rekap_kuesioner.json (contains archived Google Sheets data)
+                try {
+                    const res = await fetch('./rekap_kuesioner.json?t=' + Date.now());
+                    if (res.ok) {
+                        const serverData = await res.json();
+                        if (serverData && Array.isArray(serverData.responses)) {
+                            serverData.responses.forEach(sResp => {
+                                const exists = masterList.some(r => 
+                                    r.id === sResp.id || 
+                                    (r.respondent && sResp.respondent && r.respondent.name.toLowerCase() === sResp.respondent.name.toLowerCase() && r.submittedAt === sResp.submittedAt)
+                                );
+                                if (!exists) {
+                                    masterList.push(sResp);
+                                }
+                            });
+                        }
+                    }
+                } catch (jsonErr) {}
+
+                localStorage.setItem('temanjiwa_rekap_kuesioner_all', JSON.stringify(masterList));
+                if (showToastNotif) {
+                    this.showToast(`Sinkronisasi selesai! ${masterList.length} responden terkumpul dari Google Spreadsheet 📊`);
+                }
+                setTimeout(() => this.initLucideIcons(), 50);
+                return masterList;
+            } finally {
+                this.isSyncingGSheet = false;
+            }
+        },
+
+        // Send newly answered questionnaire to Google Spreadsheet (Apps Script Webhook)
+        async sendResponseToGoogleSheet(record) {
+            const webAppUrl = this.googleSheetConfig.webAppUrl || localStorage.getItem('temanjiwa_gsheet_webapp_url');
+            if (!webAppUrl || !webAppUrl.trim()) {
+                console.info('Google Apps Script Webhook belum dikonfigurasi. Data diarsipkan secara lokal dan siap diekspor.');
+                return false;
+            }
+
+            try {
+                // Use no-cors mode for Google Apps Script redirects
+                await fetch(webAppUrl.trim(), {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(record)
+                });
+                console.info('Response dispatched to Google Apps Script Webhook successfully');
+                return true;
+            } catch (err) {
+                console.warn('Gagal mengirim ke Google Apps Script Webhook:', err.message);
+                return false;
+            }
+        },
+
+        saveGoogleWebAppUrl() {
+            const url = (this.googleSheetInputUrl || '').trim();
+            if (!url) {
+                localStorage.removeItem('temanjiwa_gsheet_webapp_url');
+                this.googleSheetConfig.webAppUrl = '';
+                this.showToast('URL Google Apps Script direset.');
+                return;
+            }
+            localStorage.setItem('temanjiwa_gsheet_webapp_url', url);
+            this.googleSheetConfig.webAppUrl = url;
+            this.showToast('URL Google Apps Script berhasil disimpan! 🚀');
+        },
+
+        openGoogleSpreadsheet() {
+            window.open(this.googleSheetConfig.sheetUrl, '_blank');
+        },
+
+        // Export all respondents to exact Google Spreadsheet CSV format
+        exportToCsv() {
+            if (!this.isDeveloper) {
+                this.handleSecretDevTrigger();
+                return;
+            }
+            try {
+                const masterList = JSON.parse(localStorage.getItem('temanjiwa_rekap_kuesioner_all') || '[]');
+                if (masterList.length === 0) {
+                    this.showToast('Belum ada data kuesioner untuk diekspor');
+                    return;
+                }
+
+                // Build header
+                const headers = ["Timestamp", "Nama", "Usia", "Jenis Kelamin", "Status (Kerja, Kuliah, dan Sekolah)"];
+                if (window.TEMANJIWA_QUESTIONNAIRE && Array.isArray(window.TEMANJIWA_QUESTIONNAIRE.sections)) {
+                    for (const sec of window.TEMANJIWA_QUESTIONNAIRE.sections) {
+                        for (const q of sec.questions) {
+                            if (q.number >= 5 && q.number <= 67) {
+                                headers.push(q.text.replace(/[\r\n]+/g, ' '));
+                            }
+                        }
+                    }
+                } else {
+                    for (let i = 5; i <= 67; i++) headers.push(`Pertanyaan ${i}`);
+                }
+
+                const csvLines = [headers.map(h => `"${h.replace(/"/g, '""')}"`).join(',')];
+
+                masterList.forEach(item => {
+                    const resp = item.respondent || {};
+                    const ans = item.answers || {};
+                    const row = [
+                        item.submittedFormatted || item.submittedAt || new Date().toLocaleString('id-ID'),
+                        resp.name || ans['q1'] || '',
+                        resp.age || ans['q2'] || '',
+                        resp.gender || ans['q3'] || '',
+                        resp.status || ans['q4'] || ''
+                    ];
+
+                    for (let qNum = 5; qNum <= 67; qNum++) {
+                        row.push(ans['q' + qNum] !== undefined ? ans['q' + qNum] : '');
+                    }
+
+                    csvLines.push(row.map(val => `"${String(val).replace(/"/g, '""')}"`).join(','));
+                });
+
+                const csvContent = "\uFEFF" + csvLines.join("\r\n"); // UTF-8 BOM
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `rekap_kuesioner_google_sheets_${Date.now()}.csv`;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                URL.revokeObjectURL(url);
+                this.showToast(`Berhasil mengekspor format Google Sheets (${masterList.length} baris)! 📄`);
+            } catch (err) {
+                console.error('Gagal mengekspor CSV:', err);
+                this.showToast('Gagal mengekspor CSV');
+            }
+        },
+
         buildQuestionnaireRecord() {
             const respId = 'RESP-' + Date.now() + '-' + Math.random().toString(36).substring(2, 7).toUpperCase();
             const respondentName = (this.questionnaireAnswers['q1'] || this.user.name || 'Responden').trim();
@@ -2169,24 +2428,10 @@ Pesan Curhat Pengguna: ${promptText}`;
                 return;
             }
             try {
-                let masterList = JSON.parse(localStorage.getItem('temanjiwa_rekap_kuesioner_all') || '[]');
-
-                // Synchronize with server file if reachable
-                try {
-                    const res = await fetch('./rekap_kuesioner.json?t=' + Date.now());
-                    if (res.ok) {
-                        const serverData = await res.json();
-                        if (serverData && Array.isArray(serverData.responses)) {
-                            serverData.responses.forEach(sResp => {
-                                if (!masterList.some(r => r.id === sResp.id)) {
-                                    masterList.push(sResp);
-                                }
-                            });
-                            localStorage.setItem('temanjiwa_rekap_kuesioner_all', JSON.stringify(masterList));
-                        }
-                    }
-                } catch (fetchErr) {
-                    // Running on static hosting like GitHub Pages
+                // Ensure synchronization first
+                let masterList = await this.syncWithGoogleSheets(false);
+                if (!masterList) {
+                    masterList = JSON.parse(localStorage.getItem('temanjiwa_rekap_kuesioner_all') || '[]');
                 }
 
                 if (singleRecord && !masterList.some(r => r.id === singleRecord.id)) {
@@ -2200,6 +2445,7 @@ Pesan Curhat Pengguna: ${promptText}`;
                     institution: "STMIK IKMI Cirebon",
                     program: "Program Studi Sistem Informasi",
                     targetGroup: "Generasi Z",
+                    spreadsheetUrl: this.googleSheetConfig.sheetUrl,
                     totalQuestions: 67,
                     totalResponses: masterList.length,
                     exportedAt: new Date().toISOString(),
@@ -2235,6 +2481,7 @@ Pesan Curhat Pengguna: ${promptText}`;
                     institution: "STMIK IKMI Cirebon",
                     program: "Program Studi Sistem Informasi",
                     targetGroup: "Generasi Z",
+                    spreadsheetUrl: this.googleSheetConfig.sheetUrl,
                     totalQuestions: 67,
                     totalResponses: masterList.length,
                     exportedAt: new Date().toISOString(),
