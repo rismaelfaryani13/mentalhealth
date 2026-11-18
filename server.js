@@ -31,7 +31,7 @@ const server = http.createServer((req, res) => {
                     institution: "STMIK IKMI Cirebon",
                     program: "Program Studi Sistem Informasi",
                     targetGroup: "Generasi Z",
-                    totalQuestions: 67,
+                    totalQuestions: 61,
                     totalResponses: 0,
                     lastUpdated: null,
                     responses: []

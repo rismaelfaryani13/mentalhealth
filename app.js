@@ -895,7 +895,7 @@ Pesan Curhat Pengguna: ${promptText}`;
                     this.questionnaireSessionActive = true;
                     this.questionnaireCurrentSection = 0;
                     this.saveToStorage();
-                    this.showToast('Sesi Kuesioner Wajib Dimulai. Silakan lengkapi 67 pertanyaan penelitian 📋');
+                    this.showToast('Sesi Kuesioner Wajib Dimulai. Silakan lengkapi 61 pertanyaan penelitian 📋');
                 } else if (this.questionnaireStatus === 'in_progress') {
                     this.questionnaireSessionActive = true;
                 }
@@ -1777,7 +1777,7 @@ Pesan Curhat Pengguna: ${promptText}`;
         },
 
         // ==========================================
-        // RESEARCH QUESTIONNAIRE METHODS (67 QUESTIONS)
+        // RESEARCH QUESTIONNAIRE METHODS (61 QUESTIONS)
         // ==========================================
         openQuestionnaire() {
             if (!this.isLoggedIn) {
@@ -1842,6 +1842,10 @@ Pesan Curhat Pengguna: ${promptText}`;
                 return ['1', '2', '3', '4', '5'].includes(String(ans));
             }
 
+            if (q.type === 'ueq7') {
+                return ['1', '2', '3', '4', '5', '6', '7'].includes(String(ans));
+            }
+
             return false;
         },
 
@@ -1865,7 +1869,7 @@ Pesan Curhat Pengguna: ${promptText}`;
 
         updateQuestionnaireProgress() {
             const answered = this.getTotalAnsweredCount();
-            const total = window.TEMANJIWA_QUESTIONNAIRE ? window.TEMANJIWA_QUESTIONNAIRE.metadata.totalQuestions : 67;
+            const total = window.TEMANJIWA_QUESTIONNAIRE ? window.TEMANJIWA_QUESTIONNAIRE.metadata.totalQuestions : 61;
             this.questionnaireProgress = Math.min(100, Math.round((answered / total) * 100));
             // Ensure 100% is only shown when every single question is valid
             if (answered < total && this.questionnaireProgress >= 100) {
@@ -1904,7 +1908,7 @@ Pesan Curhat Pengguna: ${promptText}`;
         },
 
         nextQuestionnaireSection() {
-            if (this.questionnaireCurrentSection >= 8) {
+            if (this.questionnaireCurrentSection >= window.TEMANJIWA_QUESTIONNAIRE.sections.length) {
                 this.goToQuestionnaireSection(0);
                 return;
             }
@@ -1995,9 +1999,9 @@ Pesan Curhat Pengguna: ${promptText}`;
                 return;
             }
 
-            // All 67 questions are strictly validated & answered
+            // All 61 questions are strictly validated & answered
             this.questionnaireSaving = true;
-            this.triggerLoading('Menyimpan Hasil Kuesioner...', 'Memverifikasi dan mengarsipkan 67 jawaban ke rekap_kuesioner.json', 1200, async () => {
+            this.triggerLoading('Menyimpan Hasil Kuesioner...', 'Memverifikasi dan mengarsipkan 61 jawaban ke rekap_kuesioner.json', 1200, async () => {
                 this.questionnaireStatus = 'completed';
                 this.questionnaireSessionActive = false; // RELEASE NAVIGATION GUARD!
                 this.questionnaireSaving = false;
@@ -2188,7 +2192,7 @@ Pesan Curhat Pengguna: ${promptText}`;
                                 answers['q3'] = gender;
                                 answers['q4'] = status;
 
-                                for (let qNum = 5; qNum <= 67; qNum++) {
+                                for (let qNum = 5; qNum <= 61; qNum++) {
                                     answers['q' + qNum] = (row[qNum] !== undefined ? row[qNum].trim() : '');
                                 }
 
@@ -2398,13 +2402,13 @@ Pesan Curhat Pengguna: ${promptText}`;
                 if (window.TEMANJIWA_QUESTIONNAIRE && Array.isArray(window.TEMANJIWA_QUESTIONNAIRE.sections)) {
                     for (const sec of window.TEMANJIWA_QUESTIONNAIRE.sections) {
                         for (const q of sec.questions) {
-                            if (q.number >= 5 && q.number <= 67) {
+                            if (q.number >= 5 && q.number <= 61) {
                                 headers.push(q.text.replace(/[\r\n]+/g, ' '));
                             }
                         }
                     }
                 } else {
-                    for (let i = 5; i <= 67; i++) headers.push(`Pertanyaan ${i}`);
+                    for (let i = 5; i <= 61; i++) headers.push(`Pertanyaan ${i}`);
                 }
 
                 const csvLines = [headers.map(h => `"${h.replace(/"/g, '""')}"`).join(',')];
@@ -2420,7 +2424,7 @@ Pesan Curhat Pengguna: ${promptText}`;
                         resp.status || ans['q4'] || ''
                     ];
 
-                    for (let qNum = 5; qNum <= 67; qNum++) {
+                    for (let qNum = 5; qNum <= 61; qNum++) {
                         row.push(ans['q' + qNum] !== undefined ? ans['q' + qNum] : '');
                     }
 
@@ -2444,6 +2448,48 @@ Pesan Curhat Pengguna: ${promptText}`;
             }
         },
 
+        calculateSusScore() {
+            let oddTotal = 0;
+            let evenTotal = 0;
+            for (let item = 1; item <= 10; item++) {
+                const value = Number(this.questionnaireAnswers['q' + (14 + item)]) || 0;
+                if (item % 2 === 1) oddTotal += value;
+                else evenTotal += value;
+            }
+            if (!oddTotal || !evenTotal) return null;
+            return ((oddTotal - 5) + (25 - evenTotal)) * 2.5;
+        },
+
+        calculateUeqScores() {
+            const dimensions = {
+                Attractiveness: [],
+                Perspicuity: [],
+                Efficiency: [],
+                Dependability: [],
+                Stimulation: [],
+                Novelty: []
+            };
+
+            if (!window.TEMANJIWA_QUESTIONNAIRE) return dimensions;
+            const ueqSection = window.TEMANJIWA_QUESTIONNAIRE.sections.find(sec => sec.id === 'ueq');
+            if (!ueqSection) return dimensions;
+
+            ueqSection.questions.forEach(q => {
+                const value = Number(this.questionnaireAnswers[q.id]);
+                if (!value) return;
+                const converted = q.reverse ? (4 - value) : (value - 4);
+                dimensions[q.dimension].push(converted);
+            });
+
+            Object.keys(dimensions).forEach(dimension => {
+                const values = dimensions[dimension];
+                dimensions[dimension] = values.length
+                    ? Number((values.reduce((sum, value) => sum + value, 0) / values.length).toFixed(3))
+                    : null;
+            });
+            return dimensions;
+        },
+
         buildQuestionnaireRecord() {
             const respId = 'RESP-' + Date.now() + '-' + Math.random().toString(36).substring(2, 7).toUpperCase();
             const respondentName = (this.questionnaireAnswers['q1'] || this.user.name || 'Responden').trim();
@@ -2465,7 +2511,11 @@ Pesan Curhat Pengguna: ${promptText}`;
                     accountEmail: this.user ? this.user.email : 'user@temanjiwa.id'
                 },
                 answers: { ...this.questionnaireAnswers },
-                otherAnswers: { ...this.questionnaireOtherAnswers }
+                otherAnswers: { ...this.questionnaireOtherAnswers },
+                scores: {
+                    sus: this.calculateSusScore(),
+                    ueq: this.calculateUeqScores()
+                }
             };
         },
 
@@ -2529,7 +2579,7 @@ Pesan Curhat Pengguna: ${promptText}`;
                     program: "Program Studi Sistem Informasi",
                     targetGroup: "Generasi Z",
                     spreadsheetUrl: this.googleSheetConfig.sheetUrl,
-                    totalQuestions: 67,
+                    totalQuestions: 61,
                     totalResponses: masterList.length,
                     exportedAt: new Date().toISOString(),
                     exportedFormatted: new Date().toLocaleString('id-ID'),
@@ -2565,7 +2615,7 @@ Pesan Curhat Pengguna: ${promptText}`;
                     program: "Program Studi Sistem Informasi",
                     targetGroup: "Generasi Z",
                     spreadsheetUrl: this.googleSheetConfig.sheetUrl,
-                    totalQuestions: 67,
+                    totalQuestions: 61,
                     totalResponses: masterList.length,
                     exportedAt: new Date().toISOString(),
                     responses: masterList

@@ -498,7 +498,7 @@
                                 <h3 class="text-base sm:text-lg font-extrabold text-white">Rekap Kuesioner Penelitian & Google Spreadsheet</h3>
                                 <p class="text-xs text-emerald-100 mt-0.5">
                                     Tersinkron: <a href="https://docs.google.com/spreadsheets/d/1vjYnoduryaryCUgbzxB93yzRwzezAIHC0DqhahKUkM4/edit?usp=sharing" target="_blank" class="underline font-bold text-white hover:text-emerald-200">Google Spreadsheet Skripsi</a> • 
-                                    <span class="font-bold underline" x-text="$store.app.getMasterRekapCount() + ' Responden Lengkap (67 Pertanyaan)'"></span>
+                                    <span class="font-bold underline" x-text="$store.app.getMasterRekapCount() + ' Responden Lengkap (61 Pertanyaan)'"></span>
                                 </p>
                             </div>
                         </div>
@@ -546,8 +546,8 @@
                                 <p class="text-xs text-[#64748B] mt-1 max-w-lg leading-relaxed">
                                     Penelitian skripsi oleh <strong>Risma Elfaryani</strong>.
                                     <span x-show="$store.app.questionnaireStatus === 'not_started'">Bebas diisi kapan saja melalui tombol di samping atau menu navbar Kuesioner.</span>
-                                    <span x-show="$store.app.questionnaireStatus === 'in_progress'">Progres tersimpan. Lengkapi 67 pertanyaan untuk menyelesaikan.</span>
-                                    <span x-show="$store.app.questionnaireStatus === 'completed'">Terima kasih! Anda telah melengkapi seluruh 67 pertanyaan instrumen penelitian.</span>
+                                    <span x-show="$store.app.questionnaireStatus === 'in_progress'">Progres tersimpan. Lengkapi 61 pertanyaan untuk menyelesaikan.</span>
+                                    <span x-show="$store.app.questionnaireStatus === 'completed'">Terima kasih! Anda telah melengkapi seluruh 61 pertanyaan instrumen penelitian.</span>
                                 </p>
                             </div>
                         </div>
@@ -1812,7 +1812,7 @@
                 </form>
             </section>
 
-            <!-- 23. MANDATORY RESEARCH QUESTIONNAIRE SCREEN (67 QUESTIONS) -->
+            <!-- 23. MANDATORY RESEARCH QUESTIONNAIRE SCREEN (61 QUESTIONS) -->
             <section x-show="$store.app.currentScreen === 'questionnaire'"
                      x-transition:enter="transition ease-out duration-300"
                      class="space-y-6 max-w-3xl mx-auto w-full pb-12">
@@ -1831,7 +1831,7 @@
                             Terima Kasih Atas Partisipasi Anda!
                         </h2>
                         <p class="text-xs sm:text-sm text-[#64748B] max-w-lg mx-auto leading-relaxed mb-4">
-                            Seluruh 67 pertanyaan instrumen penelitian skripsi berjudul <em>"Analisis UI/UX Mental Health Tracker untuk Generasi Z Menggunakan Metode Design Thinking"</em> telah lengkap dan tersimpan aman di akun Anda.
+                            Seluruh 61 pertanyaan instrumen penelitian skripsi berjudul <em>"Analisis UI/UX Mental Health Tracker untuk Generasi Z Menggunakan Metode Design Thinking"</em> telah lengkap dan tersimpan aman di akun Anda.
                         </p>
                         <div class="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-white border border-emerald-200 text-xs font-medium text-[#1E293B] shadow-xs">
                             <i data-lucide="clock" class="w-4 h-4 text-emerald-600"></i>
@@ -1853,7 +1853,7 @@
                                         <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">Akses Khusus Pengembang</span>
                                     </h4>
                                     <p class="text-xs text-[#64748B] mt-0.5">
-                                        Seluruh 67 jawaban terstruktur telah diarsipkan dan dapat diunduh untuk kebutuhan pengolahan data skripsi.
+                                        Seluruh 61 jawaban terstruktur telah diarsipkan dan dapat diunduh untuk kebutuhan pengolahan data skripsi.
                                     </p>
                                 </div>
                             </div>
@@ -1898,7 +1898,7 @@
                                     <div class="py-3">
                                         <div class="font-bold text-[#1E293B] mb-2 flex items-center justify-between">
                                             <span x-text="sec.badge + ': ' + sec.title"></span>
-                                            <span class="text-[10px] text-emerald-600 font-semibold">67 Pertanyaan Selesai</span>
+                                            <span class="text-[10px] text-emerald-600 font-semibold">61 Pertanyaan Selesai</span>
                                         </div>
                                         <div class="space-y-1.5 pl-2 border-l-2 border-[#A8C5FF]/40">
                                             <template x-for="q in sec.questions" :key="q.id">
@@ -1960,7 +1960,7 @@
                         <div class="flex items-center justify-between text-xs font-bold text-[#1E293B]">
                             <span class="flex items-center gap-1.5">
                                 <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                                <span x-text="'Pertanyaan Terjawab: ' + $store.app.getTotalAnsweredCount() + ' dari 67'"></span>
+                                <span x-text="'Pertanyaan Terjawab: ' + $store.app.getTotalAnsweredCount() + ' dari 61'"></span>
                             </span>
                             <span class="px-2.5 py-0.5 rounded-full bg-[#A8C5FF]/30 text-[#1E293B] text-[11px]"
                                   x-text="$store.app.questionnaireProgress + '% Selesai'"></span>
@@ -1984,16 +1984,16 @@
                                 </button>
                             </template>
                             <button type="button"
-                                    @click="$store.app.goToQuestionnaireSection(8)"
+                                    @click="$store.app.goToQuestionnaireSection(6)"
                                     class="px-3 py-1.5 rounded-xl text-[11px] font-semibold shrink-0 transition-all flex items-center gap-1.5"
-                                    :class="$store.app.questionnaireCurrentSection === 8 ? 'bg-[#568BFF] text-white shadow-xs' : 'bg-[#F8FAFD] text-[#64748B] border border-[#E9EEF7] hover:bg-white'">
+                                    :class="$store.app.questionnaireCurrentSection === 6 ? 'bg-[#568BFF] text-white shadow-xs' : 'bg-[#F8FAFD] text-[#64748B] border border-[#E9EEF7] hover:bg-white'">
                                 <span>Ringkasan</span>
-                                <span x-show="$store.app.getTotalAnsweredCount() === 67" class="text-[10px]">✓</span>
+                                <span x-show="$store.app.getTotalAnsweredCount() === 61" class="text-[10px]">✓</span>
                             </button>
                         </div>
                     </div>
 
-                    <!-- DYNAMIC QUESTIONS SECTIONS (0 TO 7) -->
+                    <!-- DYNAMIC QUESTIONNAIRE SECTIONS -->
                     <template x-for="(sec, secIdx) in window.TEMANJIWA_QUESTIONNAIRE.sections" :key="sec.id">
                         <div x-show="$store.app.questionnaireCurrentSection === secIdx" class="space-y-6">
 
@@ -2134,6 +2134,22 @@
                                             </div>
                                         </div>
 
+                                        <!-- INPUT TYPE: UEQ 7-POINT SEMANTIC DIFFERENTIAL -->
+                                        <div x-show="q.type === 'ueq7'" class="pt-2">
+                                            <div class="grid grid-cols-[minmax(0,1fr)_repeat(7,minmax(28px,40px))_minmax(0,1fr)] items-center gap-1.5 sm:gap-2">
+                                                <span class="text-[10px] sm:text-xs font-semibold text-right text-[#475569]" x-text="q.left"></span>
+                                                <template x-for="scale in window.TEMANJIWA_QUESTIONNAIRE.ueqScale" :key="scale.value">
+                                                    <button type="button"
+                                                            @click="$store.app.setQuestionnaireAnswer(q.id, scale.value)"
+                                                            class="h-9 sm:h-10 rounded-xl border text-xs font-bold transition-all"
+                                                            :class="$store.app.getQuestionnaireAnswer(q.id) === scale.value ? 'bg-[#568BFF] border-[#568BFF] text-white ring-2 ring-[#A8C5FF] shadow-sm' : 'bg-white border-[#CBD5E1] text-[#64748B] hover:border-[#568BFF] hover:bg-[#F0F5FF]'"
+                                                            x-text="scale.value">
+                                                    </button>
+                                                </template>
+                                                <span class="text-[10px] sm:text-xs font-semibold text-left text-[#475569]" x-text="q.right"></span>
+                                            </div>
+                                        </div>
+
                                         <!-- INPUT TYPE: TEXTAREA (QUALITATIVE FEEDBACK) -->
                                         <div x-show="q.type === 'textarea'" class="pt-1">
                                             <textarea rows="3"
@@ -2150,8 +2166,8 @@
                         </div>
                     </template>
 
-                    <!-- SECTION 8: RINGKASAN & VERIFIKASI AKHIR SEBELUM SUBMIT -->
-                    <div x-show="$store.app.questionnaireCurrentSection === 8" class="space-y-6">
+                    <!-- RINGKASAN & VERIFIKASI AKHIR SEBELUM SUBMIT -->
+                    <div x-show="$store.app.questionnaireCurrentSection === 6" class="space-y-6">
                         <div class="p-6 rounded-3xl bg-white border border-[#E9EEF7] shadow-soft space-y-4">
                             <div class="flex items-center gap-2">
                                 <span class="px-3 py-1 rounded-full bg-[#A8C5FF]/30 text-[#1E293B] text-xs font-bold">
@@ -2160,10 +2176,10 @@
                             </div>
                             <h3 class="text-xl font-extrabold text-[#1E293B]">Ringkasan Kelengkapan Instrumen Penelitian</h3>
                             <p class="text-xs text-[#64748B] leading-relaxed">
-                                Pastikan seluruh 8 bagian telah terisi lengkap. Anda dapat mengeklik tombol pada masing-masing bagian untuk memeriksa kembali jawaban Anda sebelum mengirimkannya secara permanen.
+                                Pastikan seluruh bagian telah terisi lengkap. Anda dapat mengeklik tombol pada masing-masing bagian untuk memeriksa kembali jawaban Anda sebelum mengirimkannya secara permanen.
                             </p>
 
-                            <!-- Breakdown of 8 sections -->
+                            <!-- Breakdown of questionnaire sections -->
                             <div class="space-y-2.5 pt-2">
                                 <template x-for="(sec, idx) in window.TEMANJIWA_QUESTIONNAIRE.sections" :key="sec.id">
                                     <div class="p-3.5 rounded-2xl border flex items-center justify-between gap-3 transition-all"
@@ -2193,20 +2209,20 @@
 
                             <!-- Final Summary Alert -->
                             <div class="pt-4 border-t border-[#E9EEF7]">
-                                <div x-show="$store.app.getTotalAnsweredCount() === 67"
+                                <div x-show="$store.app.getTotalAnsweredCount() === 61"
                                      class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs flex items-center gap-2.5 mb-4">
                                     <span class="text-lg">🎉</span>
-                                    <span><strong>Sempurna!</strong> Seluruh 67 pertanyaan telah lengkap dijawab. Silakan klik tombol di bawah untuk menyelesaikan kuesioner.</span>
+                                    <span><strong>Sempurna!</strong> Seluruh 61 pertanyaan telah lengkap dijawab. Silakan klik tombol di bawah untuk menyelesaikan kuesioner.</span>
                                 </div>
 
-                                <div x-show="$store.app.getTotalAnsweredCount() < 67"
+                                <div x-show="$store.app.getTotalAnsweredCount() < 61"
                                      class="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs flex items-center gap-2.5 mb-4">
                                     <span class="text-lg">⚠️</span>
-                                    <span x-text="'Masih ada ' + (67 - $store.app.getTotalAnsweredCount()) + ' pertanyaan wajib yang belum dijawab. Lengkapi terlebih dahulu untuk dapat menyelesaikan kuesioner.'"></span>
+                                    <span x-text="'Masih ada ' + (61 - $store.app.getTotalAnsweredCount()) + ' pertanyaan wajib yang belum dijawab. Lengkapi terlebih dahulu untuk dapat menyelesaikan kuesioner.'"></span>
                                 </div>
 
                                 <button @click="$store.app.submitQuestionnaire()"
-                                        :disabled="$store.app.questionnaireSaving || $store.app.getTotalAnsweredCount() < 67"
+                                        :disabled="$store.app.questionnaireSaving || $store.app.getTotalAnsweredCount() < 61"
                                         class="w-full py-4 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white font-bold text-sm shadow-lg shadow-[#A8C5FF]/40 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2">
                                     <span x-show="!$store.app.questionnaireSaving" class="flex items-center gap-2">
                                         <i data-lucide="check-circle" class="w-5 h-5"></i>
@@ -2234,15 +2250,15 @@
 
                         <div class="text-center">
                             <span class="text-xs font-bold text-[#1E293B] block"
-                                  x-text="'Bagian ' + ($store.app.questionnaireCurrentSection + 1) + ' dari 9'"></span>
+                                  x-text="'Bagian ' + ($store.app.questionnaireCurrentSection + 1) + ' dari ' + (window.TEMANJIWA_QUESTIONNAIRE.sections.length + 1)"></span>
                             <span class="text-[10px] text-[#64748B]"
-                                  x-text="$store.app.questionnaireCurrentSection === 8 ? 'Verifikasi' : window.TEMANJIWA_QUESTIONNAIRE.sections[$store.app.questionnaireCurrentSection]?.badge"></span>
+                                  x-text="$store.app.questionnaireCurrentSection === 6 ? 'Verifikasi' : window.TEMANJIWA_QUESTIONNAIRE.sections[$store.app.questionnaireCurrentSection]?.badge"></span>
                         </div>
 
                         <button type="button"
                                 @click="$store.app.nextQuestionnaireSection()"
                                 class="px-5 py-2.5 rounded-full bg-gradient-to-r from-[#A8C5FF] to-[#7FA8FF] text-white text-xs font-bold shadow-md shadow-[#A8C5FF]/30 hover:scale-105 active:scale-95 transition-all flex items-center gap-1.5">
-                            <span x-text="$store.app.questionnaireCurrentSection === 7 ? 'Tinjau Ringkasan' : ($store.app.questionnaireCurrentSection === 8 ? 'Ke Bagian 1' : 'Lanjut')"></span>
+                            <span x-text="$store.app.questionnaireCurrentSection === 5 ? 'Tinjau Ringkasan' : ($store.app.questionnaireCurrentSection === 6 ? 'Ke Bagian 1' : 'Lanjut')"></span>
                             <i data-lucide="chevron-right" class="w-4 h-4"></i>
                         </button>
                     </div>
@@ -2520,7 +2536,7 @@
                             </div>
                             <div class="text-2xl font-black text-emerald-950 flex items-baseline gap-2 mt-1">
                                 <span x-text="$store.app.getMasterRekapCount()"></span>
-                                <span class="text-xs font-semibold text-emerald-700">Responden Terverifikasi (67 Pertanyaan)</span>
+                                <span class="text-xs font-semibold text-emerald-700">Responden Terverifikasi (61 Pertanyaan)</span>
                             </div>
                             <p class="text-[11px] text-slate-600 mt-0.5 truncate max-w-md">
                                 URL: <a href="https://docs.google.com/spreadsheets/d/1vjYnoduryaryCUgbzxB93yzRwzezAIHC0DqhahKUkM4/edit?usp=sharing" target="_blank" class="text-emerald-700 underline font-semibold hover:text-emerald-900">docs.google.com/spreadsheets/...</a>
@@ -2617,7 +2633,7 @@
                                 </div>
                             </div>
                             <div class="text-right">
-                                <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-bold">67 Jawaban Lengkap</span>
+                                <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-bold">61 Jawaban Lengkap</span>
                                 <div class="text-[10px] text-slate-400 mt-1" x-text="resp.submittedFormatted || (resp.submittedAt ? new Date(resp.submittedAt).toLocaleDateString('id-ID') : '-')"></div>
                             </div>
                         </div>

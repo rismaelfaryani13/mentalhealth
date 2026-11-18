@@ -41,8 +41,8 @@ function doPost(e) {
       answers['q4'] || respondent.status || ''
     ];
     
-    // Masukkan jawaban pertanyaan q5 sampai q67
-    for (var i = 5; i <= 67; i++) {
+    // Masukkan jawaban pertanyaan q5 sampai q61
+    for (var i = 5; i <= 61; i++) {
       var key = 'q' + i;
       row.push(answers[key] !== undefined ? answers[key] : '');
     }
