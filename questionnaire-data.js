@@ -2,17 +2,13 @@
  * TemanJiwa - Master Instrument Kuesioner Penelitian
  * Skripsi: "Analisis UI/UX Mental Health Tracker untuk Generasi Z Menggunakan Metode Design Thinking"
  * Peneliti: Risma Elfaryani (Program Studi Sistem Informasi STMIK IKMI Cirebon)
- * 
- * Total Pertanyaan: 67 Pertanyaan (Semua Wajib Diisi)
+ *
  * Struktur:
- * - Identitas Responden (Q1 - Q4)
- * - Bagian A: Kondisi Responden Sebelum Menggunakan Aplikasi (Q5 - Q14)
- * - Bagian B: Penilaian Desain Antarmuka (User Interface Design) (Q15 - Q24) [Likert 1-5]
- * - Bagian C: Kemudahan Penggunaan (Usability) (Q25 - Q34) [Likert 1-5]
- * - Bagian D: Penilaian Fitur Aplikasi (Q35 - Q49) [Likert 1-5]
- * - Bagian E: Pengalaman Pengguna (User Experience) (Q50 - Q57) [Likert 1-5]
- * - Bagian F: Kepuasan Pengguna (Q58 - Q62) [Likert 1-5]
- * - Bagian G: Kritik dan Saran (Q63 - Q67) [Kualitatif / Refleksi]
+ * - Identitas & Kebiasaan Awal (Q1-Q14)
+ * - Bagian A: SUS Usability (Q15-Q24)
+ * - Bagian B: UEQ (Q25-Q50)
+ * - Bagian C: Evaluasi Per Fitur (Q51-Q56)
+ * - Bagian D: Pertanyaan Terbuka (Q57-Q61)
  */
 
 window.TEMANJIWA_QUESTIONNAIRE = {
@@ -22,10 +18,10 @@ window.TEMANJIWA_QUESTIONNAIRE = {
         institution: "STMIK IKMI Cirebon",
         program: "Program Studi Sistem Informasi",
         targetGroup: "Generasi Z",
-        estimatedTime: "5–10 menit",
-        introduction: "Penelitian ini bertujuan untuk mengetahui pengalaman pengguna (User Experience) serta mengevaluasi kemudahan penggunaan, tampilan antarmuka, dan manfaat fitur-fitur yang terdapat pada aplikasi Mental Health Tracker. Hasil dari penelitian ini akan digunakan sebagai dasar dalam memberikan rekomendasi perbaikan desain antarmuka dan pengalaman pengguna agar aplikasi lebih sesuai dengan kebutuhan Generasi Z.",
-        privacyNote: "Partisipasi Anda dalam mengisi kuesioner ini sangat berarti bagi keberhasilan penelitian. Seluruh jawaban yang diberikan akan dijaga kerahasiaannya dan hanya digunakan untuk kepentingan akademik. Tidak ada jawaban yang benar maupun salah; oleh karena itu, diharapkan Anda dapat memberikan jawaban yang jujur sesuai dengan pengalaman selama menggunakan aplikasi.",
-        totalQuestions: 67
+        estimatedTime: "8-12 menit",
+        introduction: "Penelitian ini bertujuan untuk mengetahui pengalaman pengguna serta mengevaluasi kemudahan penggunaan dan manfaat fitur-fitur pada aplikasi Mental Health Tracker dengan instrumen SUS dan UEQ.",
+        privacyNote: "Seluruh jawaban akan dijaga kerahasiaannya dan hanya digunakan untuk kepentingan akademik.",
+        totalQuestions: 61
     },
     likertScale: [
         { value: "1", label: "Sangat Tidak Setuju", short: "STS", color: "#FCA5A5", border: "#F87171" },
@@ -34,298 +30,126 @@ window.TEMANJIWA_QUESTIONNAIRE = {
         { value: "4", label: "Setuju", short: "S", color: "#BBF7D0", border: "#4ADE80" },
         { value: "5", label: "Sangat Setuju", short: "SS", color: "#A8C5FF", border: "#60A5FA" }
     ],
+    ueqScale: [
+        { value: "1", short: "1" },
+        { value: "2", short: "2" },
+        { value: "3", short: "3" },
+        { value: "4", short: "4" },
+        { value: "5", short: "5" },
+        { value: "6", short: "6" },
+        { value: "7", short: "7" }
+    ],
     sections: [
         {
             id: "identitas",
             badge: "Identitas",
             title: "Identitas Responden",
-            description: "Informasi dasar responden untuk keperluan demografi penelitian skripsi.",
+            description: "Informasi dasar responden untuk keperluan demografi penelitian.",
             questions: [
-                {
-                    id: "q1",
-                    number: 1,
-                    text: "Nama",
-                    type: "text",
-                    required: true,
-                    placeholder: "Masukkan nama lengkap Anda"
-                },
-                {
-                    id: "q2",
-                    number: 2,
-                    text: "Usia",
-                    type: "number",
-                    required: true,
-                    placeholder: "Contoh: 21",
-                    min: 10,
-                    max: 100
-                },
-                {
-                    id: "q3",
-                    number: 3,
-                    text: "Jenis Kelamin",
-                    type: "radio",
-                    required: true,
-                    options: ["Laki-laki", "Perempuan"]
-                },
-                {
-                    id: "q4",
-                    number: 4,
-                    text: "Status (Kerja, Kuliah, dan Sekolah)",
-                    type: "radio",
-                    required: true,
-                    options: ["Sekolah", "Kuliah", "Kerja"],
-                    hasOther: true,
-                    otherPlaceholder: "Tuliskan status Anda lainnya..."
-                }
+                { id: "q1", number: 1, text: "Nama", type: "text", required: true, placeholder: "Masukkan nama lengkap Anda" },
+                { id: "q2", number: 2, text: "Usia", type: "number", required: true, placeholder: "Contoh: 21", min: 10, max: 100 },
+                { id: "q3", number: 3, text: "Jenis Kelamin", type: "radio", required: true, options: ["Laki-laki", "Perempuan"] },
+                { id: "q4", number: 4, text: "Status (Kerja/Kuliah/Sekolah)", type: "radio", required: true, options: ["Kerja", "Kuliah", "Sekolah"], hasOther: true, otherPlaceholder: "Tuliskan status Anda lainnya..." }
             ]
         },
         {
-            id: "section_a",
+            id: "kebiasaan",
+            badge: "Identitas & Kebiasaan",
+            title: "Identitas & Kebiasaan Awal",
+            description: "Pertanyaan mengenai kondisi dan kebutuhan kesehatan mental sebelum menggunakan aplikasi.",
+            questions: [
+                { id: "q5", number: 5, text: "Bagaimana Anda menilai kondisi kesehatan mental Anda saat ini?", type: "radio", required: true, options: ["Sangat Baik", "Baik", "Cukup", "Kurang Baik", "Sangat Kurang Baik"] },
+                { id: "q6", number: 6, text: "Seberapa sering Anda merasa stres dalam kehidupan sehari-hari?", type: "radio", required: true, options: ["Tidak Pernah", "Jarang", "Kadang-kadang", "Sering", "Sangat Sering"] },
+                { id: "q7", number: 7, text: "Ketika mengalami masalah, bagaimana Anda biasanya mengelola emosi?", type: "radio", required: true, options: ["Sangat Mudah", "Mudah", "Cukup Mudah", "Sulit", "Sangat Sulit"] },
+                { id: "q8", number: 8, text: "Seberapa sering Anda mencatat atau memantau suasana hati (mood) Anda?", type: "radio", required: true, options: ["Tidak Pernah", "Jarang", "Kadang-kadang", "Sering", "Selalu"] },
+                { id: "q9", number: 9, text: "Berapa lama rata-rata waktu tidur Anda setiap malam?", type: "radio", required: true, options: ["Kurang dari 5 jam", "5-6 jam", "7-8 jam", "Lebih dari 8 jam"] },
+                { id: "q10", number: 10, text: "Seberapa sering Anda melakukan aktivitas untuk menjaga kesehatan mental (misalnya meditasi, olahraga, journaling, atau relaksasi)?", type: "radio", required: true, options: ["Tidak Pernah", "Jarang", "Kadang-kadang", "Sering", "Sangat sering"] },
+                { id: "q11", number: 11, text: "Apakah Anda pernah menggunakan aplikasi kesehatan mental sebelumnya?", type: "radio", required: true, options: ["Belum pernah", "Pernah, tetapi jarang", "Pernah dan digunakan sekali", "Sering menggunakan", "Masih aktif menggunakan"] },
+                { id: "q12", number: 12, text: "Apa tujuan utama Anda menggunakan aplikasi Mental Health Tracker?", type: "radio", required: true, options: ["Memantau suasana hati (Mood Tracker)", "Mengurangi stres", "Menjaga kesehatan mental", "Membangun kebiasaan hidup sehat", "Ingin mencoba aplikasi baru"], hasOther: true, otherPlaceholder: "Jawaban lainnya..." },
+                { id: "q13", number: 13, text: "Fitur apa yang paling Anda harapkan tersedia dalam aplikasi Mental Health Tracker?", type: "radio", required: true, options: ["Mood Tracker", "Journal Harian", "Sleep Tracker", "Meditasi dan Relaksasi", "Reminder Aktivitas Sehat", "Water Tracker", "Artikel Edukasi"], hasOther: true, otherPlaceholder: "Jawaban lainnya..." },
+                { id: "q14", number: 14, text: "Menurut Anda, seberapa penting aplikasi Mental Health Tracker bagi Generasi Z?", type: "radio", required: true, options: ["Sangat Tidak Penting", "Tidak Penting", "Cukup Penting", "Penting", "Sangat Penting"] }
+            ]
+        },
+        {
+            id: "sus",
             badge: "Bagian A",
-            title: "Kondisi Responden Sebelum Menggunakan Aplikasi",
-            description: "Evaluasi awal mengenai pola istirahat, manajemen stres, dan kebiasaan kesehatan mental harian Anda.",
+            title: "Evaluasi Usability (SUS)",
+            description: "System Usability Scale: 1 = Sangat Tidak Setuju sampai 5 = Sangat Setuju.",
+            isLikert: true,
             questions: [
-                {
-                    id: "q5",
-                    number: 5,
-                    text: "Bagaimana Anda menilai kondisi kesehatan mental Anda saat ini?",
-                    type: "radio",
-                    required: true,
-                    options: ["Sangat Baik", "Baik", "Cukup", "Kurang Baik", "Sangat Kurang Baik"],
-                    hasOther: true,
-                    otherPlaceholder: "Jawaban lainnya..."
-                },
-                {
-                    id: "q6",
-                    number: 6,
-                    text: "Seberapa sering Anda merasa stres dalam kehidupan sehari-hari?",
-                    type: "radio",
-                    required: true,
-                    options: ["Tidak Pernah", "Jarang", "Kadang-kadang", "Sering", "Sangat Sering"],
-                    hasOther: true,
-                    otherPlaceholder: "Jawaban lainnya..."
-                },
-                {
-                    id: "q7",
-                    number: 7,
-                    text: "Ketika mengalami masalah, bagaimana Anda biasanya mengelola emosi?",
-                    type: "radio",
-                    required: true,
-                    options: ["Sangat Mudah", "Mudah", "Cukup Mudah", "Sulit", "Sangat Sulit"],
-                    hasOther: true,
-                    otherPlaceholder: "Jawaban lainnya..."
-                },
-                {
-                    id: "q8",
-                    number: 8,
-                    text: "Seberapa sering Anda mencatat atau memantau suasana hati (mood) Anda?",
-                    type: "radio",
-                    required: true,
-                    options: ["Tidak Pernah", "Jarang", "Kadang-kadang", "Sering", "Selalu"],
-                    hasOther: true,
-                    otherPlaceholder: "Jawaban lainnya..."
-                },
-                {
-                    id: "q9",
-                    number: 9,
-                    text: "Berapa lama rata-rata waktu tidur Anda setiap malam?",
-                    type: "radio",
-                    required: true,
-                    options: ["Kurang dari 5 jam", "5-6 jam", "7-8 jam", "Lebih dari 8 jam"],
-                    hasOther: true,
-                    otherPlaceholder: "Jawaban lainnya..."
-                },
-                {
-                    id: "q10",
-                    number: 10,
-                    text: "Seberapa sering Anda melakukan aktivitas untuk menjaga kesehatan mental (misalnya meditasi, olahraga, journaling, atau relaksasi)?",
-                    type: "radio",
-                    required: true,
-                    options: ["Tidak Pernah", "Jarang", "Kadang-kadang", "Sering", "Sangat sering"],
-                    hasOther: true,
-                    otherPlaceholder: "Jawaban lainnya..."
-                },
-                {
-                    id: "q11",
-                    number: 11,
-                    text: "Apakah Anda pernah menggunakan aplikasi kesehatan mental sebelumnya?",
-                    type: "radio",
-                    required: true,
-                    options: ["Belum pernah", "Pernah, tetapi jarang", "Pernah dan digunakan sekali", "Sering menggunakan", "Masih aktif menggunakan"],
-                    hasOther: true,
-                    otherPlaceholder: "Jawaban lainnya..."
-                },
-                {
-                    id: "q12",
-                    number: 12,
-                    text: "Apa tujuan utama Anda menggunakan aplikasi Mental Health Tracker?",
-                    type: "radio",
-                    required: true,
-                    options: ["Memantau suasana hati (Mood Tracker)", "Mengurangi stress", "Menjaga kesehatan mental", "Membangun kebiasaan hidup sehat", "Ingin Mencoba aplikasi baru"],
-                    hasOther: true,
-                    otherPlaceholder: "Jawaban lainnya..."
-                },
-                {
-                    id: "q13",
-                    number: 13,
-                    text: "Fitur apa yang paling Anda harapkan tersedia dalam aplikasi Mental Health Tracker?",
-                    type: "radio",
-                    required: true,
-                    options: ["Mood Tracker", "Journal Harian", "Sleep Tracker", "Meditasi dan Relaksasi", "Reminder Aktivitas Sehat"],
-                    hasOther: true,
-                    otherPlaceholder: "Jawaban lainnya..."
-                },
-                {
-                    id: "q14",
-                    number: 14,
-                    text: "Menurut Anda, seberapa penting aplikasi Mental Health Tracker bagi Generasi Z?",
-                    type: "radio",
-                    required: true,
-                    options: ["Sangat Tidak Penting", "Tidak Penting", "Cukup Penting", "Penting", "Sangat Penting"],
-                    hasOther: true,
-                    otherPlaceholder: "Jawaban lainnya..."
-                }
+                { id: "q15", number: 15, text: "Saya rasa saya akan sering menggunakan aplikasi Mental Health Tracker ini untuk memantau kondisi mental saya.", type: "likert5", required: true, polarity: "positive" },
+                { id: "q16", number: 16, text: "Saya merasa alur dan fitur pada aplikasi Mental Health Tracker ini terlalu rumit tanpa alasan yang jelas.", type: "likert5", required: true, polarity: "negative" },
+                { id: "q17", number: 17, text: "Saya rasa aplikasi Mental Health Tracker ini (seperti Mood, Sleep, dan Water Tracker) mudah digunakan.", type: "likert5", required: true, polarity: "positive" },
+                { id: "q18", number: 18, text: "Saya rasa saya membutuhkan bantuan orang lain atau panduan teknis untuk dapat menggunakan seluruh fitur aplikasi ini.", type: "likert5", required: true, polarity: "negative" },
+                { id: "q19", number: 19, text: "Saya menemukan bahwa berbagai fitur pada aplikasi ini (Mood Tracker, Journal, Sleep Tracker, Water Tracker, Reminder, dan Artikel Edukasi) terintegrasi dengan baik.", type: "likert5", required: true, polarity: "positive" },
+                { id: "q20", number: 20, text: "Saya rasa terlalu banyak ketidakkonsistenan pada tampilan dan tata letak antar halaman aplikasi ini.", type: "likert5", required: true, polarity: "negative" },
+                { id: "q21", number: 21, text: "Saya membayangkan bahwa kebanyakan pengguna (khususnya Generasi Z) akan belajar menggunakan aplikasi ini dengan sangat cepat.", type: "likert5", required: true, polarity: "positive" },
+                { id: "q22", number: 22, text: "Saya menemukan bahwa proses pengisian data dan penggunaan aplikasi ini sangat membingungkan atau merepotkan.", type: "likert5", required: true, polarity: "negative" },
+                { id: "q23", number: 23, text: "Saya merasa sangat percaya diri dan nyaman saat menggunakan fitur-fitur di dalam aplikasi ini.", type: "likert5", required: true, polarity: "positive" },
+                { id: "q24", number: 24, text: "Saya perlu mempelajari banyak hal terlebih dahulu sebelum saya bisa mulai menggunakan aplikasi Mental Health Tracker ini dengan lancar.", type: "likert5", required: true, polarity: "negative" }
             ]
         },
         {
-            id: "section_b",
+            id: "ueq",
             badge: "Bagian B",
-            title: "Penilaian Desain Antarmuka (User Interface Design)",
-            description: "Keterangan Skala: 1 = Sangat Tidak Setuju, 2 = Tidak Setuju, 3 = Netral, 4 = Setuju, 5 = Sangat Setuju",
-            isLikert: true,
+            title: "Evaluasi Pengalaman Pengguna (UEQ)",
+            description: "Berikan penilaian Anda terhadap pengalaman menggunakan keseluruhan fitur pada aplikasi Mental Health Tracker (meliputi tampilan antarmuka, Mood Tracker, Journal, Sleep Tracker, Water Tracker, Reminder, dan Artikel Edukasi) dengan memilih angka 1 hingga 7 di antara dua kata sifat berikut:",
+            isUEQ: true,
             questions: [
-                { id: "q15", number: 15, text: "Tampilan halaman utama (Home) aplikasi terlihat menarik.", type: "likert5", required: true },
-                { id: "q16", number: 16, text: "Kombinasi warna yang digunakan pada aplikasi memberikan kesan nyaman dan menenangkan.", type: "likert5", required: true },
-                { id: "q17", number: 17, text: "Ukuran dan jenis huruf (font) pada aplikasi mudah dibaca.", type: "likert5", required: true },
-                { id: "q18", number: 18, text: "Tata letak menu dan informasi pada setiap halaman terlihat rapi dan terorganisir.", type: "likert5", required: true },
-                { id: "q19", number: 19, text: "Ikon-ikon yang digunakan mudah dikenali dan dipahami fungsinya.", type: "likert5", required: true },
-                { id: "q20", number: 20, text: "Desain tombol (button) mudah dikenali dan digunakan.", type: "likert5", required: true },
-                { id: "q21", number: 21, text: "Jarak antar elemen pada setiap halaman sudah proporsional sehingga nyaman dilihat.", type: "likert5", required: true },
-                { id: "q22", number: 22, text: "Tampilan aplikasi terlihat konsisten pada setiap halaman.", type: "likert5", required: true },
-                { id: "q23", number: 23, text: "Animasi atau efek transisi pada aplikasi membuat pengalaman penggunaan menjadi lebih baik.", type: "likert5", required: true },
-                { id: "q24", number: 24, text: "Secara keseluruhan, desain antarmuka aplikasi memberikan pengalaman visual yang menyenangkan.", type: "likert5", required: true }
+                { id:"q25", number:25, type:"ueq7", required:true, dimension:"Attractiveness", left:"Menyebalkan", right:"Menyenangkan", ueqItem:1 },
+                { id:"q26", number:26, type:"ueq7", required:true, dimension:"Attractiveness", left:"Buruk", right:"Baik", ueqItem:2 },
+                { id:"q27", number:27, type:"ueq7", required:true, dimension:"Attractiveness", left:"Tidak disukai", right:"Disukai", ueqItem:3 },
+                { id:"q28", number:28, type:"ueq7", required:true, dimension:"Attractiveness", left:"Tidak nyaman", right:"Nyaman", ueqItem:4 },
+                { id:"q29", number:29, type:"ueq7", required:true, dimension:"Attractiveness", left:"Tidak menarik", right:"Menarik", ueqItem:5 },
+                { id:"q30", number:30, type:"ueq7", required:true, dimension:"Attractiveness", left:"Tidak ramah pengguna", right:"Ramah pengguna", ueqItem:6 },
+                { id:"q31", number:31, type:"ueq7", required:true, dimension:"Perspicuity", left:"Tidak dapat dipahami", right:"Dapat dipahami", ueqItem:7 },
+                { id:"q32", number:32, type:"ueq7", required:true, dimension:"Perspicuity", left:"Sulit dipelajari", right:"Mudah dipelajari", ueqItem:8 },
+                { id:"q33", number:33, type:"ueq7", required:true, dimension:"Perspicuity", left:"Rumit", right:"Sederhana", ueqItem:9 },
+                { id:"q34", number:34, type:"ueq7", required:true, dimension:"Perspicuity", left:"Tidak jelas", right:"Jelas", ueqItem:10 },
+                { id:"q35", number:35, type:"ueq7", required:true, dimension:"Efficiency", left:"Lambat", right:"Cepat", ueqItem:11 },
+                { id:"q36", number:36, type:"ueq7", required:true, dimension:"Efficiency", left:"Tidak efisien", right:"Efisien", ueqItem:12 },
+                { id:"q37", number:37, type:"ueq7", required:true, dimension:"Efficiency", left:"Tidak praktis", right:"Praktis", ueqItem:13 },
+                { id:"q38", number:38, type:"ueq7", required:true, dimension:"Efficiency", left:"Berantakan", right:"Terorganisasi", ueqItem:14 },
+                { id:"q39", number:39, type:"ueq7", required:true, dimension:"Dependability", left:"Tidak dapat diprediksi", right:"Dapat diprediksi", ueqItem:15 },
+                { id:"q40", number:40, type:"ueq7", required:true, dimension:"Dependability", left:"Menghalangi", right:"Mendukung", ueqItem:16 },
+                { id:"q41", number:41, type:"ueq7", required:true, dimension:"Dependability", left:"Tidak layak / Tidak aman", right:"Layak / Dapat diandalkan", ueqItem:17 },
+                { id:"q42", number:42, type:"ueq7", required:true, dimension:"Dependability", left:"Tidak memenuhi ekspektasi", right:"Memenuhi ekspektasi", ueqItem:18 },
+                { id:"q43", number:43, type:"ueq7", required:true, dimension:"Stimulation", left:"Tidak bermanfaat", right:"Bermanfaat", ueqItem:19 },
+                { id:"q44", number:44, type:"ueq7", required:true, dimension:"Stimulation", left:"Membosankan", right:"Mengasyikkan", ueqItem:20 },
+                { id:"q45", number:45, type:"ueq7", required:true, dimension:"Stimulation", left:"Tidak menarik minat", right:"Menarik minat", ueqItem:21 },
+                { id:"q46", number:46, type:"ueq7", required:true, dimension:"Stimulation", left:"Tidak memotivasi", right:"Memotivasi", ueqItem:22 },
+                { id:"q47", number:47, type:"ueq7", required:true, dimension:"Novelty", left:"Kreatif", right:"Tidak kreatif", ueqItem:23, reverse:true },
+                { id:"q48", number:48, type:"ueq7", required:true, dimension:"Novelty", left:"Berdaya cipta / Inovatif", right:"Konvensional", ueqItem:24, reverse:true },
+                { id:"q49", number:49, type:"ueq7", required:true, dimension:"Novelty", left:"Lazim / Biasa saja", right:"Terdepan / Modern", ueqItem:25 },
+                { id:"q50", number:50, type:"ueq7", required:true, dimension:"Novelty", left:"Konservatif / Kaku", right:"Inovatif", ueqItem:26 }
             ]
         },
         {
-            id: "section_c",
-            badge: "Bagian C",
-            title: "Kemudahan Penggunaan (Usability)",
-            description: "Keterangan Skala: 1 = Sangat Tidak Setuju, 2 = Tidak Setuju, 3 = Netral, 4 = Setuju, 5 = Sangat Setuju",
-            isLikert: true,
-            questions: [
-                { id: "q25", number: 25, text: "Saya dapat memahami cara menggunakan aplikasi dengan mudah sejak pertama kali menggunakannya.", type: "likert5", required: true },
-                { id: "q26", number: 26, text: "Menu dan fitur pada aplikasi mudah ditemukan.", type: "likert5", required: true },
-                { id: "q27", number: 27, text: "Navigasi antar halaman aplikasi mudah dipahami.", type: "likert5", required: true },
-                { id: "q28", number: 28, text: "Saya dapat menggunakan seluruh fitur aplikasi tanpa mengalami kesulitan.", type: "likert5", required: true },
-                { id: "q29", number: 29, text: "Informasi yang ditampilkan pada aplikasi mudah dipahami.", type: "likert5", required: true },
-                { id: "q30", number: 30, text: "Proses pengisian data, seperti Mood Tracker atau Journal, berjalan dengan mudah.", type: "likert5", required: true },
-                { id: "q31", number: 31, text: "Waktu yang dibutuhkan untuk menyelesaikan aktivitas pada aplikasi tergolong singkat.", type: "likert5", required: true },
-                { id: "q32", number: 32, text: "Aplikasi merespons setiap tindakan saya dengan cepat.", type: "likert5", required: true },
-                { id: "q33", number: 33, text: "Saya jarang mengalami kebingungan saat menggunakan aplikasi.", type: "likert5", required: true },
-                { id: "q34", number: 34, text: "Secara keseluruhan, aplikasi mudah digunakan.", type: "likert5", required: true }
+            id:"fitur",
+            badge:"Bagian C",
+            title:"Evaluasi Spesifik Fitur",
+            description:"Evaluasi Per Fitur: 1 = Sangat Tidak Setuju sampai 5 = Sangat Setuju.",
+            isLikert:true,
+            questions:[
+                {id:"q51",number:51,text:"Fitur Mood Tracker mudah digunakan dan membantu saya memantau suasana hati secara efektif.",type:"likert5",required:true},
+                {id:"q52",number:52,text:"Fitur Journal memudahkan saya menulis catatan dan mengekspresikan perasaan.",type:"likert5",required:true},
+                {id:"q53",number:53,text:"Fitur Sleep Tracker memudahkan saya mencatat dan memantau pola tidur harian.",type:"likert5",required:true},
+                {id:"q54",number:54,text:"Fitur Water Tracker memudahkan saya mencatat konsumsi air dan memenuhi target minum.",type:"likert5",required:true},
+                {id:"q55",number:55,text:"Fitur Reminder bekerja dengan baik dalam mengingatkan dan membangun kebiasaan sehat.",type:"likert5",required:true},
+                {id:"q56",number:56,text:"Fitur Artikel Edukasi mudah dipahami dan memberikan informasi kesehatan mental yang relevan.",type:"likert5",required:true}
             ]
         },
         {
-            id: "section_d",
-            badge: "Bagian D",
-            title: "Penilaian Fitur Aplikasi",
-            description: "Keterangan Skala: 1 = Sangat Tidak Setuju, 2 = Tidak Setuju, 3 = Netral, 4 = Setuju, 5 = Sangat Setuju",
-            isLikert: true,
-            questions: [
-                { id: "q35", number: 35, text: "Fitur Mood Tracker mudah digunakan.", type: "likert5", required: true },
-                { id: "q36", number: 36, text: "Mood Tracker membantu saya mencatat suasana hati setiap hari.", type: "likert5", required: true },
-                { id: "q37", number: 37, text: "Riwayat Mood Tracker mudah dipahami.", type: "likert5", required: true },
-                { id: "q38", number: 38, text: "Fitur Journal mudah digunakan untuk menulis catatan harian.", type: "likert5", required: true },
-                { id: "q39", number: 39, text: "Journal membantu saya mengekspresikan perasaan.", type: "likert5", required: true },
-                { id: "q40", number: 40, text: "Sleep Tracker mudah digunakan untuk mencatat waktu tidur.", type: "likert5", required: true },
-                { id: "q41", number: 41, text: "Sleep Tracker membantu saya memantau pola tidur.", type: "likert5", required: true },
-                { id: "q42", number: 42, text: "Water Tracker mudah digunakan untuk mencatat konsumsi air minum.", type: "likert5", required: true },
-                { id: "q43", number: 43, text: "Water Tracker membantu saya memenuhi target minum harian.", type: "likert5", required: true },
-                { id: "q44", number: 44, text: "Reminder bekerja dengan baik sebagai pengingat aktivitas sehat.", type: "likert5", required: true },
-                { id: "q45", number: 45, text: "Reminder membantu saya membangun kebiasaan hidup sehat.", type: "likert5", required: true },
-                { id: "q46", number: 46, text: "Artikel edukasi mudah dipahami.", type: "likert5", required: true },
-                { id: "q47", number: 47, text: "Informasi pada artikel edukasi bermanfaat bagi saya.", type: "likert5", required: true },
-                { id: "q48", number: 48, text: "Semua fitur berjalan sesuai dengan fungsinya.", type: "likert5", required: true },
-                { id: "q49", number: 49, text: "Secara keseluruhan fitur-fitur pada aplikasi membantu menjaga kesehatan mental saya.", type: "likert5", required: true }
-            ]
-        },
-        {
-            id: "section_e",
-            badge: "Bagian E",
-            title: "Pengalaman Pengguna (User Experience)",
-            description: "Keterangan Skala: 1 = Sangat Tidak Setuju, 2 = Tidak Setuju, 3 = Netral, 4 = Setuju, 5 = Sangat Setuju",
-            isLikert: true,
-            questions: [
-                { id: "q50", number: 50, text: "Saya merasa senang menggunakan aplikasi ini.", type: "likert5", required: true },
-                { id: "q51", number: 51, text: "Aplikasi ini membuat saya lebih termotivasi menjaga kesehatan mental.", type: "likert5", required: true },
-                { id: "q52", number: 52, text: "Saya merasa aplikasi ini bermanfaat bagi kehidupan sehari-hari.", type: "likert5", required: true },
-                { id: "q53", number: 53, text: "Saya ingin menggunakan aplikasi ini kembali di masa mendatang.", type: "likert5", required: true },
-                { id: "q54", number: 54, text: "Saya bersedia merekomendasikan aplikasi ini kepada orang lain.", type: "likert5", required: true },
-                { id: "q55", number: 55, text: "Menggunakan aplikasi ini memberikan pengalaman yang menyenangkan.", type: "likert5", required: true },
-                { id: "q56", number: 56, text: "Saya merasa nyaman menggunakan aplikasi ini dalam waktu yang lama.", type: "likert5", required: true },
-                { id: "q57", number: 57, text: "Secara keseluruhan saya memiliki pengalaman yang positif selama menggunakan aplikasi ini.", type: "likert5", required: true }
-            ]
-        },
-        {
-            id: "section_f",
-            badge: "Bagian F",
-            title: "Kepuasan Pengguna",
-            description: "Keterangan Skala: 1 = Sangat Tidak Setuju, 2 = Tidak Setuju, 3 = Netral, 4 = Setuju, 5 = Sangat Setuju",
-            isLikert: true,
-            questions: [
-                { id: "q58", number: 58, text: "Aplikasi ini memenuhi harapan saya.", type: "likert5", required: true },
-                { id: "q59", number: 59, text: "Saya puas terhadap kualitas aplikasi secara keseluruhan.", type: "likert5", required: true },
-                { id: "q60", number: 60, text: "Saya puas terhadap desain antarmuka aplikasi.", type: "likert5", required: true },
-                { id: "q61", number: 61, text: "Saya puas terhadap fitur-fitur yang tersedia pada aplikasi.", type: "likert5", required: true },
-                { id: "q62", number: 62, text: "Saya merasa aplikasi ini layak digunakan sebagai media pendukung kesehatan mental sehari-hari.", type: "likert5", required: true }
-            ]
-        },
-        {
-            id: "section_g",
-            badge: "Bagian G",
-            title: "Kritik dan Saran",
-            description: "Silakan berikan masukan, opini, dan evaluasi bebas Anda untuk pengembangan TemanJiwa lebih lanjut.",
-            questions: [
-                {
-                    id: "q63",
-                    number: 63,
-                    text: "Fitur apa yang paling Anda sukai pada aplikasi Mental Health Tracker? Mengapa?",
-                    type: "textarea",
-                    required: true,
-                    placeholder: "Tuliskan fitur favorit Anda beserta alasannya di sini..."
-                },
-                {
-                    id: "q64",
-                    number: 64,
-                    text: "Fitur apa yang menurut Anda masih perlu diperbaiki? Jelaskan alasannya.",
-                    type: "textarea",
-                    required: true,
-                    placeholder: "Tuliskan fitur yang membutuhkan penyempurnaan beserta alasannya..."
-                },
-                {
-                    id: "q65",
-                    number: 65,
-                    text: "Bagian desain antarmuka (warna, ikon, tata letak, tipografi, atau navigasi) apa yang menurut Anda masih kurang menarik atau kurang nyaman?",
-                    type: "textarea",
-                    required: true,
-                    placeholder: "Tuliskan evaluasi desain UI Anda di sini..."
-                },
-                {
-                    id: "q66",
-                    number: 66,
-                    text: "Apakah ada fitur tambahan yang ingin Anda hadirkan pada aplikasi ini? Jelaskan secara singkat.",
-                    type: "textarea",
-                    required: true,
-                    placeholder: "Tuliskan ide atau usulan fitur baru yang bermanfaat..."
-                },
-                {
-                    id: "q67",
-                    number: 67,
-                    text: "Berikan kritik, masukan, atau saran untuk pengembangan aplikasi Mental Health Tracker agar menjadi lebih baik di masa mendatang.",
-                    type: "textarea",
-                    required: true,
-                    placeholder: "Tuliskan pesan, kesan, kritik membangun, atau saran pengembangan di sini..."
-                }
+            id:"open",
+            badge:"Bagian D",
+            title:"Pertanyaan Terbuka",
+            description:"Masukan iterasi Design Thinking.",
+            questions:[
+                {id:"q57",number:57,text:"Fitur apa yang paling Anda sukai pada aplikasi Mental Health Tracker?",type:"textarea",required:true,placeholder:"Tuliskan fitur favorit Anda beserta alasannya..."},
+                {id:"q58",number:58,text:"Fitur apa yang menurut Anda masih perlu diperbaiki?",type:"textarea",required:true,placeholder:"Tuliskan fitur yang perlu disempurnakan beserta alasannya..."},
+                {id:"q59",number:59,text:"Bagian desain antarmuka (warna, ikon, tata letak, tipografi) mana yang perlu ditingkatkan?",type:"textarea",required:true,placeholder:"Tuliskan evaluasi desain antarmuka Anda..."},
+                {id:"q60",number:60,text:"Apakah ada fitur tambahan yang ingin Anda hadirkan pada aplikasi ini?",type:"textarea",required:true,placeholder:"Tuliskan ide atau usulan fitur baru..."},
+                {id:"q61",number:61,text:"Berikan kritik, masukan, atau saran untuk pengembangan aplikasi Mental Health Tracker agar menjadi lebih baik.",type:"textarea",required:true,placeholder:"Tuliskan kritik, masukan, atau saran Anda..."}
             ]
         }
     ]
