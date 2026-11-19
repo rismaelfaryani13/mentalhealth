@@ -1,6 +1,6 @@
 /**
  * TemanJiwa - Master Instrument Kuesioner Penelitian
- * Skripsi: "Analisis UI/UX Mental Health Tracker untuk Generasi Z Menggunakan Metode Design Thinking"
+ * Skripsi: " Analisis dan Evaluasi UI/UX Mental Health Tracker untuk Generasi Z Menggunakan Design Thinking"
  * Peneliti: Risma Elfaryani (Program Studi Sistem Informasi STMIK IKMI Cirebon)
  *
  * Struktur:
