@@ -1,11 +1,11 @@
 {
-  "project": "TemanJiwa - Analisis UI/UX Mental Health Tracker untuk Generasi Z Menggunakan Metode Design Thinking",
+  "project": "TemanJiwa - Analisis dan Evaluasi UI/UX Mental Health Tracker untuk Generasi Z Menggunakan Design Thinking",
   "researcher": "Risma Elfaryani",
   "institution": "STMIK IKMI Cirebon",
   "program": "Program Studi Sistem Informasi",
   "targetGroup": "Generasi Z",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1vjYnoduryaryCUgbzxB93yzRwzezAIHC0DqhahKUkM4/edit?usp=sharing",
-  "webhookUrl": "https://script.google.com/macros/s/AKfycbyKVubO_gsd_Nbe4vj_afVutfYkwI3p1QloqZ_OJvYkYg4RLV4oxOpJvFVVyCUH_6H4QA/exec",
+  "webhookUrl": "https://script.google.com/macros/s/AKfycbyzuMBIHyduCIOGTrJ0jTD0TH1zPMFpOG2UrCuLRiyWOIbfr_QafiN9U7U22PRUlSqo-A/exec",
   "totalQuestions": 61,
   "totalResponses": 34,
   "lastUpdated": "2026-11-19T06:15:34.137Z",
