@@ -50,6 +50,23 @@ const server = http.createServer((req, res) => {
                     rekap.responses = [];
                 }
 
+                rekap.totalQuestions = 61;
+                if (responseData.answers && typeof responseData.answers === 'object') {
+                    const answers = {};
+                    for (let i = 1; i <= 61; i++) {
+                        const key = 'q' + i;
+                        if (responseData.answers[key] !== undefined) answers[key] = responseData.answers[key];
+                    }
+                    for (let i = 57; i <= 61; i++) {
+                        const oldKey = 'q' + (63 + i - 57);
+                        if (responseData.answers[oldKey] !== undefined) answers['q' + i] = responseData.answers[oldKey];
+                    }
+                    for (let i = 1; i <= 61; i++) {
+                        if (answers['q' + i] === undefined) answers['q' + i] = '';
+                    }
+                    responseData.answers = answers;
+                }
+
                 // Check if response already exists by id, update or append
                 const existingIndex = rekap.responses.findIndex(r => r.id === responseData.id);
                 if (existingIndex >= 0) {

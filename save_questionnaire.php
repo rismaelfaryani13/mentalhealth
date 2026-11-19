@@ -52,6 +52,24 @@ if (!isset($rekap['responses']) || !is_array($rekap['responses'])) {
     $rekap['responses'] = [];
 }
 
+$rekap['totalQuestions'] = 61;
+if (isset($responseData['answers']) && is_array($responseData['answers'])) {
+    $answers = [];
+    for ($i = 1; $i <= 61; $i++) {
+        $key = 'q' . $i;
+        if (array_key_exists($key, $responseData['answers'])) {
+            $answers[$key] = $responseData['answers'][$key];
+        }
+    }
+    for ($i = 57; $i <= 61; $i++) {
+        $oldKey = 'q' . (63 + $i - 57);
+        if (array_key_exists($oldKey, $responseData['answers'])) {
+            $answers['q' . $i] = $responseData['answers'][$oldKey];
+        }
+    }
+    $responseData['answers'] = $answers;
+}
+
 // Cari apakah id sudah ada (update atau append)
 $foundIndex = -1;
 foreach ($rekap['responses'] as $idx => $r) {
