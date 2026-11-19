@@ -13,7 +13,7 @@
 
 window.TEMANJIWA_QUESTIONNAIRE = {
     metadata: {
-        title: "Analisis UI/UX Mental Health Tracker untuk Generasi Z Menggunakan Metode Design Thinking",
+        title: " Analisis dan Evaluasi UI/UX Mental Health Tracker untuk Generasi Z Menggunakan Design Thinking",
         researcher: "Risma Elfaryani",
         institution: "STMIK IKMI Cirebon",
         program: "Program Studi Sistem Informasi",
