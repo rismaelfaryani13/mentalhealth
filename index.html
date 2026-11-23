@@ -79,7 +79,7 @@
     <script src="questionnaire-data.js"></script>
 
     <!-- Application Script (Cache-Busted for instant updates) -->
-    <script defer src="app.js?v=2.6"></script>
+    <script defer src="app.js?v=2.7"></script>
 
     <!-- Alpine.js & Plugins CDN -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -127,7 +127,7 @@
     </div>
 
     <!-- Main Container (Mobile First Layout centered on Desktop) -->
-    <div id="app-shell" class="relative min-h-[100dvh] flex flex-col justify-between w-full max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-5xl mx-auto bg-[#F8FAFD]/90 shadow-2xl border-x border-[#E9EEF7]">
+    <div id="app-shell" class="relative min-h-[100dvh] flex flex-col w-full max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-5xl mx-auto bg-[#F8FAFD]/90 shadow-2xl border-x border-[#E9EEF7]">
 
         <!-- ========================================== -->
         <!-- HEADER (Applies to main dashboard screens) -->
@@ -191,7 +191,7 @@
         <!-- ========================================== -->
         <!-- MAIN CONTENT AREA FOR ALL 22 SCREENS -->
         <!-- ========================================== -->
-        <main class="app-main flex-1 w-full max-w-[800px] mx-auto px-4 sm:px-6 py-6 transition-all duration-300 flex flex-col justify-center">
+        <main class="app-main flex-1 w-full max-w-[800px] mx-auto px-4 sm:px-6 py-6 transition-all duration-300 flex flex-col justify-start">
 
             <!-- 1. SPLASH SCREEN (CENTERED) -->
             <section x-show="$store.app.currentScreen === 'splash'"
