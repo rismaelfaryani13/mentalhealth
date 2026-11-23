@@ -20,6 +20,211 @@ body {
     color: var(--color-text-primary);
     -webkit-tap-highlight-color: transparent;
     overflow-x: hidden;
+    max-width: 100%;
+    margin: 0;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    overflow-x: clip;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+img,
+svg,
+video,
+canvas {
+    max-width: 100%;
+}
+
+.app-header {
+    min-height: 4.25rem;
+}
+
+.app-header-brand {
+    max-width: calc(100% - 7.5rem);
+}
+
+.questionnaire-screen {
+    min-width: 0;
+    padding-bottom: calc(8.75rem + env(safe-area-inset-bottom));
+}
+
+.questionnaire-progress {
+    scroll-margin-top: 4.75rem;
+}
+
+.question-card-header,
+.question-text,
+.ueq-scale,
+.ueq-poles,
+.ueq-poles > span {
+    min-width: 0;
+}
+
+.ueq-buttons {
+    width: 100%;
+}
+
+.ueq-button {
+    min-width: 0;
+    min-height: 2.5rem;
+    max-height: 3rem;
+}
+
+.questionnaire-bottom-nav {
+    position: fixed;
+    left: 50%;
+    width: calc(100% - 2rem);
+    max-width: 800px;
+    transform: translateX(-50%);
+    bottom: calc(4.35rem + env(safe-area-inset-bottom));
+    margin-inline: 0;
+}
+
+.questionnaire-nav-status {
+    max-width: 7.5rem;
+}
+
+.questionnaire-nav-status span:first-child {
+    white-space: nowrap;
+}
+
+.global-bottom-nav {
+    min-height: 4.35rem;
+}
+
+@media (max-width: 639px) {
+    .app-header {
+        min-height: 3.75rem;
+        padding-inline: 0.75rem;
+    }
+
+    .app-header-badge,
+    .app-header-subtitle {
+        display: none;
+    }
+
+    .app-header-brand {
+        max-width: calc(100% - 7.25rem);
+        gap: 0.5rem;
+    }
+
+    .questionnaire-progress {
+        position: relative;
+        top: auto;
+        border-radius: 1.25rem;
+        padding: 0.75rem;
+    }
+
+    .questionnaire-screen {
+        padding-bottom: calc(9.5rem + env(safe-area-inset-bottom));
+    }
+
+    .question-card-header {
+        gap: 0.5rem;
+    }
+
+    .ueq-scale {
+        margin-inline: -0.25rem;
+    }
+
+    .ueq-poles {
+        width: 100%;
+    }
+
+    .ueq-poles > span {
+        max-width: 48%;
+        overflow-wrap: anywhere;
+    }
+
+    .ueq-buttons {
+        gap: 0.125rem;
+    }
+
+    .ueq-button {
+        max-width: 2.75rem;
+        height: 2.5rem;
+    }
+
+    .questionnaire-bottom-nav {
+        margin-inline: 0.5rem;
+        width: calc(100% - 1rem);
+        max-width: 800px;
+    }
+
+    .questionnaire-nav-button {
+        min-height: 2.5rem;
+        padding-inline: 0.625rem;
+        max-width: 6.75rem;
+    }
+
+    .questionnaire-nav-status {
+        max-width: 6rem;
+        line-height: 1.1;
+    }
+
+    .global-bottom-nav {
+        min-height: 4.35rem;
+        padding-top: 0.375rem;
+    }
+
+    .global-bottom-nav button {
+        min-width: 0;
+        padding-inline: 0.25rem;
+    }
+}
+
+@media (max-width: 359px) {
+    .app-header-brand h1 {
+        max-width: 5.75rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .app-header [aria-label="Bantuan Darurat SOS"] {
+        display: none;
+    }
+
+    .app-header-brand {
+        max-width: calc(100% - 6.25rem);
+    }
+
+    .questionnaire-nav-button {
+        max-width: 5.75rem;
+        font-size: 0.6875rem;
+    }
+
+    .questionnaire-nav-status {
+        max-width: 5.25rem;
+    }
+
+    .ueq-buttons {
+        gap: 0;
+    }
+
+    .global-bottom-nav button {
+        max-width: 3.25rem;
+    }
+}
+
+@media (min-width: 640px) {
+    .ueq-poles {
+        justify-content: space-between;
+    }
+
+    .ueq-buttons {
+        max-width: 28rem;
+        margin-inline: auto;
+    }
 }
 
 /* Custom Scrollbar */
@@ -59,6 +264,8 @@ body {
     pointer-events: none;
     opacity: 0.55;
     animation: floatBlob 20s infinite alternate ease-in-out;
+    max-width: 100vw;
+    max-height: 100dvh;
 }
 
 .blob-1 {
