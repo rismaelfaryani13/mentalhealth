@@ -1956,6 +1956,16 @@ Pesan Curhat Pengguna: ${promptText}`;
             }
         },
 
+        scrollActiveQuestionnaireChip() {
+            const idx = this.questionnaireCurrentSection;
+            setTimeout(() => {
+                const chip = document.getElementById('questionnaire-chip-' + idx);
+                if (chip) {
+                    chip.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                }
+            }, 0);
+        },
+
         saveQuestionnaireProgress() {
             this.saveToStorage();
         },
