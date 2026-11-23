@@ -31,13 +31,13 @@ window.TEMANJIWA_QUESTIONNAIRE = {
         { value: "5", label: "Sangat Setuju", short: "SS", color: "#A8C5FF", border: "#60A5FA" }
     ],
     ueqScale: [
-        { value: "1", short: "1" },
-        { value: "2", short: "2" },
-        { value: "3", short: "3" },
-        { value: "4", short: "4" },
-        { value: "5", short: "5" },
-        { value: "6", short: "6" },
-        { value: "7", short: "7" }
+        { value: "1", short: "1", label: "Sangat condong ke kata sifat kiri" },
+        { value: "2", short: "2", label: "Condong ke kata sifat kiri" },
+        { value: "3", short: "3", label: "Agak condong ke kata sifat kiri" },
+        { value: "4", short: "4", label: "Netral" },
+        { value: "5", short: "5", label: "Agak condong ke kata sifat kanan" },
+        { value: "6", short: "6", label: "Condong ke kata sifat kanan" },
+        { value: "7", short: "7", label: "Sangat condong ke kata sifat kanan" }
     ],
     sections: [
         {

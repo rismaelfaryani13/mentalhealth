@@ -2569,6 +2569,36 @@ Pesan Curhat Pengguna: ${promptText}`;
             return dimensions;
         },
 
+        interpretUeqScore(dimension, score) {
+            if (!Number.isFinite(score)) return null;
+
+            const benchmarks = {
+                Attractiveness: { excellent: 1.75, good: 1.52, above: 1.17, below: 0.70 },
+                Perspicuity: { excellent: 1.78, good: 1.55, above: 1.40, below: 0.80 },
+                Efficiency: { excellent: 1.90, good: 1.78, above: 1.22, below: 0.80 },
+                Dependability: { excellent: 1.65, good: 1.48, above: 1.14, below: 0.70 },
+                Stimulation: { excellent: 1.55, good: 1.49, above: 1.05, below: 0.50 },
+                Novelty: { excellent: 1.40, good: 1.05, above: 0.90, below: 0.50 }
+            };
+            const benchmark = benchmarks[dimension];
+            if (!benchmark) return null;
+
+            if (score >= benchmark.excellent) return 'Excellent';
+            if (score >= benchmark.good) return 'Good';
+            if (score >= benchmark.above) return 'Above Average';
+            if (score >= benchmark.below) return 'Below Average';
+            return 'Bad';
+        },
+
+        calculateUeqInterpretations() {
+            const interpretations = {};
+            const scores = this.calculateUeqScores();
+            Object.entries(scores).forEach(([dimension, score]) => {
+                interpretations[dimension] = this.interpretUeqScore(dimension, score);
+            });
+            return interpretations;
+        },
+
         calculateFeatureScores() {
             const values = [];
             for (let i = 51; i <= 56; i++) {
@@ -2605,6 +2635,7 @@ Pesan Curhat Pengguna: ${promptText}`;
                 scores: {
                     sus: this.calculateSusScore(),
                     ueq: this.calculateUeqScores(),
+                    ueqInterpretations: this.calculateUeqInterpretations(),
                     featureAverage: this.calculateFeatureScores()
                 }
             };
