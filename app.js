@@ -244,6 +244,7 @@ document.addEventListener('alpine:init', () => {
             this.loadFromStorage();
             this.initLucideIcons();
             this.initRealtimeClock();
+            this.initViewportHeight();
             this.syncWithGoogleSheets(false); // Automatically pull live Google Spreadsheet responses
             setTimeout(() => this.pushPendingLocalResponsesToGoogleSheet(false), 2500);
 
@@ -275,6 +276,19 @@ document.addEventListener('alpine:init', () => {
                     this.renderCharts();
                 }
             });
+        },
+
+        initViewportHeight() {
+            const updateViewportHeight = () => {
+                const viewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+                document.documentElement.style.setProperty('--app-viewport-height', `${viewportHeight}px`);
+            };
+            updateViewportHeight();
+            window.addEventListener('resize', updateViewportHeight);
+            window.addEventListener('orientationchange', updateViewportHeight);
+            if (window.visualViewport) {
+                window.visualViewport.addEventListener('resize', updateViewportHeight);
+            }
         },
 
         // Real-Time System Monitor (Reminders & Clock Ticks)

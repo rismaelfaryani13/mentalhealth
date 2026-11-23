@@ -1,4 +1,4 @@
-const CACHE_NAME = 'temanjiwa-v2';
+const CACHE_NAME = 'temanjiwa-v3';
 const ASSETS = [
     './index.html',
     './style.css',
