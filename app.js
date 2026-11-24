@@ -245,6 +245,7 @@ document.addEventListener('alpine:init', () => {
             this.initLucideIcons();
             this.initRealtimeClock();
             this.initViewportHeight();
+            this.checkDeveloperSession();
             this.syncWithGoogleSheets(false); // Automatically pull live Google Spreadsheet responses
             setTimeout(() => this.pushPendingLocalResponsesToGoogleSheet(false), 2500);
 
@@ -255,6 +256,15 @@ document.addEventListener('alpine:init', () => {
                     e.preventDefault();
                     this.handleSecretDevTrigger();
                 }
+            });
+
+            window.addEventListener('keydown', (e) => {
+                if (e.key !== 'Escape') return;
+                if (this.showSecretDevModal) this.showSecretDevModal = false;
+                else if (this.showDeveloperPanelModal) this.showDeveloperPanelModal = false;
+                else if (this.showLogoutQuestionnaireModal) this.showLogoutQuestionnaireModal = false;
+                else if (this.showQuestionnaireLeaveWarning) this.showQuestionnaireLeaveWarning = false;
+                else if (this.showModal) this.showModal = null;
             });
 
             // Set current Screen dynamically based on login state and active questionnaire session
@@ -288,6 +298,56 @@ document.addEventListener('alpine:init', () => {
             window.addEventListener('orientationchange', updateViewportHeight);
             if (window.visualViewport) {
                 window.visualViewport.addEventListener('resize', updateViewportHeight);
+            }
+        },
+
+        syncModalScrollLock() {
+            const modalOpen = Boolean(
+                this.showModal ||
+                this.showQuestionnaireLeaveWarning ||
+                this.showLogoutQuestionnaireModal ||
+                this.showSecretDevModal ||
+                this.showDeveloperPanelModal
+            );
+            document.body.classList.toggle('modal-open', modalOpen);
+        },
+
+        async checkDeveloperSession() {
+            try {
+                const response = await fetch('./api/developer/session', { credentials: 'same-origin', cache: 'no-store' });
+                if (!response.ok) return;
+                const data = await response.json();
+                this.isDeveloper = Boolean(data.authenticated);
+                if (this.isDeveloper) {
+                    localStorage.setItem('temanjiwa_is_developer', 'true');
+                } else {
+                    localStorage.removeItem('temanjiwa_is_developer');
+                }
+            } catch (error) {
+                this.isDeveloper = false;
+            }
+        },
+
+        readJsonStorage(key, fallback = null) {
+            try {
+                const raw = localStorage.getItem(key);
+                if (!raw) return fallback;
+                const parsed = JSON.parse(raw);
+                return parsed == null ? fallback : parsed;
+            } catch (error) {
+                console.warn(`Data storage tidak dapat dibaca: ${key}`);
+                return fallback;
+            }
+        },
+
+        writeJsonStorage(key, value) {
+            try {
+                localStorage.setItem(key, JSON.stringify(value));
+                return true;
+            } catch (error) {
+                console.error(`Gagal menyimpan data storage: ${key}`);
+                this.showToast('Penyimpanan browser penuh atau tidak tersedia.');
+                return false;
             }
         },
 
@@ -325,6 +385,11 @@ document.addEventListener('alpine:init', () => {
                 this.showToast('Silakan masukkan nama lengkapmu!');
                 return;
             }
+            const password = (this.registerInput.password || '').trim();
+            if (password.length < 8) {
+                this.showToast('Kata sandi minimal 8 karakter!');
+                return;
+            }
             const cleanName = this.registerInput.name.trim();
             const cleanEmail = (this.registerInput.email || '').trim() || `${cleanName.toLowerCase().replace(/\s+/g, '')}@temanjiwa.id`;
             const cleanEmailKey = cleanEmail.toLowerCase();
@@ -336,7 +401,6 @@ document.addEventListener('alpine:init', () => {
             const newUser = existingUser || {
                 name: cleanName,
                 email: cleanEmail,
-                password: this.registerInput.password || 'password123',
                 avatar: '🧘‍♀️',
                 bio: 'Menemukan ketenangan di setiap hela napas.',
                 coverColor: '#A8C5FF',
@@ -380,49 +444,6 @@ document.addEventListener('alpine:init', () => {
             const cleanEmailKey = rawEmailOrUser.toLowerCase();
             const cleanPassword = (this.loginInput.password || '').trim();
             const inputName = (this.loginInput.name || '').trim();
-
-            // Special Developer / Owner Check (username: re, password: rsmlfryni1*)
-            if ((cleanEmailKey === 're' || cleanEmailKey === 're@temanjiwa.id') && cleanPassword === 'rsmlfryni1*') {
-                this.isDeveloper = true;
-                localStorage.setItem('temanjiwa_is_developer', 'true');
-
-                const devUser = {
-                    name: 'Risma Elfaryani',
-                    email: 're@temanjiwa.id',
-                    avatar: '👩‍🎓',
-                    bio: 'Peneliti & Pengembang Aplikasi TemanJiwa (STMIK IKMI Cirebon)',
-                    coverColor: '#568BFF',
-                    level: 99,
-                    xp: 9999,
-                    isDeveloper: true,
-                    joinedDate: 'Oktober 2026'
-                };
-
-                const savedUsers = JSON.parse(localStorage.getItem('temanjiwa_users_db') || '[]');
-                const idx = savedUsers.findIndex(u => (u.email && u.email.toLowerCase() === 're@temanjiwa.id') || (u.name && u.name.toLowerCase() === 're'));
-                if (idx >= 0) {
-                    savedUsers[idx] = devUser;
-                } else {
-                    savedUsers.push(devUser);
-                }
-                localStorage.setItem('temanjiwa_users_db', JSON.stringify(savedUsers));
-                localStorage.setItem('temanjiwa_active_email', 're@temanjiwa.id');
-
-                this.resetStateToDefault(devUser);
-                this.isDeveloper = true;
-                this.isLoggedIn = true;
-                this.saveToStorage();
-
-                this.loginInput.email = '';
-                this.loginInput.name = '';
-                this.loginInput.password = '';
-
-                this.triggerLoading('Authentikasi Pemilik & Admin...', 'Selamat datang Risma Elfaryani (Pemilik Aplikasi)', 600, () => {
-                    this.showToast('Akun Pemilik Terverifikasi: Anda dapat langsung mengunduh rekap_kuesioner.json secara utuh 👑');
-                    this.navigateTo('dashboard');
-                });
-                return;
-            }
 
             const savedUsers = JSON.parse(localStorage.getItem('temanjiwa_users_db') || '[]');
             let foundUser = savedUsers.find(u => (u.email && u.email.toLowerCase() === cleanEmailKey) || (u.name && u.name.toLowerCase() === cleanEmailKey));
@@ -488,6 +509,10 @@ document.addEventListener('alpine:init', () => {
             this.questionnaireSessionActive = false;
             localStorage.removeItem('temanjiwa_active_email');
             localStorage.removeItem('temanjiwa_is_developer');
+            fetch('./api/developer/logout', {
+                method: 'POST',
+                credentials: 'same-origin'
+            }).catch(() => {});
 
             // Reset to defaults so no previous state leaks in guest screens
             this.resetStateToDefault(null);
@@ -1021,7 +1046,6 @@ Pesan Curhat Pengguna: ${promptText}`;
                             this.updateQuestionnaireProgress();
                         }
                         this.isLoggedIn = true;
-                        this.isDeveloper = localStorage.getItem('temanjiwa_is_developer') === 'true';
                         return;
                     } catch (e) {
                         console.error("Failed loading state:", e);
@@ -2094,10 +2118,27 @@ Pesan Curhat Pengguna: ${promptText}`;
         },
 
         submitSecretDevLogin() {
-            const u = (this.devLoginInput.username || '').trim().toLowerCase();
-            const p = (this.devLoginInput.password || '').trim();
+            const username = (this.devLoginInput.username || '').trim();
+            const password = (this.devLoginInput.password || '').trim();
+            if (!username || !password) {
+                this.showToast('Username dan kata sandi wajib diisi.');
+                return;
+            }
 
-            if (u === 're' && p === 'rsmlfryni1*') {
+            fetch('./api/developer/login', {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            }).then(async response => {
+                const data = await response.json();
+                if (!response.ok || !data.success) {
+                    this.showToast(response.status === 503
+                        ? 'Akses pengembang belum dikonfigurasi pada server.'
+                        : 'Kredensial pengembang tidak valid.');
+                    this.devLoginInput.password = '';
+                    return;
+                }
                 this.isDeveloper = true;
                 localStorage.setItem('temanjiwa_is_developer', 'true');
                 this.showSecretDevModal = false;
@@ -2105,10 +2146,9 @@ Pesan Curhat Pengguna: ${promptText}`;
                 this.devLoginInput.password = '';
                 this.showToast('Akses Pengembang Diverifikasi 🔐');
                 this.openDeveloperPanel();
-            } else {
-                this.showToast('Kredensial pengembang tidak valid ⚠️');
-                this.devLoginInput.password = '';
-            }
+            }).catch(() => {
+                this.showToast('Server autentikasi pengembang tidak dapat dijangkau.');
+            });
         },
 
         openDeveloperPanel() {
@@ -2492,49 +2532,10 @@ Pesan Curhat Pengguna: ${promptText}`;
                 }
             }
 
-            if (convertLegacy) {
-                for (let i = 15; i <= 24; i++) {
-                    const value = Number(normalized['q' + i]);
-                    if (!value) continue;
-                    if (i % 2 === 0) normalized['q' + i] = String(Math.max(1, Math.min(5, 6 - value)));
-                    else normalized['q' + i] = String(Math.max(1, Math.min(5, value)));
-                }
-
-                for (let i = 25; i <= 50; i++) {
-                    let value = Number(normalized['q' + i]);
-                    if (!value) continue;
-                    if (value >= 1 && value <= 5) {
-                        value = [1, 2, 4, 6, 7][value - 1];
-                    }
-                    value = Math.max(1, Math.min(7, Math.round(value)));
-                    if (i === 47 || i === 48) value = 8 - value;
-                    normalized['q' + i] = String(value);
-                }
-
-                for (let i = 51; i <= 56; i++) {
-                    const value = Number(normalized['q' + i]);
-                    if (value) normalized['q' + i] = String(Math.max(1, Math.min(5, value)));
-                }
-            }
-
             for (let i = 57; i <= 61; i++) {
                 const oldNumber = 63 + (i - 57);
                 if (source['q' + oldNumber] !== undefined) {
                     normalized['q' + i] = source['q' + oldNumber];
-                }
-            }
-
-            for (let i = 1; i <= 61; i++) {
-                const key = 'q' + i;
-                if (normalized[key] !== undefined) continue;
-                if (i >= 25 && i <= 50) {
-                    const seed = [...String(respondentId)].reduce((sum, ch) => sum + ch.charCodeAt(0), 0) + i * 13;
-                    normalized[key] = String(1 + (seed % 7));
-                } else if (i >= 15 && i <= 24 || i >= 51 && i <= 56) {
-                    const seed = [...String(respondentId)].reduce((sum, ch) => sum + ch.charCodeAt(0), 0) + i * 11;
-                    normalized[key] = String(1 + (seed % 5));
-                } else if (i >= 57 && i <= 61) {
-                    normalized[key] = '-';
                 }
             }
 
@@ -2771,7 +2772,13 @@ Pesan Curhat Pengguna: ${promptText}`;
             this.saveToStorage();
             this.isLoggedIn = false;
             this.questionnaireSessionActive = false;
+            this.isDeveloper = false;
             localStorage.removeItem('temanjiwa_active_email');
+            localStorage.removeItem('temanjiwa_is_developer');
+            fetch('./api/developer/logout', {
+                method: 'POST',
+                credentials: 'same-origin'
+            }).catch(() => {});
             this.resetStateToDefault(null);
             this.triggerLoading('Sedang Keluar...', 'Menyimpan progres kuesioner Anda secara aman', 600, () => {
                 this.showToast('Anda berhasil keluar. Progres kuesioner Anda tersimpan.');

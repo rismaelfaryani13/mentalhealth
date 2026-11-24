@@ -21,9 +21,16 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $rawInput = file_get_contents('php://input');
 $responseData = json_decode($rawInput, true);
 
-if (!$responseData || !isset($responseData['id'])) {
+if (!$responseData || !is_array($responseData) || !isset($responseData['id'])) {
     http_response_code(400);
     echo json_encode(['success' => false, 'error' => 'Invalid JSON input']);
+    exit;
+}
+
+$rawLength = strlen($rawInput);
+if ($rawLength > 2 * 1024 * 1024) {
+    http_response_code(413);
+    echo json_encode(['success' => false, 'error' => 'Payload too large']);
     exit;
 }
 
@@ -70,6 +77,20 @@ if (isset($responseData['answers']) && is_array($responseData['answers'])) {
     $responseData['answers'] = $answers;
 }
 
+if (!isset($responseData['answers']) || count($responseData['answers']) !== 61) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'error' => 'All 61 questionnaire answers are required']);
+    exit;
+}
+
+if (isset($responseData['respondent']) && is_array($responseData['respondent'])) {
+    foreach ($responseData['respondent'] as $key => $value) {
+        if (is_string($value)) {
+            $responseData['respondent'][$key] = substr($value, 0, 500);
+        }
+    }
+}
+
 // Cari apakah id sudah ada (update atau append)
 $foundIndex = -1;
 foreach ($rekap['responses'] as $idx => $r) {
@@ -88,7 +109,13 @@ if ($foundIndex >= 0) {
 $rekap['totalResponses'] = count($rekap['responses']);
 $rekap['lastUpdated'] = date('c');
 
-$saved = file_put_contents($filePath, json_encode($rekap, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+$tempPath = $filePath . '.tmp';
+$saved = file_put_contents($tempPath, json_encode($rekap, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), LOCK_EX);
+if ($saved !== false) {
+    if (!rename($tempPath, $filePath)) {
+        $saved = false;
+    }
+}
 
 if ($saved !== false) {
     echo json_encode([

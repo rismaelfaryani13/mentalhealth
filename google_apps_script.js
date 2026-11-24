@@ -96,33 +96,7 @@ function normalizeAnswers(answers) {
 
   for (var i = 1; i <= 61; i++) {
     var key = "q" + i;
-    if (answers[key] !== undefined) normalized[key] = answers[key];
-  }
-
-  for (var sus = 15; sus <= 24; sus++) {
-    var susKey = "q" + sus;
-    var susValue = Number(normalized[susKey]);
-    if (!susValue) continue;
-    susValue = Math.max(1, Math.min(5, susValue));
-    normalized[susKey] = String(sus % 2 === 0 ? 6 - susValue : susValue);
-  }
-
-  for (var ueq = 25; ueq <= 50; ueq++) {
-    var ueqKey = "q" + ueq;
-    var ueqValue = Number(normalized[ueqKey]);
-    if (!ueqValue) continue;
-    if (ueqValue >= 1 && ueqValue <= 5) {
-      ueqValue = [1, 2, 4, 6, 7][ueqValue - 1];
-    }
-    ueqValue = Math.max(1, Math.min(7, Math.round(ueqValue)));
-    if (ueq === 47 || ueq === 48) ueqValue = 8 - ueqValue;
-    normalized[ueqKey] = String(ueqValue);
-  }
-
-  for (var feature = 51; feature <= 56; feature++) {
-    var featureKey = "q" + feature;
-    var featureValue = Number(normalized[featureKey]);
-    if (featureValue) normalized[featureKey] = String(Math.max(1, Math.min(5, featureValue)));
+    if (answers[key] !== undefined) normalized[key] = String(answers[key]);
   }
 
   for (var open = 57; open <= 61; open++) {

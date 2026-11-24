@@ -1,6 +1,34 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
+
+const PORT = Number(process.env.PORT) || 3000;
+const ROOT_DIR = __dirname;
+const MAX_REQUEST_BYTES = 2 * 1024 * 1024;
+const developerSessions = new Map();
+
+function safeCompare(left, right) {
+    const leftBuffer = Buffer.from(String(left));
+    const rightBuffer = Buffer.from(String(right));
+    if (leftBuffer.length !== rightBuffer.length) return false;
+    return crypto.timingSafeEqual(leftBuffer, rightBuffer);
+}
+
+function getCookie(req, name) {
+    const header = req.headers.cookie || '';
+    const match = header.split(';').map(value => value.trim()).find(value => value.startsWith(name + '='));
+    return match ? decodeURIComponent(match.slice(name.length + 1)) : null;
+}
+
+function sendJson(res, status, payload, extraHeaders = {}) {
+    res.writeHead(status, {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Cache-Control': 'no-store',
+        ...extraHeaders
+    });
+    res.end(JSON.stringify(payload));
+}
 
 const mimeTypes = {
     '.html': 'text/html; charset=utf-8',
@@ -14,16 +42,85 @@ const mimeTypes = {
 };
 
 const server = http.createServer((req, res) => {
-    const parsedUrl = req.url.split('?')[0];
+    const parsedUrl = (req.url || '/').split('?')[0];
+
+    if (parsedUrl === '/api/developer/session' && req.method === 'GET') {
+        const token = getCookie(req, 'temanjiwa_admin');
+        const expiresAt = token ? developerSessions.get(token) : null;
+        if (expiresAt && expiresAt < Date.now()) {
+            developerSessions.delete(token);
+        }
+        sendJson(res, 200, { authenticated: Boolean(expiresAt && expiresAt >= Date.now()) });
+        return;
+    }
+
+    if (parsedUrl === '/api/developer/login' && req.method === 'POST') {
+        let body = '';
+        req.on('data', chunk => {
+            body += chunk;
+            if (body.length > 4096) {
+                sendJson(res, 413, { success: false, error: 'Payload too large' });
+                req.destroy();
+            }
+        });
+        req.on('end', () => {
+            if (res.writableEnded) return;
+            try {
+                const data = JSON.parse(body);
+                const username = process.env.DEV_USERNAME;
+                const password = process.env.DEV_PASSWORD;
+                if (!username || !password) {
+                    sendJson(res, 503, { success: false, error: 'Developer access is not configured on this server' });
+                    return;
+                }
+                if (!safeCompare(data.username, username) || !safeCompare(data.password, password)) {
+                    sendJson(res, 401, { success: false, error: 'Invalid developer credentials' });
+                    return;
+                }
+                const token = crypto.randomBytes(32).toString('hex');
+                developerSessions.set(token, Date.now() + 60 * 60 * 1000);
+                const cookie = `temanjiwa_admin=${encodeURIComponent(token)}; HttpOnly; SameSite=Strict; Path=/; Max-Age=3600`;
+                sendJson(res, 200, { success: true }, { 'Set-Cookie': cookie });
+            } catch (error) {
+                sendJson(res, 400, { success: false, error: 'Invalid JSON input' });
+            }
+        });
+        return;
+    }
+
+    if (parsedUrl === '/api/developer/logout' && req.method === 'POST') {
+        const token = getCookie(req, 'temanjiwa_admin');
+        if (token) developerSessions.delete(token);
+        sendJson(res, 200, { success: true }, {
+            'Set-Cookie': 'temanjiwa_admin=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0'
+        });
+        return;
+    }
 
     // API: Save Questionnaire Response to rekap_kuesioner.json
     if (req.method === 'POST' && (parsedUrl === '/api/save-questionnaire' || parsedUrl === '/save_questionnaire.php')) {
         let body = '';
-        req.on('data', chunk => { body += chunk; });
+        let receivedBytes = 0;
+        req.on('data', chunk => {
+            receivedBytes += chunk.length;
+            if (receivedBytes > MAX_REQUEST_BYTES) {
+                res.writeHead(413, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: false, error: 'Payload too large' }));
+                req.destroy();
+                return;
+            }
+            body += chunk;
+        });
         req.on('end', () => {
+            if (res.writableEnded) return;
             try {
                 const responseData = JSON.parse(body);
-                const filePath = path.join(__dirname, 'rekap_kuesioner.json');
+                if (!responseData || typeof responseData !== 'object' || !responseData.id) {
+                    res.writeHead(400, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ success: false, error: 'Invalid questionnaire payload' }));
+                    return;
+                }
+                const filePath = path.join(ROOT_DIR, 'rekap_kuesioner.json');
 
                 let rekap = {
                     project: "TemanJiwa - Analisis UI/UX Mental Health Tracker untuk Generasi Z Menggunakan Metode Design Thinking",
@@ -42,7 +139,7 @@ const server = http.createServer((req, res) => {
                         const fileContent = fs.readFileSync(filePath, 'utf8');
                         rekap = JSON.parse(fileContent);
                     } catch (e) {
-                        console.warn('Could not parse existing rekap_kuesioner.json, creating new.');
+                            console.warn('Could not parse existing rekap_kuesioner.json, creating new.');
                     }
                 }
 
@@ -61,10 +158,21 @@ const server = http.createServer((req, res) => {
                         const oldKey = 'q' + (63 + i - 57);
                         if (responseData.answers[oldKey] !== undefined) answers['q' + i] = responseData.answers[oldKey];
                     }
-                    for (let i = 1; i <= 61; i++) {
-                        if (answers['q' + i] === undefined) answers['q' + i] = '';
-                    }
                     responseData.answers = answers;
+                }
+
+                if (!responseData.answers || Object.keys(responseData.answers).length !== 61) {
+                    res.writeHead(400, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ success: false, error: 'All 61 questionnaire answers are required' }));
+                    return;
+                }
+
+                if (responseData.respondent && typeof responseData.respondent === 'object') {
+                    for (const key of Object.keys(responseData.respondent)) {
+                        if (typeof responseData.respondent[key] === 'string') {
+                            responseData.respondent[key] = responseData.respondent[key].slice(0, 500);
+                        }
+                    }
                 }
 
                 // Check if response already exists by id, update or append
@@ -78,8 +186,10 @@ const server = http.createServer((req, res) => {
                 rekap.totalResponses = rekap.responses.length;
                 rekap.lastUpdated = new Date().toISOString();
 
-                fs.writeFileSync(filePath, JSON.stringify(rekap, null, 2), 'utf8');
-                console.log(`[API] Saved questionnaire response for: ${responseData.respondent ? responseData.respondent.name : 'Unknown'}. Total responses: ${rekap.totalResponses}`);
+                const tempPath = filePath + '.tmp';
+                fs.writeFileSync(tempPath, JSON.stringify(rekap, null, 2), 'utf8');
+                fs.renameSync(tempPath, filePath);
+                console.log(`[API] Saved questionnaire response. Total responses: ${rekap.totalResponses}`);
 
                 res.writeHead(200, {
                     'Content-Type': 'application/json',
@@ -107,7 +217,13 @@ const server = http.createServer((req, res) => {
     }
 
     // Static Files Handler
-    let filePath = path.join(__dirname, parsedUrl === '/' ? 'index.html' : parsedUrl);
+    const relativePath = parsedUrl === '/' ? 'index.html' : parsedUrl.replace(/^\/+/, '');
+    const filePath = path.resolve(ROOT_DIR, relativePath);
+    if (!filePath.startsWith(ROOT_DIR + path.sep) && filePath !== path.join(ROOT_DIR, 'index.html')) {
+        res.writeHead(403, { 'Content-Type': 'text/plain' });
+        res.end('Forbidden');
+        return;
+    }
     
     fs.readFile(filePath, (err, content) => {
         if (err) {
@@ -116,14 +232,16 @@ const server = http.createServer((req, res) => {
             return;
         }
         const ext = path.extname(filePath).toLowerCase();
+        const isImmutableAsset = /\.(?:png|jpg|jpeg|svg|ico|woff2?)$/i.test(filePath);
         res.writeHead(200, {
             'Content-Type': mimeTypes[ext] || 'application/octet-stream',
-            'Access-Control-Allow-Origin': '*'
+            'Access-Control-Allow-Origin': '*',
+            'Cache-Control': isImmutableAsset ? 'public, max-age=86400' : 'no-cache'
         });
         res.end(content);
     });
 });
 
-server.listen(3000, () => {
-    console.log('Server listening on http://localhost:3000/');
+server.listen(PORT, () => {
+    console.log(`Server listening on http://localhost:${PORT}/`);
 });

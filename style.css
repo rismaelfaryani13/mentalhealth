@@ -35,7 +35,7 @@ body {
     min-height: 100dvh;
     overflow-x: hidden;
     overflow-x: clip;
-    touch-action: pan-x pan-y;
+    touch-action: auto;
 }
 
 html {
@@ -45,10 +45,14 @@ html {
 }
 
 body {
-    overscroll-behavior-y: contain;
+    overscroll-behavior-y: auto;
     -webkit-overflow-scrolling: touch;
     overflow-y: auto;
-    touch-action: pan-x pan-y;
+    touch-action: auto;
+}
+
+body.modal-open {
+    overflow: hidden;
 }
 
 #app-shell {
@@ -62,6 +66,24 @@ body {
     overflow-y: visible;
     -webkit-overflow-scrolling: touch;
     padding-bottom: calc(var(--global-bottom-nav-height) + env(safe-area-inset-bottom) + 1.25rem);
+}
+
+/* Modal surfaces own their scroll area so closing a modal restores page scroll. */
+[role="dialog"] {
+    overscroll-behavior: contain;
+}
+
+[role="dialog"] [data-modal-scroll],
+.modal-scroll {
+    min-height: 0;
+    max-height: calc(100dvh - 2rem);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+button,
+[role="button"] {
+    touch-action: manipulation;
 }
 
 * {
