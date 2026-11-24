@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full bg-[#F8FAFD]">
+<html lang="id" class="bg-[#F8FAFD]">
 
 <head>
     <meta charset="UTF-8">
@@ -62,7 +62,7 @@
     </script>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=2.10">
 
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -80,13 +80,13 @@
     <script src="questionnaire-data.js"></script>
 
     <!-- Application Script (Cache-Busted for instant updates) -->
-    <script defer src="app.js?v=2.8"></script>
+    <script defer src="app.js?v=2.12"></script>
 
     <!-- Alpine.js & Plugins CDN -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
-<body x-data x-effect="$store.app.syncModalScrollLock()" class="h-full bg-[#F8FAFD] text-[#1E293B] antialiased selection:bg-[#A8C5FF] selection:text-white">
+<body x-data x-effect="$store.app.syncModalScrollLock()" class="bg-[#F8FAFD] text-[#1E293B] antialiased selection:bg-[#A8C5FF] selection:text-white">
 
     <!-- Global Fullscreen Centered Loading Screen Overlay -->
     <div x-show="$store.app.isLoading"
@@ -1817,7 +1817,7 @@
             <!-- 23. MANDATORY RESEARCH QUESTIONNAIRE SCREEN (61 QUESTIONS) -->
             <section x-show="$store.app.currentScreen === 'questionnaire'"
                      x-transition:enter="transition ease-out duration-300"
-                     class="questionnaire-screen space-y-6 max-w-3xl mx-auto w-full pb-12">
+                     class="questionnaire-screen space-y-6 max-w-3xl mx-auto w-full">
 
                 <!-- STATE A: QUESTIONNAIRE ALREADY COMPLETED -->
                 <div x-show="$store.app.questionnaireStatus === 'completed'" class="space-y-6">
@@ -2433,6 +2433,7 @@
         <!-- iOS STYLE BOTTOM NAVIGATION BAR -->
         <!-- ========================================== -->
         <nav x-show="['dashboard', 'mood', 'journal', 'selfcare', 'stats', 'profile', 'questionnaire'].includes($store.app.currentScreen)"
+             :class="$store.app.currentScreen === 'questionnaire' ? 'global-nav-questionnaire-hidden' : ''"
              class="global-bottom-nav fixed bottom-0 left-1/2 -translate-x-1/2 z-40 w-full max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-5xl bg-white/95 backdrop-blur-md border-t border-[#E9EEF7] px-2 py-2 pb-[calc(.5rem+env(safe-area-inset-bottom))] flex items-center justify-around shadow-nav rounded-t-3xl transition-all">
             
             <!-- Dashboard -->
@@ -2718,7 +2719,7 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./service-worker.js?v=5')
+                navigator.serviceWorker.register('./service-worker.js?v=10')
                     .then(registration => {
                         registration.addEventListener('updatefound', () => {
                             const worker = registration.installing;

@@ -41,18 +41,24 @@ body {
 html {
     scroll-behavior: smooth;
     scroll-padding-top: calc(var(--app-header-height) + 0.75rem);
-    scroll-padding-bottom: calc(var(--global-bottom-nav-height) + env(safe-area-inset-bottom) + 1rem);
+    scroll-padding-bottom: calc(var(--questionnaire-bottom-nav-height) + env(safe-area-inset-bottom) + 1.25rem);
+    overflow-y: visible;
 }
 
 body {
     overscroll-behavior-y: auto;
     -webkit-overflow-scrolling: touch;
-    overflow-y: auto;
+    overflow-y: visible;
     touch-action: auto;
 }
 
 body.modal-open {
     overflow: hidden;
+}
+
+body.modal-open,
+body.modal-open html {
+    overscroll-behavior: contain;
 }
 
 #app-shell {
@@ -65,7 +71,7 @@ body.modal-open {
     justify-content: flex-start;
     overflow-y: visible;
     -webkit-overflow-scrolling: touch;
-    padding-bottom: calc(var(--global-bottom-nav-height) + env(safe-area-inset-bottom) + 1.25rem);
+    padding-bottom: calc(var(--global-bottom-nav-height) + env(safe-area-inset-bottom) + 5rem) !important;
 }
 
 /* Modal surfaces own their scroll area so closing a modal restores page scroll. */
@@ -107,7 +113,7 @@ canvas {
 
 .questionnaire-screen {
     min-width: 0;
-    padding-bottom: calc(var(--questionnaire-bottom-nav-height) + var(--global-bottom-nav-height) + env(safe-area-inset-bottom) + 7rem);
+    padding-bottom: calc(var(--questionnaire-bottom-nav-height) + env(safe-area-inset-bottom) + 9rem) !important;
     scroll-margin-top: calc(var(--app-header-height) + 0.75rem);
 }
 
@@ -138,6 +144,7 @@ canvas {
 .questionnaire-section-content,
 .question-card {
     scroll-margin-top: calc(var(--app-header-height) + 9rem);
+    scroll-margin-bottom: calc(var(--questionnaire-bottom-nav-height) + env(safe-area-inset-bottom) + 2rem);
 }
 
 .questionnaire-validation-slot {
@@ -226,6 +233,10 @@ canvas {
     max-width: 5.5rem;
 }
 
+.global-bottom-nav.global-nav-questionnaire-hidden {
+    display: none !important;
+}
+
 @media (max-width: 639px) {
     .app-header {
         min-height: 3.75rem;
@@ -255,15 +266,15 @@ canvas {
     }
 
     .questionnaire-screen {
-        padding-bottom: calc(var(--questionnaire-bottom-nav-height) + var(--global-bottom-nav-height) + env(safe-area-inset-bottom) + 7rem);
+        padding-bottom: calc(var(--questionnaire-bottom-nav-height) + env(safe-area-inset-bottom) + 9rem);
     }
 
     .app-main {
-        padding-bottom: calc(var(--global-bottom-nav-height) + env(safe-area-inset-bottom) + 1rem);
+        padding-bottom: calc(var(--global-bottom-nav-height) + env(safe-area-inset-bottom) + 5.5rem) !important;
     }
 
     .questionnaire-screen {
-        padding-bottom: calc(var(--questionnaire-bottom-nav-height) + var(--global-bottom-nav-height) + env(safe-area-inset-bottom) + 2rem);
+        padding-bottom: calc(var(--questionnaire-bottom-nav-height) + env(safe-area-inset-bottom) + 10rem) !important;
     }
 
     .question-card-header {

@@ -118,6 +118,15 @@ document.addEventListener('alpine:init', () => {
         // Water Tracker State
         waterLogged: 1250,
         waterTarget: 2000,
+        waterHistory: [
+            { day: 'Sen', amount: 1800 },
+            { day: 'Sel', amount: 2000 },
+            { day: 'Rab', amount: 1500 },
+            { day: 'Kam', amount: 2000 },
+            { day: 'Jum', amount: 2250 },
+            { day: 'Sab', amount: 1750 },
+            { day: 'Min', amount: 1250 }
+        ],
 
         // Sleep Tracker State
         sleepInput: { bedtime: '22:30', waketime: '06:30', quality: 4 },
@@ -242,6 +251,7 @@ document.addEventListener('alpine:init', () => {
         // Init App & Real-Time Monitor
         init() {
             this.loadFromStorage();
+            this.ensureIntegratedHistories();
             this.initLucideIcons();
             this.initRealtimeClock();
             this.initViewportHeight();
@@ -286,6 +296,34 @@ document.addEventListener('alpine:init', () => {
                     this.renderCharts();
                 }
             });
+        },
+
+        ensureIntegratedHistories() {
+            const days = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
+
+            if (!Array.isArray(this.habits) || this.habits.length === 0) {
+                this.habits = [
+                    { id: 1, name: 'Meditasi Pernapasan 5 Menit', icon: 'wind', completed: false, streak: 0, category: 'Mindfulness' },
+                    { id: 2, name: 'Minum 2 Liter Air Bersih', icon: 'droplet', completed: false, streak: 0, category: 'Kesehatan' },
+                    { id: 3, name: 'Tulis 1 Hal Yang Disyukuri', icon: 'book-open', completed: false, streak: 0, category: 'Jurnal' },
+                    { id: 4, name: 'Jalan Kaki Ringan 15 Menit', icon: 'footprints', completed: false, streak: 0, category: 'Fisik' },
+                    { id: 5, name: 'Tidur Sebelum Jam 23:00', icon: 'moon', completed: false, streak: 0, category: 'Istirahat' }
+                ];
+            }
+
+            if (!Array.isArray(this.sleepHistory) || this.sleepHistory.length !== 7) {
+                this.sleepHistory = days.map(day => ({ day, duration: 0, quality: 0 }));
+            } else {
+                const byDay = new Map(this.sleepHistory.map(item => [item.day, item]));
+                this.sleepHistory = days.map(day => byDay.get(day) || { day, duration: 0, quality: 0 });
+            }
+
+            if (!Array.isArray(this.waterHistory) || this.waterHistory.length !== 7) {
+                this.waterHistory = days.map(day => ({ day, amount: day === 'Min' ? (this.waterLogged || 0) : 0 }));
+            } else {
+                const byDay = new Map(this.waterHistory.map(item => [item.day, item]));
+                this.waterHistory = days.map(day => byDay.get(day) || { day, amount: 0 });
+            }
         },
 
         initViewportHeight() {
@@ -608,6 +646,12 @@ document.addEventListener('alpine:init', () => {
                 ];
                 this.waterLogged = 1250;
                 this.waterTarget = 2000;
+                this.waterHistory = [
+                    { day: 'Sen', amount: 1800 }, { day: 'Sel', amount: 2000 },
+                    { day: 'Rab', amount: 1500 }, { day: 'Kam', amount: 2000 },
+                    { day: 'Jum', amount: 2250 }, { day: 'Sab', amount: 1750 },
+                    { day: 'Min', amount: 1250 }
+                ];
                 this.sleepInput = { bedtime: '22:30', waketime: '06:30', quality: 4 };
                 this.sleepToday = { duration: 8.0, quality: 4, bedtime: '22:30', waketime: '06:30' };
                 this.sleepHistory = [
@@ -636,6 +680,12 @@ document.addEventListener('alpine:init', () => {
                 ];
                 this.waterLogged = 0;
                 this.waterTarget = 2000;
+                this.waterHistory = [
+                    { day: 'Sen', amount: 0 }, { day: 'Sel', amount: 0 },
+                    { day: 'Rab', amount: 0 }, { day: 'Kam', amount: 0 },
+                    { day: 'Jum', amount: 0 }, { day: 'Sab', amount: 0 },
+                    { day: 'Min', amount: 0 }
+                ];
                 this.sleepInput = { bedtime: '22:00', waketime: '06:00', quality: 3 };
                 this.sleepToday = { duration: 0.0, quality: 0, bedtime: '--:--', waketime: '--:--' };
                 this.sleepHistory = [
@@ -988,7 +1038,9 @@ Pesan Curhat Pengguna: ${promptText}`;
                 habits: this.habits,
                 waterLogged: this.waterLogged,
                 waterTarget: this.waterTarget,
+                waterHistory: this.waterHistory,
                 sleepToday: this.sleepToday,
+                sleepHistory: this.sleepHistory,
                 reminders: this.reminders,
                 notifications: this.notifications,
                 aiMessages: this.aiChat.messages,
@@ -1031,7 +1083,9 @@ Pesan Curhat Pengguna: ${promptText}`;
                         if (parsed.habits) this.habits = parsed.habits;
                         if (parsed.waterLogged !== undefined) this.waterLogged = parsed.waterLogged;
                         if (parsed.waterTarget) this.waterTarget = parsed.waterTarget;
+                        if (Array.isArray(parsed.waterHistory)) this.waterHistory = parsed.waterHistory;
                         if (parsed.sleepToday) this.sleepToday = parsed.sleepToday;
+                        if (Array.isArray(parsed.sleepHistory)) this.sleepHistory = parsed.sleepHistory;
                         if (parsed.reminders) this.reminders = parsed.reminders;
                         if (parsed.notifications) this.notifications = parsed.notifications;
                         if (parsed.aiMessages && parsed.aiMessages.length > 0) this.aiChat.messages = parsed.aiMessages;
@@ -1065,7 +1119,9 @@ Pesan Curhat Pengguna: ${promptText}`;
                         if (parsed.habits) this.habits = parsed.habits;
                         if (parsed.waterLogged !== undefined) this.waterLogged = parsed.waterLogged;
                         if (parsed.waterTarget) this.waterTarget = parsed.waterTarget;
+                        if (Array.isArray(parsed.waterHistory)) this.waterHistory = parsed.waterHistory;
                         if (parsed.sleepToday) this.sleepToday = parsed.sleepToday;
+                        if (Array.isArray(parsed.sleepHistory)) this.sleepHistory = parsed.sleepHistory;
                         if (parsed.reminders) this.reminders = parsed.reminders;
                         if (parsed.notifications) this.notifications = parsed.notifications;
                         if (parsed.aiMessages && parsed.aiMessages.length > 0) this.aiChat.messages = parsed.aiMessages;
@@ -1350,22 +1406,45 @@ Pesan Curhat Pengguna: ${promptText}`;
                     habit.streak = Math.max(0, habit.streak - 1);
                 }
                 this.saveToStorage();
-                setTimeout(() => this.initLucideIcons(), 50);
+                setTimeout(() => {
+                    this.initLucideIcons();
+                    if (this.currentScreen === 'stats') this.renderCharts();
+                }, 50);
             }
         },
 
         // Water Methods
         addWater(amount) {
             this.waterLogged = Math.min(this.waterTarget + 1000, this.waterLogged + amount);
+            this.updateWaterHistory();
             this.user.xp += 5;
             this.saveToStorage();
             this.showToast(`Ditambahkan +${amount}ml air!`);
+            setTimeout(() => {
+                if (this.currentScreen === 'stats') this.renderCharts();
+            }, 50);
         },
 
         resetWater() {
             this.waterLogged = 0;
+            this.updateWaterHistory();
             this.saveToStorage();
             this.showToast('Catatan air direset.');
+            setTimeout(() => {
+                if (this.currentScreen === 'stats') this.renderCharts();
+            }, 50);
+        },
+
+        updateWaterHistory() {
+            if (!Array.isArray(this.waterHistory)) this.waterHistory = [];
+            const dayNames = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+            const todayDay = dayNames[new Date().getDay()];
+            const existing = this.waterHistory.find(item => item.day === todayDay);
+            if (existing) {
+                existing.amount = this.waterLogged;
+            } else {
+                this.waterHistory.push({ day: todayDay, amount: this.waterLogged });
+            }
         },
 
         // Sleep Methods
@@ -1413,6 +1492,7 @@ Pesan Curhat Pengguna: ${promptText}`;
             this.user.xp += 15;
             this.saveToStorage();
             this.showToast('Catatan tidur tersimpan! (+15 XP)');
+            setTimeout(() => this.renderCharts(), 50);
             this.navigateTo('dashboard');
         },
 
@@ -1759,7 +1839,18 @@ Pesan Curhat Pengguna: ${promptText}`;
             if (waterCtx) {
                 if (window.waterChartInstance) window.waterChartInstance.destroy();
                 let waterLabels = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
-                let waterData = [1800, 2000, 1500, 2000, 2250, 1750, this.waterLogged || 1250];
+                const waterByDay = {};
+                if (Array.isArray(this.waterHistory)) {
+                    this.waterHistory.forEach(item => {
+                        if (item && item.day) waterByDay[item.day] = Number(item.amount) || 0;
+                    });
+                }
+                waterLabels.forEach(day => {
+                    if (waterByDay[day] === undefined) {
+                        waterByDay[day] = day === 'Min' ? (this.waterLogged || 0) : 0;
+                    }
+                });
+                let waterData = waterLabels.map(day => waterByDay[day]);
 
                 window.waterChartInstance = new Chart(waterCtx, {
                     type: 'bar',
